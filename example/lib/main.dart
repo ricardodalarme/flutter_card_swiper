@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:stacked_cards/stacked_cards.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,17 +16,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -33,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     //create a CardController
-    SwipeableCardSectionController _cardController =
+    SwipeableCardSectionController cardController =
         SwipeableCardSectionController();
 
     return Scaffold(
@@ -44,10 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SwipeableCardsSection(
-            cardController: _cardController,
+            cardController: cardController,
             context: context,
             //add the first 3 cards
-            items: [
+            items: const [
               CardView(text: "First card"),
               CardView(text: "Second card"),
               CardView(text: "Third card"),
@@ -55,43 +57,43 @@ class _MyHomePageState extends State<MyHomePage> {
             onCardSwiped: (dir, index, widget) {
               //Add the next card
               if (counter <= 20) {
-                _cardController.addItem(CardView(text: "Card $counter"));
+                cardController.addItem(CardView(text: "Card $counter"));
                 counter++;
               }
 
               if (dir == Direction.left) {
-                print('onDisliked ${(widget as CardView).text} $index');
+                debugPrint('onDisliked ${(widget as CardView).text} $index');
               } else if (dir == Direction.right) {
-                print('onLiked ${(widget as CardView).text} $index');
+                debugPrint('onLiked ${(widget as CardView).text} $index');
               } else if (dir == Direction.up) {
-                print('onUp ${(widget as CardView).text} $index');
+                debugPrint('onUp ${(widget as CardView).text} $index');
               } else if (dir == Direction.down) {
-                print('onDown ${(widget as CardView).text} $index');
+                debugPrint('onDown ${(widget as CardView).text} $index');
               }
             },
             enableSwipeUp: true,
             enableSwipeDown: true,
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 20.0),
+            margin: const EdgeInsets.symmetric(vertical: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FloatingActionButton(
-                  child: Icon(Icons.chevron_left),
-                  onPressed: () => _cardController.triggerSwipeLeft(),
+                  child: const Icon(Icons.chevron_left),
+                  onPressed: () => cardController.triggerSwipeLeft(),
                 ),
                 FloatingActionButton(
-                  child: Icon(Icons.chevron_right),
-                  onPressed: () => _cardController.triggerSwipeRight(),
+                  child: const Icon(Icons.chevron_right),
+                  onPressed: () => cardController.triggerSwipeRight(),
                 ),
                 FloatingActionButton(
-                  child: Icon(Icons.arrow_upward),
-                  onPressed: () => _cardController.triggerSwipeUp(),
+                  child: const Icon(Icons.arrow_upward),
+                  onPressed: () => cardController.triggerSwipeUp(),
                 ),
                 FloatingActionButton(
-                  child: Icon(Icons.arrow_downward),
-                  onPressed: () => _cardController.triggerSwipeDown(),
+                  child: const Icon(Icons.arrow_downward),
+                  onPressed: () => cardController.triggerSwipeDown(),
                 ),
               ],
             ),

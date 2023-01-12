@@ -108,7 +108,7 @@ packages:
     source: hosted
     version: "1.10.0"
   stacked_cards:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       path: ".."
       relative: true
