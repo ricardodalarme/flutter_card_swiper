@@ -1,3 +1,7 @@
+## [1.0.1]
+
+- Adjust the sample image
+
 ## [1.0.0]
 
 - Added `SwipeableCardsStack`

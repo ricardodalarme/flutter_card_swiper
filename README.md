@@ -2,7 +2,7 @@
 
 This is Tinder like swipeable cards package. You can add your own widgets to the stack, receive all four events, left, right, up and down. You can define your own business logic for each direction.
 
-<img alt="Demo" src="images/swipe-card.gif" height="500">
+<img alt="Demo" src="https://github.com/ricardodalarme/swipeable-cards-stack/raw/main/images/swipe-card.gif" height="500">
 
 ## Documentation
 
