@@ -9,47 +9,37 @@ class CardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Stack(
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: [
+            0.5,
+            1,
+          ],
+          colors: [
+            Colors.blueAccent,
+            Color.fromARGB(255, 6, 28, 61),
+          ],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox.expand(
-            child: Material(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Container(
-                color: Colors.blueAccent,
-              ),
-            ),
+          Text(
+            text,
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.w700),
           ),
-          SizedBox.expand(
-            child: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Colors.transparent, Colors.black54],
-                      begin: Alignment.center,
-                      end: Alignment.bottomCenter)),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 16.0, horizontal: 16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(text,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w700)),
-                    const Padding(padding: EdgeInsets.only(bottom: 8.0)),
-                    Text("$text details",
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(color: Colors.white)),
-                  ],
-                )),
-          )
+          const Padding(padding: EdgeInsets.only(bottom: 8.0)),
+          Text("$text details",
+              textAlign: TextAlign.start,
+              style: const TextStyle(color: Colors.white)),
         ],
       ),
     );
