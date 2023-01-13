@@ -58,13 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 counter++;
               }
 
-              if (dir == Direction.left) {
+              if (dir == AxisDirection.left) {
                 debugPrint('onDisliked ${(widget as CardView).text} $index');
-              } else if (dir == Direction.right) {
+              } else if (dir == AxisDirection.right) {
                 debugPrint('onLiked ${(widget as CardView).text} $index');
-              } else if (dir == Direction.up) {
+              } else if (dir == AxisDirection.up) {
                 debugPrint('onUp ${(widget as CardView).text} $index');
-              } else if (dir == Direction.down) {
+              } else if (dir == AxisDirection.down) {
                 debugPrint('onDown ${(widget as CardView).text} $index');
               }
             },

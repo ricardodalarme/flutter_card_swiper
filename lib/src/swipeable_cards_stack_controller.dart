@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-typedef TriggerListener = void Function(Direction dir);
+typedef TriggerListener = void Function(AxisDirection dir);
 typedef AppendItem = void Function(Widget item);
 typedef EnableSwipe = void Function(bool dir);
 
@@ -10,19 +10,19 @@ class SwipeableCardsStackController {
   late EnableSwipe enableSwipeListener;
 
   void triggerSwipeLeft() {
-    return listener.call(Direction.left);
+    return listener.call(AxisDirection.left);
   }
 
   void triggerSwipeRight() {
-    return listener.call(Direction.right);
+    return listener.call(AxisDirection.right);
   }
 
   void triggerSwipeUp() {
-    return listener.call(Direction.up);
+    return listener.call(AxisDirection.up);
   }
 
   void triggerSwipeDown() {
-    return listener.call(Direction.down);
+    return listener.call(AxisDirection.down);
   }
 
   void appendItem(Widget item) {
@@ -32,11 +32,4 @@ class SwipeableCardsStackController {
   void enableSwipe(bool isSwipeEnabled) {
     return enableSwipeListener.call(isSwipeEnabled);
   }
-}
-
-enum Direction {
-  left,
-  right,
-  up,
-  down,
 }

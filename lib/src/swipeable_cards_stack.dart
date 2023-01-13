@@ -76,20 +76,20 @@ class _SwipeableCardsStackState extends State<SwipeableCardsStack>
   Alignment frontCardAlign = cardsAlign[2];
   double frontCardRot = 0.0;
 
-  void _triggerSwipe(Direction dir) {
+  void _triggerSwipe(AxisDirection dir) {
     final swipedCallback = widget.onCardSwiped ?? (_, __, ___) => true;
     bool? shouldAnimate = false;
-    if (dir == Direction.left) {
-      shouldAnimate = swipedCallback(Direction.left, index, cards[0]);
+    if (dir == AxisDirection.left) {
+      shouldAnimate = swipedCallback(AxisDirection.left, index, cards[0]);
       frontCardAlign = const Alignment(-0.001, 0.0);
-    } else if (dir == Direction.right) {
-      shouldAnimate = swipedCallback(Direction.right, index, cards[0]);
+    } else if (dir == AxisDirection.right) {
+      shouldAnimate = swipedCallback(AxisDirection.right, index, cards[0]);
       frontCardAlign = const Alignment(0.001, 0.0);
-    } else if (dir == Direction.up) {
-      shouldAnimate = swipedCallback(Direction.up, index, cards[0]);
+    } else if (dir == AxisDirection.up) {
+      shouldAnimate = swipedCallback(AxisDirection.up, index, cards[0]);
       frontCardAlign = const Alignment(0.0, -0.001);
-    } else if (dir == Direction.down) {
-      shouldAnimate = swipedCallback(Direction.down, index, cards[0]);
+    } else if (dir == AxisDirection.down) {
+      shouldAnimate = swipedCallback(AxisDirection.down, index, cards[0]);
       frontCardAlign = const Alignment(0.0, 0.001);
     }
 
@@ -183,18 +183,18 @@ class _SwipeableCardsStackState extends State<SwipeableCardsStack>
                     bool? shouldAnimate = false;
                     if (frontCardAlign.x > 3.0) {
                       shouldAnimate =
-                          onCardSwiped(Direction.right, index, cards[0]);
+                          onCardSwiped(AxisDirection.right, index, cards[0]);
                     } else if (frontCardAlign.x < -3.0) {
                       shouldAnimate =
-                          onCardSwiped(Direction.left, index, cards[0]);
+                          onCardSwiped(AxisDirection.left, index, cards[0]);
                     } else if (frontCardAlign.y < -3.0 &&
                         widget.enableSwipeUp) {
                       shouldAnimate =
-                          onCardSwiped(Direction.up, index, cards[0]);
+                          onCardSwiped(AxisDirection.up, index, cards[0]);
                     } else if (frontCardAlign.y > 3.0 &&
                         widget.enableSwipeDown) {
                       shouldAnimate =
-                          onCardSwiped(Direction.down, index, cards[0]);
+                          onCardSwiped(AxisDirection.down, index, cards[0]);
                     } else {
                       // Return to the initial rotation and alignment
                       setState(() {
