@@ -1,11 +1,12 @@
 name: swipeable_cards_stack
 description: This is Tinder like swipeable cards package. You can add your own widgets to the stack, receive all four events, left, right, up and down. You can define your own business logic for each direction.
+homepage: https://github.com/ricardodalarme/swipeable-cards-stack
+issue_tracker: https://github.com/ricardodalarme/swipeable-cards-stack/issues
 version: 1.0.1
-homepage: https://github.com/ricardodalarme/stacked-cards
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=2.5.0"
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
@@ -15,3 +16,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
+
+screenshots:
+  - description: 'Example of the widget.'
+    path: images/swipe-card.gif
