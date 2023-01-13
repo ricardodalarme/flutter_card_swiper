@@ -1,4 +1,8 @@
-## [1.0.1]
+## [1.0.2]
+
+- Add a screenshorts to pub.dev
+
+- ## [1.0.1]
 
 - Adjust the sample image
 
