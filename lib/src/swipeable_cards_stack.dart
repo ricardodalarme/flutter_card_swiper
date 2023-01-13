@@ -27,6 +27,8 @@ class SwipeableCardsStack extends StatefulWidget {
   final Function? appendItemCallback;
   final bool enableSwipeUp;
   final bool enableSwipeDown;
+  final bool enableSwipeLeft;
+  final bool enableSwipeRight;
 
   SwipeableCardsStack({
     Key? key,
@@ -43,6 +45,8 @@ class SwipeableCardsStack extends StatefulWidget {
     this.appendItemCallback,
     this.enableSwipeUp = true,
     this.enableSwipeDown = true,
+    this.enableSwipeLeft = true,
+    this.enableSwipeRight = true,
   }) : super(key: key) {
     cardsSize[0] = Size(
       MediaQuery.of(context).size.width * cardWidthTopMul,
@@ -181,10 +185,11 @@ class _SwipeableCardsStackState extends State<SwipeableCardsStack>
                     final onCardSwiped =
                         widget.onCardSwiped ?? (_, __, ___) => true;
                     bool? shouldAnimate = false;
-                    if (frontCardAlign.x > 3.0) {
+                    if (frontCardAlign.x > 3.0 && widget.enableSwipeRight) {
                       shouldAnimate =
                           onCardSwiped(AxisDirection.right, index, cards[0]);
-                    } else if (frontCardAlign.x < -3.0) {
+                    } else if (frontCardAlign.x < -3.0 &&
+                        widget.enableSwipeLeft) {
                       shouldAnimate =
                           onCardSwiped(AxisDirection.left, index, cards[0]);
                     } else if (frontCardAlign.y < -3.0 &&
