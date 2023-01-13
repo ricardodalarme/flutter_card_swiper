@@ -1,4 +1,4 @@
-# stacked_cards
+# swipeable_cards_stack
 
 **This is Tinder like swipeable cards package. You can add your own widgets to the stack, receive all four events, left, right, up and down. You can define your own business logic for each direction.**
 
@@ -7,7 +7,7 @@
 ## Documentation
 
 ### Installation
-Add `stacked_cards` to your `pubspec.yaml`:
+Add `swipeable_cards_stack` to your `pubspec.yaml`:
 
 ```
 dependencies:
@@ -15,16 +15,16 @@ dependencies:
     sdk: flutter
 
   # added below
-  stacked_cards: <latest version>
+  swipeable_cards_stack: <latest version>
 ```
 ### Adding to app
-Use the `SwipeableCardsSection` widget provided by the package
+Use the `SwipeableCardsStack` widget provided by the package
 
 ```
 @override
   Widget build(BuildContext context) {
-    //create a SwipeableCardSectionController
-    SwipeableCardSectionController _cardController = SwipeableCardSectionController();
+    //create a SwipeableCardsStackController
+    SwipeableCardsStackController _cardController = SwipeableCardsStackController();
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +33,7 @@ Use the `SwipeableCardsSection` widget provided by the package
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SwipeableCardsSection(
+          SwipeableCardsStack(
             cardController: _cardController,
             context: context,
             //add the first 3 cards (widgets)

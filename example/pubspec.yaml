@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  stacked_cards:
+  swipeable_cards_stack:
     path: ../
 
 flutter:

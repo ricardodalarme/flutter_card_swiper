@@ -1,11 +1,11 @@
-library stacked_cards;
+library swipeable_cards_stack;
 
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:stacked_cards/swipe_controller.dart';
+import 'package:swipeable_cards_stack/swipeable_cards_stack_controller.dart';
 
-export './swipe_controller.dart';
+export 'swipeable_cards_stack_controller.dart';
 
 const List<Alignment> cardsAlign = [
   Alignment(0.0, 1.0),
@@ -14,8 +14,8 @@ const List<Alignment> cardsAlign = [
 ];
 final List<Size> cardsSize = List.filled(3, const Size(1, 1));
 
-class SwipeableCardsSection extends StatefulWidget {
-  final SwipeableCardSectionController? cardController;
+class SwipeableCardsStack extends StatefulWidget {
+  final SwipeableCardsStackController? cardController;
 
   //First 3 widgets
   final List<Widget> items;
@@ -30,7 +30,7 @@ class SwipeableCardsSection extends StatefulWidget {
   final bool enableSwipeUp;
   final bool enableSwipeDown;
 
-  SwipeableCardsSection({
+  SwipeableCardsStack({
     Key? key,
     this.cardController,
     required BuildContext context,
@@ -61,10 +61,10 @@ class SwipeableCardsSection extends StatefulWidget {
   }
 
   @override
-  State<SwipeableCardsSection> createState() => _CardsSectionState();
+  State<SwipeableCardsStack> createState() => _SwipeableCardsStackState();
 }
 
-class _CardsSectionState extends State<SwipeableCardsSection>
+class _SwipeableCardsStackState extends State<SwipeableCardsStack>
     with SingleTickerProviderStateMixin {
   int cardsCounter = 0;
   int index = 0;

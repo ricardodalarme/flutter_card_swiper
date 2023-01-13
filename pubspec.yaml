@@ -1,4 +1,4 @@
-name: stacked_cards
+name: swipeable_cards_stack
 description: This is Tinder like swipeable cards package. You can add your own widgets to the stack, receive all four events, left, right, up and down. You can define your own business logic for each direction.
 version: 1.0.0
 homepage: https://github.com/ricardodalarme/stacked-cards

@@ -4,7 +4,7 @@ typedef TriggerListener = void Function(Direction dir);
 typedef AppendItem = void Function(Widget item);
 typedef EnableSwipe = void Function(bool dir);
 
-class SwipeableCardSectionController {
+class SwipeableCardsStackController {
   late TriggerListener listener;
   late AppendItem addItem;
   late EnableSwipe enableSwipeListener;

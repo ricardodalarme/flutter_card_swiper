@@ -39,7 +39,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  stacked_cards:
+  swipeable_cards_stack:
     dependency: "direct main"
     description:
       path: ".."

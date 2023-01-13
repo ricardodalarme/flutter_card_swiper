@@ -1,6 +1,6 @@
 import 'package:example/card_view.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked_cards/stacked_cards.dart';
+import 'package:swipeable_cards_stack/swipeable_cards_stack.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int counter = 4;
-  final cardController = SwipeableCardSectionController();
+  final cardController = SwipeableCardsStackController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SwipeableCardsSection(
+          SwipeableCardsStack(
             cardController: cardController,
             context: context,
             //add the first 3 cards
