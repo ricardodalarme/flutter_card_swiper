@@ -51,6 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
               } else if (dir == AxisDirection.down) {
                 debugPrint('onDown ${(widget as CardView).text} $index');
               }
+
+              return true;
             },
           ),
           Container(

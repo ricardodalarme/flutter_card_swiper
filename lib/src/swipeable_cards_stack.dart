@@ -13,19 +13,21 @@ const List<Alignment> cardsAlign = [
 ];
 final List<Size> cardsSize = List.filled(3, const Size(1, 1));
 
+typedef OnCardSwiped = bool Function(
+    AxisDirection dir, int index, Widget? widget);
+
 class SwipeableCardsStack extends StatefulWidget {
   final SwipeableCardsStackController? cardController;
 
   //First 3 widgets
   final List<Widget> items;
-  final Function? onCardSwiped;
+  final OnCardSwiped? onCardSwiped;
   final double cardWidthTopMul;
   final double cardWidthMiddleMul;
   final double cardWidthBottomMul;
   final double cardHeightTopMul;
   final double cardHeightMiddleMul;
   final double cardHeightBottomMul;
-  final Function? appendItemCallback;
   final bool enableSwipeUp;
   final bool enableSwipeDown;
   final bool enableSwipeLeft;
@@ -43,7 +45,6 @@ class SwipeableCardsStack extends StatefulWidget {
     this.cardHeightTopMul = 0.6,
     this.cardHeightMiddleMul = 0.55,
     this.cardHeightBottomMul = 0.5,
-    this.appendItemCallback,
     this.enableSwipeUp = true,
     this.enableSwipeDown = true,
     this.enableSwipeLeft = true,
@@ -97,8 +98,6 @@ class _SwipeableCardsStackState extends State<SwipeableCardsStack>
       shouldAnimate = swipedCallback(AxisDirection.down, index, cards[0]);
       frontCardAlign = const Alignment(0.0, 0.001);
     }
-
-    shouldAnimate ??= true;
 
     if (shouldAnimate) {
       animateCards();
@@ -214,8 +213,6 @@ class _SwipeableCardsStackState extends State<SwipeableCardsStack>
                         frontCardRot = 0.0;
                       });
                     }
-
-                    shouldAnimate ??= true;
 
                     if (shouldAnimate) {
                       animateCards();
