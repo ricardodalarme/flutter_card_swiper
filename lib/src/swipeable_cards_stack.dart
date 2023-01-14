@@ -223,8 +223,6 @@ class _SwipeableCardsStackState extends State<SwipeableCardsStack>
                   },
                 ),
               )
-            else
-              const SizedBox(),
           ],
         ),
       ),
