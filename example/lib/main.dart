@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:example/example_candidate_model.dart';
 import 'package:example/example_card.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_card_swiper/card_swiper.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 import 'example_buttons.dart';
 

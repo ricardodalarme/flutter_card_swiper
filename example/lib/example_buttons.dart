@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_card_swiper/card_swiper.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 class ExampleButton extends StatelessWidget {
   final Function onTap;

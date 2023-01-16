@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
+import 'package:flutter_card_swiper/src/enums.dart';
 
 class CardSwiper extends StatefulWidget {
   /// list of widgets for the swiper
@@ -402,32 +404,3 @@ class _CardSwiperState extends State<CardSwiper>
 //for null safety
 void emptyFunction() {}
 void emptyFunctionIndex(int index, CardSwiperDirection direction) {}
-
-//to call the swipe function from outside of the CardSwiper
-class CardSwiperController extends ChangeNotifier {
-  CardSwiperState? state;
-
-  //swipe the card by changing the status of the controller
-  void swipe() {
-    state = CardSwiperState.swipe;
-    notifyListeners();
-  }
-
-  //swipe the card to the left side by changing the status of the controller
-  void swipeLeft() {
-    state = CardSwiperState.swipeLeft;
-    notifyListeners();
-  }
-
-  //swipe the card to the right side by changing the status of the controller
-  void swipeRight() {
-    state = CardSwiperState.swipeRight;
-    notifyListeners();
-  }
-}
-
-enum CardSwiperState { swipe, swipeLeft, swipeRight }
-
-enum CardSwiperDirection { none, left, right, top, bottom }
-
-enum SwipeType { none, swipe, back }
