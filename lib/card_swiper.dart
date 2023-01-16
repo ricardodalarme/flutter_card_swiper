@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class CardSwiper extends StatefulWidget {
   /// list of widgets for the swiper
-  final List<Widget?>? cards;
+  final List<Widget?> cards;
 
   /// controller to trigger actions
   final CardSwiperController? controller;
@@ -81,7 +81,7 @@ class _CardSwiperState extends State<CardSwiper>
 
   CardSwiperDirection detectedDirection = CardSwiperDirection.none;
 
-  bool get _isLastCard => _currentIndex == widget.cards!.length - 1;
+  bool get _isLastCard => _currentIndex == widget.cards.length - 1;
   int get _nextCardIndex => _isLastCard ? 0 : _currentIndex + 1;
 
   @override
@@ -93,7 +93,7 @@ class _CardSwiperState extends State<CardSwiper>
         //swipe widget from the outside
         ..addListener(() {
           if (widget.controller!.state == CardSwiperState.swipe) {
-            if (widget.cards!.isNotEmpty) {
+            if (widget.cards.isNotEmpty) {
               switch (widget.direction) {
                 case CardSwiperDirection.right:
                   _swipeHorizontal(context);
@@ -117,7 +117,7 @@ class _CardSwiperState extends State<CardSwiper>
         //swipe widget left from the outside
         ..addListener(() {
           if (widget.controller!.state == CardSwiperState.swipeLeft) {
-            if (widget.cards!.isNotEmpty) {
+            if (widget.cards.isNotEmpty) {
               _left = -1;
               _swipeHorizontal(context);
               _animationController.forward();
@@ -127,7 +127,7 @@ class _CardSwiperState extends State<CardSwiper>
         //swipe widget right from the outside
         ..addListener(() {
           if (widget.controller!.state == CardSwiperState.swipeRight) {
-            if (widget.cards!.isNotEmpty) {
+            if (widget.cards.isNotEmpty) {
               _left = widget.threshold + 1;
               _swipeHorizontal(context);
               _animationController.forward();
@@ -218,7 +218,7 @@ class _CardSwiperState extends State<CardSwiper>
           angle: _angle,
           child: Container(
             constraints: constraints,
-            child: widget.cards![index],
+            child: widget.cards[index],
           ),
         ),
         onTap: () {
@@ -259,7 +259,7 @@ class _CardSwiperState extends State<CardSwiper>
 
   Widget _backItem(BoxConstraints constraints, int index) {
     return Visibility(
-      visible: widget.cards!.length - index <= 2,
+      visible: widget.cards.length - index <= 2,
       child: Positioned(
         top: _difference,
         left: 0,
@@ -269,7 +269,7 @@ class _CardSwiperState extends State<CardSwiper>
             scale: _scale,
             child: Container(
               constraints: constraints,
-              child: widget.cards![index],
+              child: widget.cards[index],
             ),
           ),
         ),
