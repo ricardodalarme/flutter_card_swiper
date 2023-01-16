@@ -70,7 +70,7 @@ class _CardSwiperState extends State<CardSwiper>
 
   int _currentIndex = 0;
 
-  int _swipeTyp = 0; // 1 = swipe, 3 = goBack
+  SwipeType _swipeTyp = SwipeType.none;
   bool _tapOnTop = false; //position of starting drag point on card
 
   late AnimationController _animationController;
@@ -158,7 +158,7 @@ class _CardSwiperState extends State<CardSwiper>
       //when status of controller changes
       if (status == AnimationStatus.completed) {
         setState(() {
-          if (_swipeTyp == 1) {
+          if (_swipeTyp == SwipeType.swipe) {
             widget.onSwipe(_currentIndex, detectedDirection);
 
             if (_isLastCard) {
@@ -175,7 +175,7 @@ class _CardSwiperState extends State<CardSwiper>
           _angle = 0;
           _scale = 0.9;
           _difference = 40;
-          _swipeTyp = 0;
+          _swipeTyp = SwipeType.none;
         });
       }
     });
@@ -311,7 +311,7 @@ class _CardSwiperState extends State<CardSwiper>
   //moves the card away to the left or right
   void _swipeHorizontal(BuildContext context) {
     setState(() {
-      _swipeTyp = 1;
+      _swipeTyp = SwipeType.swipe;
       _leftAnimation = Tween<double>(
         begin: _left,
         end: (_left == 0)
@@ -346,7 +346,7 @@ class _CardSwiperState extends State<CardSwiper>
   //moves the card away to the top or bottom
   void _swipeVertical(BuildContext context) {
     setState(() {
-      _swipeTyp = 1;
+      _swipeTyp = SwipeType.swipe;
       _leftAnimation = Tween<double>(
         begin: _left,
         end: _left + _left,
@@ -381,7 +381,7 @@ class _CardSwiperState extends State<CardSwiper>
   //moves the card back to starting position
   void _goBack(BuildContext context) {
     setState(() {
-      _swipeTyp = 3;
+      _swipeTyp = SwipeType.back;
       _leftAnimation = Tween<double>(
         begin: _left,
         end: 0,
@@ -432,3 +432,5 @@ class CardSwiperController extends ChangeNotifier {
 enum CardSwiperState { swipe, swipeLeft, swipeRight }
 
 enum CardSwiperDirection { none, left, right, top, bottom }
+
+enum SwipeType { none, swipe, back }
