@@ -1,9 +1,10 @@
 import 'dart:developer';
-import 'package:flutter/cupertino.dart';
 
-import 'package:appinio_swiper/appinio_swiper.dart';
+import 'package:flutter_card_swiper/card_swiper.dart';
 import 'package:example/example_candidate_model.dart';
 import 'package:example/example_card.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'example_buttons.dart';
 
 void main() {
@@ -34,7 +35,7 @@ class Example extends StatefulWidget {
 }
 
 class _ExamplePageState extends State<Example> {
-  final AppinioSwiperController controller = AppinioSwiperController();
+  final CardSwiperController controller = CardSwiperController();
 
   List<ExampleCard> cards = [];
 
@@ -64,7 +65,7 @@ class _ExamplePageState extends State<Example> {
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.75,
-            child: AppinioSwiper(
+            child: CardSwiper(
               unlimitedUnswipe: true,
               controller: controller,
               unswipe: _unswipe,
@@ -100,7 +101,7 @@ class _ExamplePageState extends State<Example> {
     );
   }
 
-  void _swipe(int index, AppinioSwiperDirection direction) {
+  void _swipe(int index, CardSwiperDirection direction) {
     log("the card was swiped to the: " + direction.name);
   }
 

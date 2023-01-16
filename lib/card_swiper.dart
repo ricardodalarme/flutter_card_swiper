@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class AppinioSwiper extends StatefulWidget {
+class CardSwiper extends StatefulWidget {
   /// list of widgets for the swiper
   final List<Widget?>? cards;
 
   /// controller to trigger unswipe action
-  final AppinioSwiperController? controller;
+  final CardSwiperController? controller;
 
   /// duration of every animation
   final Duration duration;
@@ -43,9 +43,9 @@ class AppinioSwiper extends StatefulWidget {
   final Function unswipe;
 
   /// direction in which the card gets swiped when triggered by controller, default set to right
-  final AppinioSwiperDirection direction;
+  final CardSwiperDirection direction;
 
-  const AppinioSwiper({
+  const CardSwiper({
     Key? key,
     required this.cards,
     this.controller,
@@ -60,17 +60,17 @@ class AppinioSwiper extends StatefulWidget {
     this.onSwipe = emptyFunctionIndex,
     this.onEnd = emptyFunction,
     this.unswipe = emptyFunctionBool,
-    this.direction = AppinioSwiperDirection.right,
+    this.direction = CardSwiperDirection.right,
   })  : assert(maxAngle >= 0 && maxAngle <= 360),
         assert(threshold >= 1 && threshold <= 100),
-        assert(direction != AppinioSwiperDirection.none),
+        assert(direction != CardSwiperDirection.none),
         super(key: key);
 
   @override
-  State createState() => _AppinioSwiperState();
+  State createState() => _CardSwiperState();
 }
 
-class _AppinioSwiperState extends State<AppinioSwiper>
+class _CardSwiperState extends State<CardSwiper>
     with SingleTickerProviderStateMixin {
   double _left = 0;
   double _top = 0;
@@ -100,7 +100,7 @@ class _AppinioSwiperState extends State<AppinioSwiper>
   AppinioUnswipeCard? _lastCard;
   // ignore: prefer_final_fields
   List<AppinioUnswipeCard?> _lastCards = [];
-  AppinioSwiperDirection detectedDirection = AppinioSwiperDirection.none;
+  CardSwiperDirection detectedDirection = CardSwiperDirection.none;
 
   @override
   void initState() {
@@ -110,22 +110,22 @@ class _AppinioSwiperState extends State<AppinioSwiper>
       widget.controller!
         //swipe widget from the outside
         ..addListener(() {
-          if (widget.controller!.state == AppinioSwiperState.swipe) {
+          if (widget.controller!.state == CardSwiperState.swipe) {
             if (widget.cards!.isNotEmpty) {
               switch (widget.direction) {
-                case AppinioSwiperDirection.right:
+                case CardSwiperDirection.right:
                   _swipeHorizontal(context);
                   break;
-                case AppinioSwiperDirection.left:
+                case CardSwiperDirection.left:
                   _swipeHorizontal(context);
                   break;
-                case AppinioSwiperDirection.top:
+                case CardSwiperDirection.top:
                   _swipeVertical(context);
                   break;
-                case AppinioSwiperDirection.bottom:
+                case CardSwiperDirection.bottom:
                   _swipeVertical(context);
                   break;
-                case AppinioSwiperDirection.none:
+                case CardSwiperDirection.none:
                   break;
               }
               _animationController.forward();
@@ -134,7 +134,7 @@ class _AppinioSwiperState extends State<AppinioSwiper>
         })
         //swipe widget left from the outside
         ..addListener(() {
-          if (widget.controller!.state == AppinioSwiperState.swipeLeft) {
+          if (widget.controller!.state == CardSwiperState.swipeLeft) {
             if (widget.cards!.isNotEmpty) {
               _left = -1;
               _swipeHorizontal(context);
@@ -144,7 +144,7 @@ class _AppinioSwiperState extends State<AppinioSwiper>
         })
         //swipe widget right from the outside
         ..addListener(() {
-          if (widget.controller!.state == AppinioSwiperState.swipeRight) {
+          if (widget.controller!.state == CardSwiperState.swipeRight) {
             if (widget.cards!.isNotEmpty) {
               _left = widget.threshold + 1;
               _swipeHorizontal(context);
@@ -154,7 +154,7 @@ class _AppinioSwiperState extends State<AppinioSwiper>
         })
         //unswipe widget from the outside
         ..addListener(() {
-          if (widget.controller!.state == AppinioSwiperState.unswipe) {
+          if (widget.controller!.state == CardSwiperState.unswipe) {
             if (widget.allowUnswipe) {
               if (!_isUnswiping) {
                 if (_lastCard != null || _lastCards.isNotEmpty) {
@@ -393,7 +393,7 @@ class _AppinioSwiperState extends State<AppinioSwiper>
       _leftAnimation = Tween<double>(
         begin: _left,
         end: (_left == 0)
-            ? (widget.direction == AppinioSwiperDirection.right)
+            ? (widget.direction == CardSwiperDirection.right)
                 ? MediaQuery.of(context).size.width
                 : -MediaQuery.of(context).size.width
             : (_left > widget.threshold)
@@ -414,12 +414,12 @@ class _AppinioSwiperState extends State<AppinioSwiper>
       ).animate(_animationController);
     });
     if (_left > widget.threshold ||
-        _left == 0 && widget.direction == AppinioSwiperDirection.right) {
+        _left == 0 && widget.direction == CardSwiperDirection.right) {
       _swipedDirectionHorizontal = 1;
-      detectedDirection = AppinioSwiperDirection.right;
+      detectedDirection = CardSwiperDirection.right;
     } else {
       _swipedDirectionHorizontal = -1;
-      detectedDirection = AppinioSwiperDirection.left;
+      detectedDirection = CardSwiperDirection.left;
     }
     (_top <= 0) ? _swipedDirectionVertical = 1 : _swipedDirectionVertical = -1;
     _horizontal = true;
@@ -436,7 +436,7 @@ class _AppinioSwiperState extends State<AppinioSwiper>
       _topAnimation = Tween<double>(
         begin: _top,
         end: (_top == 0)
-            ? (widget.direction == AppinioSwiperDirection.bottom)
+            ? (widget.direction == CardSwiperDirection.bottom)
                 ? MediaQuery.of(context).size.height
                 : -MediaQuery.of(context).size.height
             : (_top > widget.threshold)
@@ -453,12 +453,12 @@ class _AppinioSwiperState extends State<AppinioSwiper>
       ).animate(_animationController);
     });
     if (_top > widget.threshold ||
-        _top == 0 && widget.direction == AppinioSwiperDirection.bottom) {
+        _top == 0 && widget.direction == CardSwiperDirection.bottom) {
       _swipedDirectionVertical = -1;
-      detectedDirection = AppinioSwiperDirection.bottom;
+      detectedDirection = CardSwiperDirection.bottom;
     } else {
       _swipedDirectionVertical = 1;
-      detectedDirection = AppinioSwiperDirection.top;
+      detectedDirection = CardSwiperDirection.top;
     }
     (_left >= 0)
         ? _swipedDirectionHorizontal = 1
@@ -547,34 +547,34 @@ class _AppinioSwiperState extends State<AppinioSwiper>
 
 //for null safety
 void emptyFunction() {}
-void emptyFunctionIndex(int index, AppinioSwiperDirection direction) {}
+void emptyFunctionIndex(int index, CardSwiperDirection direction) {}
 void emptyFunctionBool(bool unswiped) {}
 
 //to call the swipe or unswipe function from outside of the appinio swiper
-class AppinioSwiperController extends ChangeNotifier {
-  AppinioSwiperState? state;
+class CardSwiperController extends ChangeNotifier {
+  CardSwiperState? state;
 
   //swipe the card by changing the status of the controller
   void swipe() {
-    state = AppinioSwiperState.swipe;
+    state = CardSwiperState.swipe;
     notifyListeners();
   }
 
   //swipe the card to the left side by changing the status of the controller
   void swipeLeft() {
-    state = AppinioSwiperState.swipeLeft;
+    state = CardSwiperState.swipeLeft;
     notifyListeners();
   }
 
   //swipe the card to the right side by changing the status of the controller
   void swipeRight() {
-    state = AppinioSwiperState.swipeRight;
+    state = CardSwiperState.swipeRight;
     notifyListeners();
   }
 
   //calls unswipe the card by changing the status of the controller
   void unswipe() {
-    state = AppinioSwiperState.unswipe;
+    state = CardSwiperState.unswipe;
     notifyListeners();
   }
 }
@@ -595,6 +595,6 @@ class AppinioUnswipeCard {
   });
 }
 
-enum AppinioSwiperState { swipe, swipeLeft, swipeRight, unswipe }
+enum CardSwiperState { swipe, swipeLeft, swipeRight, unswipe }
 
-enum AppinioSwiperDirection { none, left, right, top, bottom }
+enum CardSwiperDirection { none, left, right, top, bottom }

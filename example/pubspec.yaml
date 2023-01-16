@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  appinio_swiper:
+  flutter_card_swiper:
     path: ../
 
 flutter:
