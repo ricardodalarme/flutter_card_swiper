@@ -1,5 +1,5 @@
 name: example
-description: Example for the Appinio Swiper
+description: Example for the flutter_card_swiper
 
 publish_to: 'none'
 version: 0.0.1

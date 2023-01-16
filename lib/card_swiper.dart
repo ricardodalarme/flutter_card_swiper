@@ -403,7 +403,7 @@ class _CardSwiperState extends State<CardSwiper>
 void emptyFunction() {}
 void emptyFunctionIndex(int index, CardSwiperDirection direction) {}
 
-//to call the swipe function from outside of the appinio swiper
+//to call the swipe function from outside of the CardSwiper
 class CardSwiperController extends ChangeNotifier {
   CardSwiperState? state;
 
