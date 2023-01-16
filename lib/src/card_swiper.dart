@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
+import 'package:flutter_card_swiper/src/typedefs.dart';
 
 class CardSwiper extends StatefulWidget {
   /// list of widgets for the swiper
@@ -27,13 +28,13 @@ class CardSwiper extends StatefulWidget {
   final bool isDisabled;
 
   /// function that gets called with the new index and detected swipe direction when the user swiped or swipe is triggered by controller
-  final Function onSwipe;
+  final CardSwiperOnSwipe? onSwipe;
 
   /// function that gets called when there is no widget left to be swiped away
-  final Function onEnd;
+  final CardSwiperOnEnd? onEnd;
 
   /// function that gets triggered when the swiper is disabled
-  final Function onTapDisabled;
+  final CardSwiperOnTapDisabled? onTapDisabled;
 
   /// direction in which the card gets swiped when triggered by controller, default set to right
   final CardSwiperDirection direction;
@@ -47,9 +48,9 @@ class CardSwiper extends StatefulWidget {
     this.maxAngle = 30,
     this.threshold = 50,
     this.isDisabled = false,
-    this.onTapDisabled = emptyFunction,
-    this.onSwipe = emptyFunctionIndex,
-    this.onEnd = emptyFunction,
+    this.onTapDisabled,
+    this.onSwipe,
+    this.onEnd,
     this.direction = CardSwiperDirection.right,
   })  : assert(maxAngle >= 0 && maxAngle <= 360),
         assert(threshold >= 1 && threshold <= 100),
@@ -161,10 +162,10 @@ class _CardSwiperState extends State<CardSwiper>
       if (status == AnimationStatus.completed) {
         setState(() {
           if (_swipeTyp == SwipeType.swipe) {
-            widget.onSwipe(_currentIndex, detectedDirection);
+            widget.onSwipe?.call(_currentIndex, detectedDirection);
 
             if (_isLastCard) {
-              widget.onEnd();
+              widget.onEnd?.call();
               _currentIndex = 0;
             } else {
               _currentIndex++;
@@ -225,7 +226,7 @@ class _CardSwiperState extends State<CardSwiper>
         ),
         onTap: () {
           if (widget.isDisabled) {
-            widget.onTapDisabled();
+            widget.onTapDisabled?.call();
           }
         },
         onPanStart: (tapInfo) {
@@ -397,7 +398,3 @@ class _CardSwiperState extends State<CardSwiper>
     });
   }
 }
-
-//for null safety
-void emptyFunction() {}
-void emptyFunctionIndex(int index, CardSwiperDirection direction) {}
