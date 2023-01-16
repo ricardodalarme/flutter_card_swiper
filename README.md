@@ -62,7 +62,7 @@ in your project's root directory.
 In your library add the following import:
 
 ```dart
-card_swiperimport 'package:flutter_card_swiper/card_swiper.dart';
+card_swiperimport 'package:flutter_card_swiper/flutter_card_swiper.dart';
 ```
 
 For help getting started with Flutter, view the online [documentation](https://flutter.io/).
