@@ -80,6 +80,8 @@ class _CardSwiperState extends State<CardSwiper>
   double _scale = 0.9;
   double _difference = 40;
 
+  int _currentIndex = 0;
+
   int _swipeTyp = 0; // 1 = swipe, 2 = unswipe, 3 = goBack
   bool _tapOnTop = false; //position of starting drag point on card
 
@@ -101,6 +103,9 @@ class _CardSwiperState extends State<CardSwiper>
   // ignore: prefer_final_fields
   List<AppinioUnswipeCard?> _lastCards = [];
   CardSwiperDirection detectedDirection = CardSwiperDirection.none;
+
+  bool get _isLastCard => _currentIndex == widget.cards!.length - 1;
+  int get _nextCardIndex => _isLastCard ? 0 : _currentIndex + 1;
 
   @override
   void initState() {
@@ -226,10 +231,15 @@ class _CardSwiperState extends State<CardSwiper>
             _swipedDirectionVertical = 0;
             _vertical = false;
             _horizontal = false;
-            widget.cards!.removeLast();
 
-            widget.onSwipe(widget.cards!.length, detectedDirection);
-            if (widget.cards!.isEmpty) widget.onEnd();
+            widget.onSwipe(_currentIndex, detectedDirection);
+
+            if (_isLastCard) {
+              widget.onEnd();
+              _currentIndex = 0;
+            } else {
+              _currentIndex++;
+            }
           } else if (_swipeTyp == 2) {
             if (widget.unlimitedUnswipe) {
               _lastCards.removeLast();
@@ -269,16 +279,8 @@ class _CardSwiperState extends State<CardSwiper>
                   clipBehavior: Clip.none,
                   fit: StackFit.expand,
                   children: [
-                    ...widget.cards!
-                        .asMap()
-                        .map((index, _) {
-                          return MapEntry(
-                            index,
-                            _item(constraints, index),
-                          );
-                        })
-                        .values
-                        .toList(),
+                    _backItem(constraints, _nextCardIndex),
+                    _frontItem(constraints, _currentIndex)
                   ]);
             },
           ),
@@ -287,27 +289,7 @@ class _CardSwiperState extends State<CardSwiper>
     );
   }
 
-  Widget _item(BoxConstraints constraints, int index) {
-    if (index != widget.cards!.length - 1) {
-      return Visibility(
-        visible: widget.cards!.length - index <= 2,
-        child: Positioned(
-          top: _difference,
-          left: 0,
-          child: Container(
-            color: Colors.transparent,
-            child: Transform.scale(
-              scale: _scale,
-              child: Container(
-                constraints: constraints,
-                child: widget.cards![index],
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
+  Widget _frontItem(BoxConstraints constraints, int index) {
     return Positioned(
       left: _left,
       top: _top,
@@ -351,6 +333,26 @@ class _CardSwiperState extends State<CardSwiper>
             _animationController.forward();
           }
         },
+      ),
+    );
+  }
+
+  Widget _backItem(BoxConstraints constraints, int index) {
+    return Visibility(
+      visible: widget.cards!.length - index <= 2,
+      child: Positioned(
+        top: _difference,
+        left: 0,
+        child: Container(
+          color: Colors.transparent,
+          child: Transform.scale(
+            scale: _scale,
+            child: Container(
+              constraints: constraints,
+              child: widget.cards![index],
+            ),
+          ),
+        ),
       ),
     );
   }
