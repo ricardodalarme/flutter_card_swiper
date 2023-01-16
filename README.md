@@ -1,4 +1,6 @@
-```card_swiper``` is a Flutter package for a Tinder Card Swiper. ✨
+# flutter_card_swiper
+
+```flutter_card_swiper``` is a Flutter package for a Tinder Card Swiper. ✨
 
 It allows swiping in all directions with any Custom Widget (Stateless or Statefull).
 
@@ -14,11 +16,6 @@ We build this package because we wanted to:
 - NEW: trigger swipe, swipe left and swipe right however we want
 - NEW: add functions while un-/swiping, on end or when the swiper is disabled
 - NEW: detect the direction (left, right, top, bottom) in which the card was swiped away
-
-## ❗NEW  Features ❗
-
-### Trigger swipe left and swipe right through controller
-You can now trigger swipe left and swipe right with our ```CardSwiperController``` regardless of the chosen ```AppinioSwipeDirection``` (which is still used when ```swipe``` is called through the controller). You can call ```swipeLeft``` or ```swipeRight``` through the controller anywhere you want.
 
 ### Detect direction of swipe
 We've added the direction in which the card was swiped away to the function ```onSwipe```. The  ```AppinioSwipeDirection``` gets now returned when the function gets called.
@@ -139,4 +136,8 @@ The ```Controller``` is used to control the ```swipe```, ```swipeLeft```, ```swi
 | swipeRight      | Changes the state of the controller to swipe right and swipes the card to the right side.
 
 <hr/>
-Made with ❤ by Flutter team at <a href="https://appinio.com">Appinio GmbH</a>
+
+## Credits
+
+- **Ricardo Dalarme** (Package maintainer)
+- [**Appinio GmbH**](https://appinio.com) (Original project creator)
