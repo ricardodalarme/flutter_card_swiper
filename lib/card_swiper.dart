@@ -191,7 +191,7 @@ class _CardSwiperState extends State<CardSwiper>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        return Container(
+        return Padding(
           padding: widget.padding,
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
@@ -216,7 +216,7 @@ class _CardSwiperState extends State<CardSwiper>
       child: GestureDetector(
         child: Transform.rotate(
           angle: _angle,
-          child: Container(
+          child: ConstrainedBox(
             constraints: constraints,
             child: widget.cards[index],
           ),
@@ -263,14 +263,11 @@ class _CardSwiperState extends State<CardSwiper>
       child: Positioned(
         top: _difference,
         left: 0,
-        child: Container(
-          color: Colors.transparent,
-          child: Transform.scale(
-            scale: _scale,
-            child: Container(
-              constraints: constraints,
-              child: widget.cards[index],
-            ),
+        child: Transform.scale(
+          scale: _scale,
+          child: ConstrainedBox(
+            constraints: constraints,
+            child: widget.cards[index],
           ),
         ),
       ),
@@ -279,7 +276,7 @@ class _CardSwiperState extends State<CardSwiper>
 
   void _calculateAngle() {
     if (_angle <= _maxAngle && _angle >= -_maxAngle) {
-      (_tapOnTop == true)
+      (_tapOnTop)
           ? _angle = (_maxAngle / 100) * (_left / 10)
           : _angle = (_maxAngle / 100) * (_left / 10) * -1;
     }
