@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import 'package:flutter_card_swiper/card_swiper.dart';
 import 'package:example/example_candidate_model.dart';
 import 'package:example/example_card.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_card_swiper/card_swiper.dart';
 
 import 'example_buttons.dart';
 
@@ -66,9 +66,7 @@ class _ExamplePageState extends State<Example> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.75,
             child: CardSwiper(
-              unlimitedUnswipe: true,
               controller: controller,
-              unswipe: _unswipe,
               cards: cards,
               onSwipe: _swipe,
               padding: const EdgeInsets.only(
@@ -82,18 +80,11 @@ class _ExamplePageState extends State<Example> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(
-                width: 80,
-              ),
               swipeLeftButton(controller),
               const SizedBox(
                 width: 20,
               ),
               swipeRightButton(controller),
-              const SizedBox(
-                width: 20,
-              ),
-              unswipeButton(controller),
             ],
           )
         ],
@@ -103,13 +94,5 @@ class _ExamplePageState extends State<Example> {
 
   void _swipe(int index, CardSwiperDirection direction) {
     log("the card was swiped to the: " + direction.name);
-  }
-
-  void _unswipe(bool unswiped) {
-    if (unswiped) {
-      log("SUCCESS: card was unswiped");
-    } else {
-      log("FAIL: no card left to unswipe");
-    }
   }
 }

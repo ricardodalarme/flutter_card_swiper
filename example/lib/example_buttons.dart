@@ -1,6 +1,6 @@
-import 'package:flutter_card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/card_swiper.dart';
 
 class ExampleButton extends StatelessWidget {
   final Function onTap;
@@ -73,23 +73,6 @@ Widget swipeLeftButton(CardSwiperController controller) {
       child: const Icon(
         Icons.close,
         color: CupertinoColors.white,
-        size: 40,
-      ),
-    ),
-  );
-}
-
-//unswipe card
-Widget unswipeButton(CardSwiperController controller) {
-  return ExampleButton(
-    onTap: () => controller.unswipe(),
-    child: Container(
-      height: 60,
-      width: 60,
-      alignment: Alignment.center,
-      child: const Icon(
-        Icons.rotate_left_rounded,
-        color: CupertinoColors.systemGrey2,
         size: 40,
       ),
     ),
