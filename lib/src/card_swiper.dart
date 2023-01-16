@@ -260,17 +260,14 @@ class _CardSwiperState extends State<CardSwiper>
   }
 
   Widget _backItem(BoxConstraints constraints, int index) {
-    return Visibility(
-      visible: widget.cards.length - index <= 2,
-      child: Positioned(
-        top: _difference,
-        left: 0,
-        child: Transform.scale(
-          scale: _scale,
-          child: ConstrainedBox(
-            constraints: constraints,
-            child: widget.cards[index],
-          ),
+    return Positioned(
+      top: _difference,
+      left: 0,
+      child: Transform.scale(
+        scale: _scale,
+        child: ConstrainedBox(
+          constraints: constraints,
+          child: widget.cards[index],
         ),
       ),
     );
