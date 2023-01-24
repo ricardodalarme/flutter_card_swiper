@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:example/example_candidate_model.dart';
 import 'package:example/example_card.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +73,6 @@ class _ExamplePageState extends State<Example> {
   }
 
   void _swipe(int index, CardSwiperDirection direction) {
-    log("the card was swiped to the: " + direction.name);
+    debugPrint("the card was swiped to the: " + direction.name);
   }
 }
