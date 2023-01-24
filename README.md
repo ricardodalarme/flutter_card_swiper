@@ -1,103 +1,79 @@
 # flutter_card_swiper
 
-```flutter_card_swiper``` is a Flutter package for a Tinder Card Swiper. ✨
+```flutter_card_swiper``` is a Flutter package for a Tinder-like card swiper. ✨
 
-It allows swiping in all directions with any Custom Widget (Stateless or Statefull).
+It allows you to swipe left, right, up, and down and define your own business logic for each direction.
 
-Very smooth animations supporting Android, iOS & WebApp.
+Very smooth animations supporting Android, iOS, Web & Desktop.
 
 ## Why?
 
 We build this package because we wanted to:
 
-- have a complete customizable slider
+- have a completely customizable slider
 - be able to swipe in every direction
-- choose our own settings for the swiper such as duration, angle, padding..
-- NEW: trigger swipe, swipe left and swipe right however we want
-- NEW: add functions while un-/swiping, on end or when the swiper is disabled
-- NEW: detect the direction (left, right, top, bottom) in which the card was swiped away
-
-### Detect direction of swipe
-We've added the direction in which the card was swiped away to the function ```onSwipe```. The  ```AppinioSwipeDirection``` gets now returned when the function gets called.
-
-### Trigger swipe through controller
-You can now trigger the swipe with our ```CardSwiperController```. You can call the ```swipe``` trough the controller anywhere you want. Just make sure to pass the controller to the parameter ```controller``` from our ```CardSwiper```.
+- choose our own settings for the swiper such as duration, angle, padding, and more
+- trigger slide to any direction you want using the controller
+- add callbacks while wiping, on end or when the swiper is disabled
+- detect the direction (left, right, top, bottom) in which the card was swiped away
 
 ## Show Cases
 
-<img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/swiping.gif?raw=true" height="250" /> <img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/swipe_button.gif?raw=true" height="250" /> 
+<img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/swiping.gif?raw=true" height="250" /> <img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/swipe_left_right.gif?raw=true" height="250" />
 
-Trigger swipe right and swipe left however you want...
-
-<img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/swipe_left_right.gif?raw=true" height="250" /> 
-
-Customize the angle...
+Customize the angle
 
 <img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/angle.gif?raw=true" height="250" />
 
-Customize the threshold of the swiper, when the card should slide away...
+Customize the threshold (when the card should slide away)
 
 <img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/treshold.gif?raw=true" height="250" />
 
 ## Installation
 
-Create a new project with the command
-```yaml
-flutter create MyApp
-```
-Add
+Add this to your package's `pubspec.yaml` file:
 ```yaml
 card_swiper: ...
 ```
-to your `pubspec.yaml` of your flutter project.
-**OR**
-run
+
+**OR** run
 
 ```yaml
-flutter pub add card_swiper
+flutter pub add flutter_card_swiper
 ```
 in your project's root directory.
 
-
-In your library add the following import:
-
-```dart
-card_swiperimport 'package:flutter_card_swiper/flutter_card_swiper.dart';
-```
-
-For help getting started with Flutter, view the online [documentation](https://flutter.io/).
-
 ## Usage
-You can place your `CardSwiper` inside of a `Scaffold` or `CupertinoPageScaffold` like we did here. Optional parameters can be defined to enable different features. See the following example..
+
+You can place your `CardSwiper` inside of a `Scaffold` like we did here. Optional parameters can be defined to enable different features. See the following example:
 
 ```dart
-card_swiperimport 'package:flutter_card_swiper/card_swiper.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:flutter/material.dart';
 
 class Example extends StatelessWidget {
   List<Container> cards = [
     Container(
       alignment: Alignment.center,
       child: const Text('1'),
-      color: CupertinoColors.activeBlue,
+      color: Colors.blue,
     ),
     Container(
       alignment: Alignment.center,
       child: const Text('2'),
-      color: CupertinoColors.activeBlue,
+      color: Colors.red,
     ),
     Container(
       alignment: Alignment.center,
       child: const Text('3'),
-      color: CupertinoColors.activeBlue,
+      color: Colors.purple,
     )
   ];
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.75,
+    return Scaffold(
+      body: Flexible(
         child: CardSwiper(
           cards: cards,
         ),
@@ -127,7 +103,7 @@ class Example extends StatelessWidget {
 
 #### Controller
 
-The ```Controller``` is used to control the ```swipe```, ```swipeLeft```, ```swipeRight``` function of the swiper from outside of the widget. You can create a controller called ```CardSwiperController``` and save the instance for further usage. Please have a closer look to our Example for the usage.
+The ```Controller``` is used to swipe the card from outside of the widget. You can create a controller called ```CardSwiperController``` and save the instance for further usage. Please have a closer look at our Example for the usage.
 
 | Method        | Description
 | ------------- |:-------------
