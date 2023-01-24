@@ -57,6 +57,14 @@ class _ExamplePageState extends State<Example> {
                     onPressed: controller.swipeRight,
                     child: Icon(Icons.keyboard_arrow_right),
                   ),
+                  FloatingActionButton(
+                    onPressed: controller.swipeTop,
+                    child: Icon(Icons.keyboard_arrow_up),
+                  ),
+                  FloatingActionButton(
+                    onPressed: controller.swipeBottom,
+                    child: Icon(Icons.keyboard_arrow_down),
+                  ),
                 ],
               ),
             )

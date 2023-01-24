@@ -1,7 +1,7 @@
-//to call the swipe function from outside of the CardSwiper
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 
+//to call the swipe function from outside of the CardSwiper
 class CardSwiperController extends ChangeNotifier {
   CardSwiperState? state;
 
@@ -20,6 +20,18 @@ class CardSwiperController extends ChangeNotifier {
   //swipe the card to the right side by changing the status of the controller
   void swipeRight() {
     state = CardSwiperState.swipeRight;
+    notifyListeners();
+  }
+
+  //swipe the card to the top side by changing the status of the controller
+  void swipeTop() {
+    state = CardSwiperState.swipeTop;
+    notifyListeners();
+  }
+
+  //swipe the card to the bottom side by changing the status of the controller
+  void swipeBottom() {
+    state = CardSwiperState.swipeBottom;
     notifyListeners();
   }
 }

@@ -92,51 +92,28 @@ class _CardSwiperState extends State<CardSwiper>
     super.initState();
 
     if (widget.controller != null) {
-      widget.controller!
-        //swipe widget from the outside
-        ..addListener(() {
-          if (widget.controller!.state == CardSwiperState.swipe) {
-            if (widget.cards.isNotEmpty) {
-              switch (widget.direction) {
-                case CardSwiperDirection.right:
-                  _swipeHorizontal(context);
-                  break;
-                case CardSwiperDirection.left:
-                  _swipeHorizontal(context);
-                  break;
-                case CardSwiperDirection.top:
-                  _swipeVertical(context);
-                  break;
-                case CardSwiperDirection.bottom:
-                  _swipeVertical(context);
-                  break;
-                case CardSwiperDirection.none:
-                  break;
-              }
-              _animationController.forward();
-            }
-          }
-        })
-        //swipe widget left from the outside
-        ..addListener(() {
-          if (widget.controller!.state == CardSwiperState.swipeLeft) {
-            if (widget.cards.isNotEmpty) {
-              _left = -1;
-              _swipeHorizontal(context);
-              _animationController.forward();
-            }
-          }
-        })
-        //swipe widget right from the outside
-        ..addListener(() {
-          if (widget.controller!.state == CardSwiperState.swipeRight) {
-            if (widget.cards.isNotEmpty) {
-              _left = widget.threshold + 1;
-              _swipeHorizontal(context);
-              _animationController.forward();
-            }
-          }
-        });
+      //swipe widget from the outside
+      widget.controller!.addListener(() {
+        switch (widget.controller!.state) {
+          case CardSwiperState.swipe:
+            _swipe(context, widget.direction);
+            break;
+          case CardSwiperState.swipeLeft:
+            _swipe(context, CardSwiperDirection.left);
+            break;
+          case CardSwiperState.swipeRight:
+            _swipe(context, CardSwiperDirection.right);
+            break;
+          case CardSwiperState.swipeTop:
+            _swipe(context, CardSwiperDirection.top);
+            break;
+          case CardSwiperState.swipeBottom:
+            _swipe(context, CardSwiperDirection.bottom);
+            break;
+          default:
+            break;
+        }
+      });
     }
 
     if (widget.maxAngle > 0) {
@@ -338,6 +315,32 @@ class _CardSwiperState extends State<CardSwiper>
     } else {
       detectedDirection = CardSwiperDirection.left;
     }
+  }
+
+  void _swipe(BuildContext context, CardSwiperDirection direction) {
+    if (widget.cards.isEmpty) return;
+
+    switch (direction) {
+      case CardSwiperDirection.left:
+        _left = -1;
+        _swipeHorizontal(context);
+        break;
+      case CardSwiperDirection.right:
+        _left = widget.threshold + 1;
+        _swipeHorizontal(context);
+        break;
+      case CardSwiperDirection.top:
+        _top = -1;
+        _swipeVertical(context);
+        break;
+      case CardSwiperDirection.bottom:
+        _top = widget.threshold + 1;
+        _swipeVertical(context);
+        break;
+      default:
+        break;
+    }
+    _animationController.forward();
   }
 
   //moves the card away to the top or bottom

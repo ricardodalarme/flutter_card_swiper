@@ -1,3 +1,7 @@
+## [1.1.0]
+
+- Add option to slide up and down through controller
+
 ## [1.0.2]
 
 - Make all callbacks type-safe

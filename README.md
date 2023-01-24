@@ -110,6 +110,8 @@ The ```Controller``` is used to swipe the card from outside of the widget. You c
 | swipe      | Changes the state of the controller to swipe and swipes the card in your selected direction.
 | swipeLeft      | Changes the state of the controller to swipe left and swipes the card to the left side.
 | swipeRight      | Changes the state of the controller to swipe right and swipes the card to the right side.
+| swipeTop      | Changes the state of the controller to swipe top and swipes the card to the top side.
+| swipeBottom      | Changes the state of the controller to swipe bottom and swipes the card to the | swipeBottom      | Changes the state of the controller to swipe bottom and swipes the card to the right side.
 
 <hr/>
 
