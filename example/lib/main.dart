@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Example(),
-  ));
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Example(),
+    ),
+  );
 }
 
 class Example extends StatefulWidget {
@@ -39,29 +41,29 @@ class _ExamplePageState extends State<Example> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FloatingActionButton(
                     onPressed: controller.swipe,
-                    child: Icon(Icons.rotate_right),
+                    child: const Icon(Icons.rotate_right),
                   ),
                   FloatingActionButton(
                     onPressed: controller.swipeLeft,
-                    child: Icon(Icons.keyboard_arrow_left),
+                    child: const Icon(Icons.keyboard_arrow_left),
                   ),
                   FloatingActionButton(
                     onPressed: controller.swipeRight,
-                    child: Icon(Icons.keyboard_arrow_right),
+                    child: const Icon(Icons.keyboard_arrow_right),
                   ),
                   FloatingActionButton(
                     onPressed: controller.swipeTop,
-                    child: Icon(Icons.keyboard_arrow_up),
+                    child: const Icon(Icons.keyboard_arrow_up),
                   ),
                   FloatingActionButton(
                     onPressed: controller.swipeBottom,
-                    child: Icon(Icons.keyboard_arrow_down),
+                    child: const Icon(Icons.keyboard_arrow_down),
                   ),
                 ],
               ),
@@ -73,6 +75,6 @@ class _ExamplePageState extends State<Example> {
   }
 
   void _swipe(int index, CardSwiperDirection direction) {
-    debugPrint("the card was swiped to the: " + direction.name);
+    debugPrint('the card $index was swiped to the: ${direction.name}');
   }
 }

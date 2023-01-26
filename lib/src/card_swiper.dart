@@ -52,9 +52,18 @@ class CardSwiper extends StatefulWidget {
     this.onSwipe,
     this.onEnd,
     this.direction = CardSwiperDirection.right,
-  })  : assert(maxAngle >= 0 && maxAngle <= 360),
-        assert(threshold >= 1 && threshold <= 100),
-        assert(direction != CardSwiperDirection.none),
+  })  : assert(
+          maxAngle >= 0 && maxAngle <= 360,
+          'maxAngle must be between 0 and 360',
+        ),
+        assert(
+          threshold >= 1 && threshold <= 100,
+          'threshold must be between 1 and 100',
+        ),
+        assert(
+          direction != CardSwiperDirection.none,
+          'direction must not be none',
+        ),
         super(key: key);
 
   @override
@@ -67,13 +76,12 @@ class _CardSwiperState extends State<CardSwiper>
   double _top = 0;
   double _total = 0;
   double _angle = 0;
-  double _maxAngle = 0;
   double _scale = 0.9;
   double _difference = 40;
 
   int _currentIndex = 0;
 
-  SwipeType _swipeTyp = SwipeType.none;
+  SwipeType _swipeType = SwipeType.none;
   bool _tapOnTop = false; //position of starting drag point on card
 
   late AnimationController _animationController;
@@ -84,6 +92,8 @@ class _CardSwiperState extends State<CardSwiper>
 
   CardSwiperDirection detectedDirection = CardSwiperDirection.none;
 
+  double get _maxAngle => widget.maxAngle * (pi / 180);
+
   bool get _isLastCard => _currentIndex == widget.cards.length - 1;
   int get _nextCardIndex => _isLastCard ? 0 : _currentIndex + 1;
 
@@ -91,80 +101,21 @@ class _CardSwiperState extends State<CardSwiper>
   void initState() {
     super.initState();
 
-    if (widget.controller != null) {
-      //swipe widget from the outside
-      widget.controller!.addListener(() {
-        switch (widget.controller!.state) {
-          case CardSwiperState.swipe:
-            _swipe(context, widget.direction);
-            break;
-          case CardSwiperState.swipeLeft:
-            _swipe(context, CardSwiperDirection.left);
-            break;
-          case CardSwiperState.swipeRight:
-            _swipe(context, CardSwiperDirection.right);
-            break;
-          case CardSwiperState.swipeTop:
-            _swipe(context, CardSwiperDirection.top);
-            break;
-          case CardSwiperState.swipeBottom:
-            _swipe(context, CardSwiperDirection.bottom);
-            break;
-          default:
-            break;
-        }
-      });
-    }
+    widget.controller?.addListener(_controllerListener);
 
-    if (widget.maxAngle > 0) {
-      _maxAngle = widget.maxAngle * (pi / 180);
-    }
-
-    _animationController =
-        AnimationController(duration: widget.duration, vsync: this);
-    _animationController.addListener(() {
-      //when value of controller changes
-      if (_animationController.status == AnimationStatus.forward) {
-        setState(() {
-          _left = _leftAnimation.value;
-          _top = _topAnimation.value;
-          _scale = _scaleAnimation.value;
-          _difference = _differenceAnimation.value;
-        });
-      }
-    });
-
-    _animationController.addStatusListener((status) {
-      //when status of controller changes
-      if (status == AnimationStatus.completed) {
-        setState(() {
-          if (_swipeTyp == SwipeType.swipe) {
-            widget.onSwipe?.call(_currentIndex, detectedDirection);
-
-            if (_isLastCard) {
-              widget.onEnd?.call();
-              _currentIndex = 0;
-            } else {
-              _currentIndex++;
-            }
-          }
-          _animationController.reset();
-          _left = 0;
-          _top = 0;
-          _total = 0;
-          _angle = 0;
-          _scale = 0.9;
-          _difference = 40;
-          _swipeTyp = SwipeType.none;
-        });
-      }
-    });
+    _animationController = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    )
+      ..addListener(_animationListener)
+      ..addStatusListener(_animationStatusListener);
   }
 
   @override
   void dispose() {
     super.dispose();
     _animationController.dispose();
+    widget.controller?.dispose();
   }
 
   @override
@@ -176,12 +127,13 @@ class _CardSwiperState extends State<CardSwiper>
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Stack(
-                  clipBehavior: Clip.none,
-                  fit: StackFit.expand,
-                  children: [
-                    _backItem(constraints, _nextCardIndex),
-                    _frontItem(constraints, _currentIndex)
-                  ]);
+                clipBehavior: Clip.none,
+                fit: StackFit.expand,
+                children: [
+                  _backItem(constraints),
+                  _frontItem(constraints),
+                ],
+              );
             },
           ),
         );
@@ -189,7 +141,7 @@ class _CardSwiperState extends State<CardSwiper>
     );
   }
 
-  Widget _frontItem(BoxConstraints constraints, int index) {
+  Widget _frontItem(BoxConstraints constraints) {
     return Positioned(
       left: _left,
       top: _top,
@@ -198,7 +150,7 @@ class _CardSwiperState extends State<CardSwiper>
           angle: _angle,
           child: ConstrainedBox(
             constraints: constraints,
-            child: widget.cards[index],
+            child: widget.cards[_currentIndex],
           ),
         ),
         onTap: () {
@@ -208,8 +160,8 @@ class _CardSwiperState extends State<CardSwiper>
         },
         onPanStart: (tapInfo) {
           if (!widget.isDisabled) {
-            RenderBox renderBox = context.findRenderObject() as RenderBox;
-            Offset position = renderBox.globalToLocal(tapInfo.globalPosition);
+            final renderBox = context.findRenderObject()! as RenderBox;
+            final position = renderBox.globalToLocal(tapInfo.globalPosition);
 
             if (position.dy < renderBox.size.height / 2) _tapOnTop = true;
           }
@@ -237,7 +189,7 @@ class _CardSwiperState extends State<CardSwiper>
     );
   }
 
-  Widget _backItem(BoxConstraints constraints, int index) {
+  Widget _backItem(BoxConstraints constraints) {
     return Positioned(
       top: _difference,
       left: 0,
@@ -245,15 +197,76 @@ class _CardSwiperState extends State<CardSwiper>
         scale: _scale,
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cards[index],
+          child: widget.cards[_nextCardIndex],
         ),
       ),
     );
   }
 
+  //swipe widget from the outside
+  void _controllerListener() {
+    switch (widget.controller!.state) {
+      case CardSwiperState.swipe:
+        _swipe(context, widget.direction);
+        break;
+      case CardSwiperState.swipeLeft:
+        _swipe(context, CardSwiperDirection.left);
+        break;
+      case CardSwiperState.swipeRight:
+        _swipe(context, CardSwiperDirection.right);
+        break;
+      case CardSwiperState.swipeTop:
+        _swipe(context, CardSwiperDirection.top);
+        break;
+      case CardSwiperState.swipeBottom:
+        _swipe(context, CardSwiperDirection.bottom);
+        break;
+      default:
+        break;
+    }
+  }
+
+  //when value of controller changes
+  void _animationListener() {
+    if (_animationController.status == AnimationStatus.forward) {
+      setState(() {
+        _left = _leftAnimation.value;
+        _top = _topAnimation.value;
+        _scale = _scaleAnimation.value;
+        _difference = _differenceAnimation.value;
+      });
+    }
+  }
+
+  //when the status of animation changes
+  void _animationStatusListener(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      setState(() {
+        if (_swipeType == SwipeType.swipe) {
+          widget.onSwipe?.call(_currentIndex, detectedDirection);
+
+          if (_isLastCard) {
+            widget.onEnd?.call();
+            _currentIndex = 0;
+          } else {
+            _currentIndex++;
+          }
+        }
+        _animationController.reset();
+        _left = 0;
+        _top = 0;
+        _total = 0;
+        _angle = 0;
+        _scale = 0.9;
+        _difference = 40;
+        _swipeType = SwipeType.none;
+      });
+    }
+  }
+
   void _calculateAngle() {
     if (_angle <= _maxAngle && _angle >= -_maxAngle) {
-      (_tapOnTop)
+      _tapOnTop
           ? _angle = (_maxAngle / 100) * (_left / 10)
           : _angle = (_maxAngle / 100) * (_left / 10) * -1;
     }
@@ -285,7 +298,7 @@ class _CardSwiperState extends State<CardSwiper>
   //moves the card away to the left or right
   void _swipeHorizontal(BuildContext context) {
     setState(() {
-      _swipeTyp = SwipeType.swipe;
+      _swipeType = SwipeType.swipe;
       _leftAnimation = Tween<double>(
         begin: _left,
         end: (_left == 0)
@@ -346,7 +359,7 @@ class _CardSwiperState extends State<CardSwiper>
   //moves the card away to the top or bottom
   void _swipeVertical(BuildContext context) {
     setState(() {
-      _swipeTyp = SwipeType.swipe;
+      _swipeType = SwipeType.swipe;
       _leftAnimation = Tween<double>(
         begin: _left,
         end: _left + _left,
@@ -381,7 +394,7 @@ class _CardSwiperState extends State<CardSwiper>
   //moves the card back to starting position
   void _goBack(BuildContext context) {
     setState(() {
-      _swipeTyp = SwipeType.back;
+      _swipeType = SwipeType.back;
       _leftAnimation = Tween<double>(
         begin: _left,
         end: 0,
