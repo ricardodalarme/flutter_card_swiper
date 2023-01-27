@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 
 //to call the swipe function from outside of the CardSwiper
