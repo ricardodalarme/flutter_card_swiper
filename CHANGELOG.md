@@ -1,3 +1,7 @@
+## [1.2.0]
+
+- Allow changing the scale of the card that is behind the front card
+
 ## [1.1.1]
 
 - Dipose the CardSwiperController to avoid memory leaks
