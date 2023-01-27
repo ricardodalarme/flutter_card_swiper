@@ -24,6 +24,9 @@ class CardSwiper extends StatefulWidget {
   /// threshold from which the card is swiped away
   final int threshold;
 
+  /// scale of the card that is behind the front card
+  final double scale;
+
   /// set to true if swiping should be disabled, exception: triggered from the outside
   final bool isDisabled;
 
@@ -47,6 +50,7 @@ class CardSwiper extends StatefulWidget {
     this.duration = const Duration(milliseconds: 200),
     this.maxAngle = 30,
     this.threshold = 50,
+    this.scale = 0.9,
     this.isDisabled = false,
     this.onTapDisabled,
     this.onSwipe,
@@ -64,6 +68,10 @@ class CardSwiper extends StatefulWidget {
           direction != CardSwiperDirection.none,
           'direction must not be none',
         ),
+        assert(
+          scale >= 0 && scale <= 1,
+          'scale must be between 0 and 1',
+        ),
         super(key: key);
 
   @override
@@ -76,7 +84,7 @@ class _CardSwiperState extends State<CardSwiper>
   double _top = 0;
   double _total = 0;
   double _angle = 0;
-  double _scale = 0.9;
+  late double _scale = widget.scale;
   double _difference = 40;
 
   int _currentIndex = 0;
@@ -257,7 +265,7 @@ class _CardSwiperState extends State<CardSwiper>
         _top = 0;
         _total = 0;
         _angle = 0;
-        _scale = 0.9;
+        _scale = widget.scale;
         _difference = 40;
         _swipeType = SwipeType.none;
       });
@@ -272,9 +280,10 @@ class _CardSwiperState extends State<CardSwiper>
   }
 
   void _calculateScale() {
-    if (_scale <= 1.0 && _scale >= 0.9) {
-      _scale =
-          (_total > 0) ? 0.9 + (_total / 5000) : 0.9 + -1 * (_total / 5000);
+    if (_scale <= 1.0 && _scale >= widget.scale) {
+      _scale = (_total > 0)
+          ? widget.scale + (_total / 5000)
+          : widget.scale + -1 * (_total / 5000);
     }
   }
 
@@ -394,7 +403,7 @@ class _CardSwiperState extends State<CardSwiper>
     ).animate(_animationController);
     _scaleAnimation = Tween<double>(
       begin: _scale,
-      end: 0.9,
+      end: widget.scale,
     ).animate(_animationController);
     _differenceAnimation = Tween<double>(
       begin: _difference,

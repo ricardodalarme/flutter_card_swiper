@@ -101,6 +101,7 @@ class Example extends StatelessWidget {
 | duration      | 200 milliseconds    |   The duration that every animation should last | false
 | maxAngle | 30      |    Maximum angle the card reaches while swiping | false
 | threshold | 50     |    Threshold from which the card is swiped away | false
+| scale | 0.9     |    Scale of the card that is behind the front card | false
 | isDisabled | false      |   Set to ```true``` if swiping should be disabled, has no impact when triggered from the outside | false
 | onTapDisabled | -     |    Function that get triggered when the swiper is disabled | false
 | onSwipe | -    |    Called with the new index and detected swipe direction when the user swiped | false
