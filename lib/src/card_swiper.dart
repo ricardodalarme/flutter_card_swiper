@@ -295,41 +295,6 @@ class _CardSwiperState extends State<CardSwiper>
     }
   }
 
-  //moves the card away to the left or right
-  void _swipeHorizontal(BuildContext context) {
-    setState(() {
-      _swipeType = SwipeType.swipe;
-      _leftAnimation = Tween<double>(
-        begin: _left,
-        end: (_left == 0)
-            ? (widget.direction == CardSwiperDirection.right)
-                ? MediaQuery.of(context).size.width
-                : -MediaQuery.of(context).size.width
-            : (_left > widget.threshold)
-                ? MediaQuery.of(context).size.width
-                : -MediaQuery.of(context).size.width,
-      ).animate(_animationController);
-      _topAnimation = Tween<double>(
-        begin: _top,
-        end: _top + _top,
-      ).animate(_animationController);
-      _scaleAnimation = Tween<double>(
-        begin: _scale,
-        end: 1.0,
-      ).animate(_animationController);
-      _differenceAnimation = Tween<double>(
-        begin: _difference,
-        end: 0,
-      ).animate(_animationController);
-    });
-    if (_left > widget.threshold ||
-        _left == 0 && widget.direction == CardSwiperDirection.right) {
-      detectedDirection = CardSwiperDirection.right;
-    } else {
-      detectedDirection = CardSwiperDirection.left;
-    }
-  }
-
   void _swipe(BuildContext context, CardSwiperDirection direction) {
     if (widget.cards.isEmpty) return;
 
@@ -356,33 +321,66 @@ class _CardSwiperState extends State<CardSwiper>
     _animationController.forward();
   }
 
+  //moves the card away to the left or right
+  void _swipeHorizontal(BuildContext context) {
+    _leftAnimation = Tween<double>(
+      begin: _left,
+      end: (_left == 0)
+          ? (widget.direction == CardSwiperDirection.right)
+              ? MediaQuery.of(context).size.width
+              : -MediaQuery.of(context).size.width
+          : (_left > widget.threshold)
+              ? MediaQuery.of(context).size.width
+              : -MediaQuery.of(context).size.width,
+    ).animate(_animationController);
+    _topAnimation = Tween<double>(
+      begin: _top,
+      end: _top + _top,
+    ).animate(_animationController);
+    _scaleAnimation = Tween<double>(
+      begin: _scale,
+      end: 1.0,
+    ).animate(_animationController);
+    _differenceAnimation = Tween<double>(
+      begin: _difference,
+      end: 0,
+    ).animate(_animationController);
+
+    _swipeType = SwipeType.swipe;
+    if (_left > widget.threshold ||
+        _left == 0 && widget.direction == CardSwiperDirection.right) {
+      detectedDirection = CardSwiperDirection.right;
+    } else {
+      detectedDirection = CardSwiperDirection.left;
+    }
+  }
+
   //moves the card away to the top or bottom
   void _swipeVertical(BuildContext context) {
-    setState(() {
-      _swipeType = SwipeType.swipe;
-      _leftAnimation = Tween<double>(
-        begin: _left,
-        end: _left + _left,
-      ).animate(_animationController);
-      _topAnimation = Tween<double>(
-        begin: _top,
-        end: (_top == 0)
-            ? (widget.direction == CardSwiperDirection.bottom)
-                ? MediaQuery.of(context).size.height
-                : -MediaQuery.of(context).size.height
-            : (_top > widget.threshold)
-                ? MediaQuery.of(context).size.height
-                : -MediaQuery.of(context).size.height,
-      ).animate(_animationController);
-      _scaleAnimation = Tween<double>(
-        begin: _scale,
-        end: 1.0,
-      ).animate(_animationController);
-      _differenceAnimation = Tween<double>(
-        begin: _difference,
-        end: 0,
-      ).animate(_animationController);
-    });
+    _leftAnimation = Tween<double>(
+      begin: _left,
+      end: _left + _left,
+    ).animate(_animationController);
+    _topAnimation = Tween<double>(
+      begin: _top,
+      end: (_top == 0)
+          ? (widget.direction == CardSwiperDirection.bottom)
+              ? MediaQuery.of(context).size.height
+              : -MediaQuery.of(context).size.height
+          : (_top > widget.threshold)
+              ? MediaQuery.of(context).size.height
+              : -MediaQuery.of(context).size.height,
+    ).animate(_animationController);
+    _scaleAnimation = Tween<double>(
+      begin: _scale,
+      end: 1.0,
+    ).animate(_animationController);
+    _differenceAnimation = Tween<double>(
+      begin: _difference,
+      end: 0,
+    ).animate(_animationController);
+
+    _swipeType = SwipeType.swipe;
     if (_top > widget.threshold ||
         _top == 0 && widget.direction == CardSwiperDirection.bottom) {
       detectedDirection = CardSwiperDirection.bottom;
@@ -393,24 +391,23 @@ class _CardSwiperState extends State<CardSwiper>
 
   //moves the card back to starting position
   void _goBack(BuildContext context) {
-    setState(() {
-      _swipeType = SwipeType.back;
-      _leftAnimation = Tween<double>(
-        begin: _left,
-        end: 0,
-      ).animate(_animationController);
-      _topAnimation = Tween<double>(
-        begin: _top,
-        end: 0,
-      ).animate(_animationController);
-      _scaleAnimation = Tween<double>(
-        begin: _scale,
-        end: 0.9,
-      ).animate(_animationController);
-      _differenceAnimation = Tween<double>(
-        begin: _difference,
-        end: 40,
-      ).animate(_animationController);
-    });
+    _leftAnimation = Tween<double>(
+      begin: _left,
+      end: 0,
+    ).animate(_animationController);
+    _topAnimation = Tween<double>(
+      begin: _top,
+      end: 0,
+    ).animate(_animationController);
+    _scaleAnimation = Tween<double>(
+      begin: _scale,
+      end: 0.9,
+    ).animate(_animationController);
+    _differenceAnimation = Tween<double>(
+      begin: _difference,
+      end: 40,
+    ).animate(_animationController);
+
+    _swipeType = SwipeType.back;
   }
 }
