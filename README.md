@@ -1,6 +1,12 @@
 # flutter_card_swiper
 
-```flutter_card_swiper``` is a Flutter package for a Tinder-like card swiper. ✨
+[![Pub Version](https://img.shields.io/pub/v/flutter_card_swiper?logo=dart&logoColor=white)](https://pub.dev/packages/flutter_card_swiper)
+[![Pub points](https://badgen.net/pub/points/flutter_card_swiper)](https://pub.dev/packages/flutter_card_swiper)
+[![Pub Likes](https://badgen.net/pub/likes/flutter_card_swiper)](https://pub.dev/packages/flutter_card_swiper)
+[![Pub popularity](https://badgen.net/pub/popularity/flutter_card_swiper)](https://pub.dev/packages/flutter_card_swiper)
+[![License](https://badgen.net/github/license/ricardodalarme/flutter_card_swiper)](https://github.com/ricardodalarme/flutter_card_swiper/blob/main/LICENSE)
+
+This is a Flutter package for a Tinder-like card swiper. ✨
 
 It allows you to swipe left, right, up, and down and define your own business logic for each direction.
 
