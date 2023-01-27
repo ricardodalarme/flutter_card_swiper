@@ -266,9 +266,8 @@ class _CardSwiperState extends State<CardSwiper>
 
   void _calculateAngle() {
     if (_angle <= _maxAngle && _angle >= -_maxAngle) {
-      _tapOnTop
-          ? _angle = (_maxAngle / 100) * (_left / 10)
-          : _angle = (_maxAngle / 100) * (_left / 10) * -1;
+      _angle = (_maxAngle / 100) * (_left / 10);
+      if (_tapOnTop) _angle *= -1;
     }
   }
 
@@ -325,13 +324,10 @@ class _CardSwiperState extends State<CardSwiper>
   void _swipeHorizontal(BuildContext context) {
     _leftAnimation = Tween<double>(
       begin: _left,
-      end: (_left == 0)
-          ? (widget.direction == CardSwiperDirection.right)
-              ? MediaQuery.of(context).size.width
-              : -MediaQuery.of(context).size.width
-          : (_left > widget.threshold)
-              ? MediaQuery.of(context).size.width
-              : -MediaQuery.of(context).size.width,
+      end: (_left == 0 && widget.direction == CardSwiperDirection.right) ||
+              _left > widget.threshold
+          ? MediaQuery.of(context).size.width
+          : -MediaQuery.of(context).size.width,
     ).animate(_animationController);
     _topAnimation = Tween<double>(
       begin: _top,
@@ -363,13 +359,10 @@ class _CardSwiperState extends State<CardSwiper>
     ).animate(_animationController);
     _topAnimation = Tween<double>(
       begin: _top,
-      end: (_top == 0)
-          ? (widget.direction == CardSwiperDirection.bottom)
-              ? MediaQuery.of(context).size.height
-              : -MediaQuery.of(context).size.height
-          : (_top > widget.threshold)
-              ? MediaQuery.of(context).size.height
-              : -MediaQuery.of(context).size.height,
+      end: (_top == 0 && widget.direction == CardSwiperDirection.bottom) ||
+              _top > widget.threshold
+          ? MediaQuery.of(context).size.height
+          : -MediaQuery.of(context).size.height,
     ).animate(_animationController);
     _scaleAnimation = Tween<double>(
       begin: _scale,
