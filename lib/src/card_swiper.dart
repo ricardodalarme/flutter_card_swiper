@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
+import 'package:flutter_card_swiper/src/stacker.dart';
 import 'package:flutter_card_swiper/src/typedefs.dart';
 
 class CardSwiper extends StatefulWidget {
@@ -42,6 +43,9 @@ class CardSwiper extends StatefulWidget {
   /// direction in which the card gets swiped when triggered by controller, default set to right
   final CardSwiperDirection direction;
 
+  /// set to true if the stack should be infinite
+  final bool isInfinity;
+
   const CardSwiper({
     Key? key,
     required this.cards,
@@ -56,6 +60,7 @@ class CardSwiper extends StatefulWidget {
     this.onSwipe,
     this.onEnd,
     this.direction = CardSwiperDirection.right,
+    this.isInfinity = true,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',
@@ -87,8 +92,6 @@ class _CardSwiperState extends State<CardSwiper>
   late double _scale = widget.scale;
   double _difference = 40;
 
-  int _currentIndex = 0;
-
   SwipeType _swipeType = SwipeType.none;
   bool _tapOnTop = false; //position of starting drag point on card
 
@@ -98,16 +101,22 @@ class _CardSwiperState extends State<CardSwiper>
   late Animation<double> _scaleAnimation;
   late Animation<double> _differenceAnimation;
 
+  late Stacker<Widget?> _stacker;
+
   CardSwiperDirection detectedDirection = CardSwiperDirection.none;
 
   double get _maxAngle => widget.maxAngle * (pi / 180);
 
-  bool get _isLastCard => _currentIndex == widget.cards.length - 1;
-  int get _nextCardIndex => _isLastCard ? 0 : _currentIndex + 1;
+  bool get _canSwipe => !widget.isDisabled && _stacker.hasFront;
 
   @override
   void initState() {
     super.initState();
+
+    _stacker = Stacker(
+      initial: widget.cards,
+      isInfinite: widget.isInfinity,
+    );
 
     widget.controller?.addListener(_controllerListener);
 
@@ -138,8 +147,8 @@ class _CardSwiperState extends State<CardSwiper>
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
                 children: [
-                  _backItem(constraints),
-                  _frontItem(constraints),
+                  if (_stacker.hasBack) _backItem(constraints),
+                  if (_stacker.hasFront) _frontItem(constraints),
                 ],
               );
             },
@@ -158,7 +167,7 @@ class _CardSwiperState extends State<CardSwiper>
           angle: _angle,
           child: ConstrainedBox(
             constraints: constraints,
-            child: widget.cards[_currentIndex],
+            child: _stacker.current,
           ),
         ),
         onTap: () {
@@ -175,7 +184,7 @@ class _CardSwiperState extends State<CardSwiper>
           }
         },
         onPanUpdate: (tapInfo) {
-          if (!widget.isDisabled) {
+          if (_canSwipe) {
             setState(() {
               _left += tapInfo.delta.dx;
               _top += tapInfo.delta.dy;
@@ -187,7 +196,7 @@ class _CardSwiperState extends State<CardSwiper>
           }
         },
         onPanEnd: (tapInfo) {
-          if (!widget.isDisabled) {
+          if (_canSwipe) {
             _tapOnTop = false;
             _onEndAnimation();
             _animationController.forward();
@@ -205,7 +214,7 @@ class _CardSwiperState extends State<CardSwiper>
         scale: _scale,
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cards[_nextCardIndex],
+          child: _stacker.next,
         ),
       ),
     );
@@ -229,6 +238,14 @@ class _CardSwiperState extends State<CardSwiper>
       case CardSwiperState.swipeBottom:
         _swipe(context, CardSwiperDirection.bottom);
         break;
+      case CardSwiperState.undo:
+        setState(() {
+          if (_stacker.hasBack2) {
+            _stacker.back();
+            _animationController.reset();
+          }
+        });
+        break;
       default:
         break;
     }
@@ -251,14 +268,12 @@ class _CardSwiperState extends State<CardSwiper>
     if (status == AnimationStatus.completed) {
       setState(() {
         if (_swipeType == SwipeType.swipe) {
-          widget.onSwipe?.call(_currentIndex, detectedDirection);
+          widget.onSwipe?.call(_stacker.currentIndex, detectedDirection);
 
-          if (_isLastCard) {
+          if (_stacker.isLast) {
             widget.onEnd?.call();
-            _currentIndex = 0;
-          } else {
-            _currentIndex++;
           }
+          _stacker.pop();
         }
         _animationController.reset();
         _left = 0;
@@ -304,7 +319,7 @@ class _CardSwiperState extends State<CardSwiper>
   }
 
   void _swipe(BuildContext context, CardSwiperDirection direction) {
-    if (widget.cards.isEmpty) return;
+    if (!_canSwipe) return;
 
     switch (direction) {
       case CardSwiperDirection.left:
