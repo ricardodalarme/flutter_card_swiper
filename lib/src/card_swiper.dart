@@ -42,6 +42,12 @@ class CardSwiper extends StatefulWidget {
   /// direction in which the card gets swiped when triggered by controller, default set to right
   final CardSwiperDirection direction;
 
+  /// set to false if you want your card to move only across the vertical axis when swiping
+  final bool isHorizontalSwipingEnabled;
+
+  /// set to false if you want your card to move only across the horizontal axis when swiping
+  final bool isVerticalSwipingEnabled;
+
   const CardSwiper({
     Key? key,
     required this.cards,
@@ -56,6 +62,8 @@ class CardSwiper extends StatefulWidget {
     this.onSwipe,
     this.onEnd,
     this.direction = CardSwiperDirection.right,
+    this.isHorizontalSwipingEnabled = true,
+    this.isVerticalSwipingEnabled = true,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',
@@ -177,8 +185,12 @@ class _CardSwiperState extends State<CardSwiper>
         onPanUpdate: (tapInfo) {
           if (!widget.isDisabled) {
             setState(() {
-              _left += tapInfo.delta.dx;
-              _top += tapInfo.delta.dy;
+              if (widget.isHorizontalSwipingEnabled) {
+                _left += tapInfo.delta.dx;
+              }
+              if (widget.isVerticalSwipingEnabled) {
+                _top += tapInfo.delta.dy;
+              }
               _total = _left + _top;
               _calculateAngle();
               _calculateScale();
