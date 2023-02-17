@@ -54,9 +54,6 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
   /// here you can change the number of cards that are displayed at the same time
   final int numberOfCardsDisplayed;
 
-  /// set to false if you don't want the first card to be shown behind the last one
-  final bool makeCardsLoop;
-
   const CardSwiper({
     Key? key,
     required this.cards,
@@ -75,7 +72,6 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
     this.isVerticalSwipingEnabled = true,
     this.isLoop = true,
     this.numberOfCardsDisplayed = 2,
-    this.makeCardsLoop = true,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',
@@ -162,7 +158,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               //the number of cards that are built on the screen
-              final stackSize = widget.makeCardsLoop
+              final stackSize = widget.isLoop
                   ? widget.numberOfCardsDisplayed
                   : min(
                       widget.numberOfCardsDisplayed,
