@@ -103,12 +103,13 @@ class Example extends StatelessWidget {
 | threshold | 50     |    Threshold from which the card is swiped away | false
 | scale | 0.9     |    Scale of the card that is behind the front card | false
 | isDisabled | false      |   Set to ```true``` if swiping should be disabled, has no impact when triggered from the outside | false
-| isHorizontalSwipingEnabled | true    |   Set to ```false``` if you want your card to move only across the vertical axis when swiping
-| isVerticalSwipingEnabled | true    |   Set to ```false``` if you want your card to move only across the horizontal axis when swiping
+| isHorizontalSwipingEnabled | true    |   Set to ```false``` if you want your card to move only across the vertical axis when swiping | false
+| isVerticalSwipingEnabled | true    |   Set to ```false``` if you want your card to move only across the horizontal axis when swiping | false
 | onTapDisabled | -     |    Function that get triggered when the swiper is disabled | false
 | onSwipe | -    |    Called with the new index and detected swipe direction when the user swiped | false
 | onEnd | -    |    Called when there is no Widget left to be swiped away | false
 | direction | right    |    Direction in which the card is swiped away when triggered from the outside | false
+| numberOfCardsDisplayed | 2    |   If your widgets in the 'cards' list cause performance issues, you can choose to display more cards at a time to reduce how long the user waits for a card to appear | false 
 
 #### Controller
 
