@@ -156,6 +156,8 @@ class _CardSwiperState extends State<CardSwiper>
                 children: List.generate(widget.numberOfCardsDisplayed, (index) {
                   if (index == 0) {
                     return _frontItem(constraints);
+                  } else if (index == 1) {
+                    return _secondItem(constraints);
                   } else {
                     return _backItem(constraints, index);
                   }
@@ -220,12 +222,26 @@ class _CardSwiperState extends State<CardSwiper>
     );
   }
 
-  Widget _backItem(BoxConstraints constraints, int index) {
+  Widget _secondItem(BoxConstraints constraints) {
     return Positioned(
       top: _difference,
       left: 0,
       child: Transform.scale(
         scale: _scale,
+        child: ConstrainedBox(
+          constraints: constraints,
+          child: widget.cards[_nextCardIndex],
+        ),
+      ),
+    );
+  }
+
+  Widget _backItem(BoxConstraints constraints, int index) {
+    return Positioned(
+      top: 40,
+      left: 0,
+      child: Transform.scale(
+        scale: widget.scale,
         child: ConstrainedBox(
           constraints: constraints,
           child: widget.cards[(_currentIndex + index) % widget.cards.length],
