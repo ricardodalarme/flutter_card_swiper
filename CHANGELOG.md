@@ -1,3 +1,7 @@
+## [1.2.1]
+
+- Add option to disable vertical or horizontal swipping
+
 ## [1.2.0]
 
 - Allow changing the scale of the card that is behind the front card
