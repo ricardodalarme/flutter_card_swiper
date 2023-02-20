@@ -48,6 +48,9 @@ class CardSwiper extends StatefulWidget {
   /// set to false if you want your card to move only across the horizontal axis when swiping
   final bool isVerticalSwipingEnabled;
 
+  /// here you can change the number of cards that are displayed at the same time
+  final int numberOfCardsDisplayed;
+
   const CardSwiper({
     Key? key,
     required this.cards,
@@ -64,6 +67,7 @@ class CardSwiper extends StatefulWidget {
     this.direction = CardSwiperDirection.right,
     this.isHorizontalSwipingEnabled = true,
     this.isVerticalSwipingEnabled = true,
+    this.numberOfCardsDisplayed = 2,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',
@@ -79,6 +83,10 @@ class CardSwiper extends StatefulWidget {
         assert(
           scale >= 0 && scale <= 1,
           'scale must be between 0 and 1',
+        ),
+        assert(
+          numberOfCardsDisplayed >= 1 && numberOfCardsDisplayed <= cards.length,
+          'you must display at least one card, and no more than the length of cards parameter',
         ),
         super(key: key);
 
@@ -145,10 +153,13 @@ class _CardSwiperState extends State<CardSwiper>
               return Stack(
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
-                children: [
-                  _backItem(constraints),
-                  _frontItem(constraints),
-                ],
+                children: List.generate(widget.numberOfCardsDisplayed, (index) {
+                  if (index == 0) {
+                    return _frontItem(constraints);
+                  } else {
+                    return _backItem(constraints, index);
+                  }
+                }).reversed.toList(),
               );
             },
           ),
@@ -209,7 +220,7 @@ class _CardSwiperState extends State<CardSwiper>
     );
   }
 
-  Widget _backItem(BoxConstraints constraints) {
+  Widget _backItem(BoxConstraints constraints, int index) {
     return Positioned(
       top: _difference,
       left: 0,
@@ -217,7 +228,7 @@ class _CardSwiperState extends State<CardSwiper>
         scale: _scale,
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cards[_nextCardIndex],
+          child: widget.cards[(_currentIndex + index) % widget.cards.length],
         ),
       ),
     );
