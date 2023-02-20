@@ -1,3 +1,10 @@
+## [2.0.0]
+
+- Makes CardSwiper a generic of `Widget?`.
+- Adds option to control if the stack should loop or not.
+- **BREAKING CHANGE**:
+  - Now CardSwiper is a stack, meaning that the last item is now the visible item.
+
 ## [1.2.1]
 
 - Add option to disable vertical or horizontal swipping
