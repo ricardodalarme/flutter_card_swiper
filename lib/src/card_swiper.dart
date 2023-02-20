@@ -237,7 +237,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
         scale: _scale,
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cards[_nextCardIndex],
+          child: widget.cards[(_currentIndex + 1) % widget.cards.length],
         ),
       ),
     );
