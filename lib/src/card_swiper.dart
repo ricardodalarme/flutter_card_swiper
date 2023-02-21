@@ -173,7 +173,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
           angle: _angle,
           child: ConstrainedBox(
             constraints: constraints,
-            child: widget.cards[_currentIndex],
+            child: _stack[_currentIndex],
           ),
         ),
         onTap: () {
@@ -226,7 +226,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
           constraints: constraints,
           child: _stack.length <= 1
               ? widget.cards.last
-              : widget.cards[_currentIndex - 1],
+              : _stack[_currentIndex - 1],
         ),
       ),
     );
