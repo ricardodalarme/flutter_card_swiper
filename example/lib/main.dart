@@ -36,7 +36,7 @@ class _ExamplePageState extends State<Example> {
               child: CardSwiper(
                 controller: controller,
                 cards: cards,
-                numberOfCardsDisplayed: 4,
+                numberOfCardsDisplayed: 3,
                 onSwipe: _swipe,
                 padding: const EdgeInsets.all(24.0),
               ),
