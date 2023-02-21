@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 import 'package:flutter_card_swiper/src/typedefs.dart';
+import 'package:flutter_card_swiper/src/unswipe.dart';
 
 class CardSwiper<T extends Widget> extends StatefulWidget {
   /// list of widgets for the swiper
@@ -101,14 +102,18 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
 
   SwipeType _swipeType = SwipeType.none;
   bool _tapOnTop = false; //position of starting drag point on card
+  bool _isUnswiping = false;
 
   late AnimationController _animationController;
   late Animation<double> _leftAnimation;
   late Animation<double> _topAnimation;
   late Animation<double> _scaleAnimation;
   late Animation<double> _differenceAnimation;
+  late Animation<double> _unSwipeLeftAnimation;
+  late Animation<double> _unSwipeTopAnimation;
 
   final List<T> _stack = [];
+  final List<Unswipe> _undoStack = [];
 
   CardSwiperDirection detectedDirection = CardSwiperDirection.none;
 
@@ -234,7 +239,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
 
   //swipe widget from the outside
   void _controllerListener() {
-    switch (widget.controller!.state) {
+    switch (widget.controller?.state) {
       case CardSwiperState.swipe:
         _swipe(context, widget.direction);
         break;
@@ -250,6 +255,12 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
       case CardSwiperState.swipeBottom:
         _swipe(context, CardSwiperDirection.bottom);
         break;
+      case CardSwiperState.undo:
+        if (_undoStack.isNotEmpty) {
+          _unswipe(_undoStack.last);
+          _animationController.forward();
+        }
+        break;
       default:
         break;
     }
@@ -259,8 +270,13 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
   void _animationListener() {
     if (_animationController.status == AnimationStatus.forward) {
       setState(() {
-        _left = _leftAnimation.value;
-        _top = _topAnimation.value;
+        if (_swipeType == SwipeType.undo) {
+          _left = _unSwipeLeftAnimation.value;
+          _top = _unSwipeTopAnimation.value;
+        } else {
+          _left = _leftAnimation.value;
+          _top = _topAnimation.value;
+        }
         _scale = _scaleAnimation.value;
         _difference = _differenceAnimation.value;
       });
@@ -273,7 +289,17 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
       setState(() {
         if (_swipeType == SwipeType.swipe) {
           widget.onSwipe?.call(_currentIndex, detectedDirection);
-          _stack.removeAt(_currentIndex);
+
+          final card = _stack.removeAt(_currentIndex);
+          _undoStack.add(
+            Unswipe(
+              widget: card,
+              horizontal: true,
+              vertical: false,
+              swipedDirectionHorizontal: -1,
+              swipedDirectionVertical: 1,
+            ),
+          );
 
           if (_stack.isEmpty) {
             widget.onEnd?.call();
@@ -282,6 +308,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
               _stack.addAll(widget.cards);
             }
           }
+        } else if (_swipeType == SwipeType.undo) {
+          _stack.add(_undoStack.removeLast().widget as T);
         }
         _animationController.reset();
         _left = 0;
@@ -434,5 +462,59 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     ).animate(_animationController);
 
     _swipeType = SwipeType.back;
+  }
+
+  //unswipe the card: brings back the last card that was swiped away
+  void _unswipe(Unswipe card) {
+    _isUnswiping = true;
+    _stack.add(card.widget as T);
+    _swipeType = SwipeType.undo;
+    //unSwipe horizontal
+    if (card.horizontal == true) {
+      _unSwipeLeftAnimation = Tween<double>(
+        begin: (card.swipedDirectionHorizontal == 1)
+            ? MediaQuery.of(context).size.width
+            : -MediaQuery.of(context).size.width,
+        end: 0,
+      ).animate(_animationController);
+      _unSwipeTopAnimation = Tween<double>(
+        begin: (card.swipedDirectionVertical == 1)
+            ? -MediaQuery.of(context).size.height / 4
+            : MediaQuery.of(context).size.height / 4,
+        end: 0,
+      ).animate(_animationController);
+      _scaleAnimation = Tween<double>(
+        begin: 1.0,
+        end: _scale,
+      ).animate(_animationController);
+      _differenceAnimation = Tween<double>(
+        begin: 0,
+        end: _difference,
+      ).animate(_animationController);
+    }
+
+    //unSwipe vertical
+    if (card.vertical == true) {
+      _unSwipeLeftAnimation = Tween<double>(
+        begin: (card.swipedDirectionHorizontal == 1)
+            ? MediaQuery.of(context).size.width / 4
+            : -MediaQuery.of(context).size.width / 4,
+        end: 0,
+      ).animate(_animationController);
+      _unSwipeTopAnimation = Tween<double>(
+        begin: (card.swipedDirectionVertical == 1)
+            ? -MediaQuery.of(context).size.height
+            : MediaQuery.of(context).size.height,
+        end: 0,
+      ).animate(_animationController);
+      _scaleAnimation = Tween<double>(
+        begin: 1.0,
+        end: _scale,
+      ).animate(_animationController);
+      _differenceAnimation = Tween<double>(
+        begin: 0,
+        end: _difference,
+      ).animate(_animationController);
+    }
   }
 }
