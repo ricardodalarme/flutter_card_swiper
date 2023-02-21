@@ -1,3 +1,7 @@
+## [2.0.1]
+
+- Fixes wrong item rendering.
+
 ## [2.0.0]
 
 - Makes CardSwiper a generic of `Widget?`.
