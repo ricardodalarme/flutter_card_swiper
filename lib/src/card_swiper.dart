@@ -167,7 +167,13 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
               return Stack(
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
-                children: List.generate(stackSize, (index) {
+                children: List.generate(
+                    widget.isLoop
+                        ? widget.numberOfCardsDisplayed
+                        : min(
+                            widget.numberOfCardsDisplayed,
+                            widget.cards.length - _currentIndex,
+                          ), (index) {
                   if (index == 0) {
                     return _frontItem(constraints);
                   } else if (index == 1) {
