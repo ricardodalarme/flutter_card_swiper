@@ -54,6 +54,9 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
   /// here you can change the number of cards that are displayed at the same time
   final int numberOfCardsDisplayed;
 
+  /// set to false if you don't want the first card to be shown behind the last one
+  final bool makeCardsLoop;
+
   const CardSwiper({
     Key? key,
     required this.cards,
@@ -72,6 +75,7 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
     this.isVerticalSwipingEnabled = true,
     this.isLoop = true,
     this.numberOfCardsDisplayed = 2,
+    this.makeCardsLoop = true,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',
@@ -157,14 +161,17 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
           padding: widget.padding,
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
+              //the number of cards that are built on the screen
+              final stackSize = widget.makeCardsLoop
+                  ? widget.numberOfCardsDisplayed
+                  : min(
+                      widget.numberOfCardsDisplayed,
+                      widget.cards.length - _currentIndex,
+                    );
               return Stack(
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
-                children: List.generate(
-                    min(
-                      widget.numberOfCardsDisplayed,
-                      widget.cards.length - _currentIndex,
-                    ), (index) {
+                children: List.generate(stackSize, (index) {
                   if (index == 0) {
                     return _frontItem(constraints);
                   } else if (index == 1) {
@@ -181,6 +188,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     );
   }
 
+  /// The card shown at the front of the stack, that can be dragged and swipped
   Widget _frontItem(BoxConstraints constraints) {
     return Positioned(
       left: _left,
@@ -233,6 +241,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     );
   }
 
+  /// the card that is just behind the _frontItem, only moves to take its place
+  /// during a movement of _frontItem
   Widget _secondItem(BoxConstraints constraints) {
     return Positioned(
       top: _difference,
@@ -247,6 +257,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     );
   }
 
+  /// if widget.numberOfCardsDisplayed > 2, those cards are built behind the
+  /// _secondItem and can't move at all
   Widget _backItem(BoxConstraints constraints, int index) {
     return Positioned(
       top: 40,
