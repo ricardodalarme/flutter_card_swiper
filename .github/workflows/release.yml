@@ -1,0 +1,28 @@
+name: release
+on:
+  workflow_run:
+    workflows: [Test & Report]
+    types:
+      - completed
+
+jobs:
+  release:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: "Install Flutter"
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Get all Flutter Packages
+        run: flutter pub get
+
+      - name: Publish
+        uses: sakebook/actions-flutter-pub-publisher@v1.4.1
+        with:
+          credential: ${{ secrets.CREDENTIAL_JSON }}

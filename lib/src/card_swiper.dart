@@ -5,9 +5,9 @@ import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 import 'package:flutter_card_swiper/src/typedefs.dart';
 
-class CardSwiper extends StatefulWidget {
+class CardSwiper<T extends Widget> extends StatefulWidget {
   /// list of widgets for the swiper
-  final List<Widget?> cards;
+  final List<T> cards;
 
   /// controller to trigger actions
   final CardSwiperController? controller;
@@ -48,11 +48,11 @@ class CardSwiper extends StatefulWidget {
   /// set to false if you want your card to move only across the horizontal axis when swiping
   final bool isVerticalSwipingEnabled;
 
+  /// set to true if the stack should loop
+  final bool isLoop;
+
   /// here you can change the number of cards that are displayed at the same time
   final int numberOfCardsDisplayed;
-
-  /// set to false if you don't want the first card to be shown behind the last one
-  final bool makeCardsLoop;
 
   const CardSwiper({
     Key? key,
@@ -70,8 +70,8 @@ class CardSwiper extends StatefulWidget {
     this.direction = CardSwiperDirection.right,
     this.isHorizontalSwipingEnabled = true,
     this.isVerticalSwipingEnabled = true,
+    this.isLoop = true,
     this.numberOfCardsDisplayed = 2,
-    this.makeCardsLoop = true,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',
@@ -95,10 +95,10 @@ class CardSwiper extends StatefulWidget {
         super(key: key);
 
   @override
-  State createState() => _CardSwiperState();
+  State createState() => _CardSwiperState<T>();
 }
 
-class _CardSwiperState extends State<CardSwiper>
+class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     with SingleTickerProviderStateMixin {
   double _left = 0;
   double _top = 0;
@@ -106,8 +106,6 @@ class _CardSwiperState extends State<CardSwiper>
   double _angle = 0;
   late double _scale = widget.scale;
   double _difference = 40;
-
-  int _currentIndex = 0;
 
   SwipeType _swipeType = SwipeType.none;
   bool _tapOnTop = false; //position of starting drag point on card
@@ -118,16 +116,21 @@ class _CardSwiperState extends State<CardSwiper>
   late Animation<double> _scaleAnimation;
   late Animation<double> _differenceAnimation;
 
+  final List<T> _stack = [];
+
   CardSwiperDirection detectedDirection = CardSwiperDirection.none;
 
   double get _maxAngle => widget.maxAngle * (pi / 180);
 
-  bool get _isLastCard => _currentIndex == widget.cards.length - 1;
-  int get _nextCardIndex => _isLastCard ? 0 : _currentIndex + 1;
+  int get _currentIndex => _stack.length - 1;
+  bool get _canSwipe => _stack.isNotEmpty && !widget.isDisabled;
+  bool get _hasBackItem => _stack.length > 1 || widget.isLoop;
 
   @override
   void initState() {
     super.initState();
+
+    _stack.addAll(widget.cards);
 
     widget.controller?.addListener(_controllerListener);
 
@@ -155,12 +158,14 @@ class _CardSwiperState extends State<CardSwiper>
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               //the number of cards that are built on the screen
-              final stackSize = widget.makeCardsLoop
+              final stackSize = widget.isLoop
                   ? widget.numberOfCardsDisplayed
-                  : min(
-                      widget.numberOfCardsDisplayed,
-                      widget.cards.length - _currentIndex,
-                    );
+                  : _stack.isNotEmpty
+                      ? min(
+                          widget.numberOfCardsDisplayed,
+                          _stack.length,
+                        )
+                      : 0;
               return Stack(
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
@@ -191,7 +196,7 @@ class _CardSwiperState extends State<CardSwiper>
           angle: _angle,
           child: ConstrainedBox(
             constraints: constraints,
-            child: widget.cards[_currentIndex],
+            child: _stack[_currentIndex],
           ),
         ),
         onTap: () {
@@ -224,7 +229,7 @@ class _CardSwiperState extends State<CardSwiper>
           }
         },
         onPanEnd: (tapInfo) {
-          if (!widget.isDisabled) {
+          if (_canSwipe) {
             _tapOnTop = false;
             _onEndAnimation();
             _animationController.forward();
@@ -244,7 +249,9 @@ class _CardSwiperState extends State<CardSwiper>
         scale: _scale,
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cards[_nextCardIndex],
+          child: _stack.length <= 1
+              ? widget.cards.last
+              : _stack[_currentIndex - 1],
         ),
       ),
     );
@@ -260,7 +267,7 @@ class _CardSwiperState extends State<CardSwiper>
         scale: widget.scale,
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cards[(_currentIndex + index) % widget.cards.length],
+          child: widget.cards[(_currentIndex - index) % widget.cards.length],
         ),
       ),
     );
@@ -307,12 +314,14 @@ class _CardSwiperState extends State<CardSwiper>
       setState(() {
         if (_swipeType == SwipeType.swipe) {
           widget.onSwipe?.call(_currentIndex, detectedDirection);
+          _stack.removeAt(_currentIndex);
 
-          if (_isLastCard) {
+          if (_stack.isEmpty) {
             widget.onEnd?.call();
-            _currentIndex = 0;
-          } else {
-            _currentIndex++;
+
+            if (widget.isLoop) {
+              _stack.addAll(widget.cards);
+            }
           }
         }
         _animationController.reset();
@@ -359,7 +368,7 @@ class _CardSwiperState extends State<CardSwiper>
   }
 
   void _swipe(BuildContext context, CardSwiperDirection direction) {
-    if (widget.cards.isEmpty) return;
+    if (!_canSwipe) return;
 
     switch (direction) {
       case CardSwiperDirection.left:
