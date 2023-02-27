@@ -24,7 +24,7 @@ final List<ExampleCandidateModel> candidates = [
   ExampleCandidateModel(
     name: 'Two, 2',
     job: 'Manager',
-    city: 'New York',
+    city: 'Nantes',
     color: const [Color(0xFF736EFE), Color(0xFF62E4EC)],
   ),
   ExampleCandidateModel(
