@@ -110,6 +110,7 @@ class Example extends StatelessWidget {
 | onSwipe | -    |    Called with the new index and detected swipe direction when the user swiped | false
 | onEnd | -    |    Called when there is no Widget left to be swiped away | false
 | direction | right    |    Direction in which the card is swiped away when triggered from the outside | false
+| numberOfCardsDisplayed | 2    |   If your widgets in the 'cards' list cause performance issues, you can choose to display more cards at a time to reduce how long the user waits for a card to appear | false 
 
 #### Controller
 
