@@ -274,17 +274,15 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
         if (_swipeType == SwipeType.swipe) {
           final cancelSwipe = widget.onSwipe?.call(_currentIndex, detectedDirection) == false;
 
-          if (cancelSwipe) {
-            return;
-          }
+          if (!cancelSwipe) {
+            _stack.removeAt(_currentIndex);
 
-          _stack.removeAt(_currentIndex);
+            if (_stack.isEmpty) {
+              widget.onEnd?.call();
 
-          if (_stack.isEmpty) {
-            widget.onEnd?.call();
-
-            if (widget.isLoop) {
-              _stack.addAll(widget.cards);
+              if (widget.isLoop) {
+                _stack.addAll(widget.cards);
+              }
             }
           }
         }
