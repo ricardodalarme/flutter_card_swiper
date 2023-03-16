@@ -316,6 +316,12 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     if (status == AnimationStatus.completed) {
       setState(() {
         if (_swipeType == SwipeType.swipe) {
+          final cancelSwipe = widget.onSwipe?.call(_currentIndex, detectedDirection) == false;
+
+          if (cancelSwipe) {
+            return;
+          }
+
           final previousIndex = _currentIndex;
           final isLastCard = _currentIndex == widget.cardsCount - 1;
 
