@@ -115,7 +115,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
   double get _maxAngle => widget.maxAngle * (pi / 180);
 
   int get _currentIndex => _stack.length - 1;
+
   bool get _canSwipe => _stack.isNotEmpty && !widget.isDisabled;
+
   bool get _hasBackItem => _stack.length > 1 || widget.isLoop;
 
   @override
@@ -267,34 +269,50 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     }
   }
 
+  // handle the onSwipe methode as well as removing the current card from the
+  // stack if onSwipe does not return false
+  void _handleOnSwipe() {
+    setState(() {
+      if (_swipeType == SwipeType.swipe) {
+        final cancelSwipe =
+            widget.onSwipe?.call(_currentIndex, detectedDirection) == false;
+
+        if (cancelSwipe) {
+          return;
+        }
+
+        _stack.removeAt(_currentIndex);
+
+        if (_stack.isEmpty) {
+          widget.onEnd?.call();
+
+          if (widget.isLoop) {
+            _stack.addAll(widget.cards);
+          }
+        }
+      }
+    });
+  }
+
+  // reset the card animation
+  void _resetCardAnimation() {
+    setState(() {
+      _animationController.reset();
+      _left = 0;
+      _top = 0;
+      _total = 0;
+      _angle = 0;
+      _scale = widget.scale;
+      _difference = 40;
+      _swipeType = SwipeType.none;
+    });
+  }
+
   //when the status of animation changes
   void _animationStatusListener(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
-      setState(() {
-        if (_swipeType == SwipeType.swipe) {
-          final cancelSwipe = widget.onSwipe?.call(_currentIndex, detectedDirection) == false;
-
-          if (!cancelSwipe) {
-            _stack.removeAt(_currentIndex);
-
-            if (_stack.isEmpty) {
-              widget.onEnd?.call();
-
-              if (widget.isLoop) {
-                _stack.addAll(widget.cards);
-              }
-            }
-          }
-        }
-        _animationController.reset();
-        _left = 0;
-        _top = 0;
-        _total = 0;
-        _angle = 0;
-        _scale = widget.scale;
-        _difference = 40;
-        _swipeType = SwipeType.none;
-      });
+      _handleOnSwipe();
+      _resetCardAnimation();
     }
   }
 
