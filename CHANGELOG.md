@@ -1,4 +1,4 @@
-## [2.0.2]
+## [2.1.0]
 
 - Add option to display more cards at a time. Useful if the widgets you want in your cards take time to build (for example a network image or video): displaying more cards builds them in advance and makes a fast serie of swipes more fluid.
 

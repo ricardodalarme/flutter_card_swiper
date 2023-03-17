@@ -124,7 +124,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
 
   int get _currentIndex => _stack.length - 1;
   bool get _canSwipe => _stack.isNotEmpty && !widget.isDisabled;
-  bool get _hasBackItem => _stack.length > 1 || widget.isLoop;
 
   @override
   void initState() {
@@ -158,25 +157,17 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               //the number of cards that are built on the screen
-              final stackSize = widget.isLoop
-                  ? widget.numberOfCardsDisplayed
-                  : _stack.isNotEmpty
-                      ? min(
-                          widget.numberOfCardsDisplayed,
-                          _stack.length,
-                        )
-                      : 0;
               return Stack(
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
-                children: List.generate(stackSize, (index) {
+                children: List.generate(nbOfCardsOnScreen(), (index) {
                   if (index == 0) {
                     return _frontItem(constraints);
-                  } else if (index == 1) {
-                    return _secondItem(constraints);
-                  } else {
-                    return _backItem(constraints, index);
                   }
+                  if (index == 1) {
+                    return _secondItem(constraints);
+                  }
+                  return _backItem(constraints, index);
                 }).reversed.toList(),
               );
             },
@@ -184,6 +175,18 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
         );
       },
     );
+  }
+
+  int nbOfCardsOnScreen() {
+    //the number of cards that are built on the screen
+    return widget.isLoop
+        ? widget.numberOfCardsDisplayed
+        : _stack.isNotEmpty
+            ? min(
+                widget.numberOfCardsDisplayed,
+                _stack.length,
+              )
+            : 0;
   }
 
   /// The card shown at the front of the stack, that can be dragged and swipped
