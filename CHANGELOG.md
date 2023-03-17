@@ -1,7 +1,7 @@
 ## [4.0.0]
 
 - **BREAKING CHANGE**:
-  - CardSwipers onSwipe function now returns <bool?> instead of <void>. I order to restore
+  - CardSwipers onSwipe function now returns <bool?> instead of <void>. In order to restore
     compatibility it is enough to declare <bool?> as the new return type, no further changes are
     needed. If onSwipe returns false, the swipe action will now be canceled and the current card
     will remain on top of the stack.
@@ -29,7 +29,7 @@
 - Makes CardSwiper a generic of `Widget?`.
 - Adds option to control if the stack should loop or not.
 - **BREAKING CHANGE**:
-    - Now CardSwiper is a stack, meaning that the last item is now the visible item.
+  - Now CardSwiper is a stack, meaning that the last item is now the visible item.
 
 ## [1.2.1]
 
