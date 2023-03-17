@@ -156,7 +156,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
           padding: widget.padding,
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
-              //the number of cards that are built on the screen
               return Stack(
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
@@ -177,8 +176,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     );
   }
 
+  ///the number of cards that are built on the screen
   int nbOfCardsOnScreen() {
-    //the number of cards that are built on the screen
     return widget.isLoop
         ? widget.numberOfCardsDisplayed
         : _stack.isNotEmpty
