@@ -74,7 +74,14 @@ class _ExamplePageState extends State<Example> {
     );
   }
 
-  void _swipe(int index, CardSwiperDirection direction) {
+  bool? _swipe(int index, CardSwiperDirection direction) {
+    if (index.isEven && direction == CardSwiperDirection.left ||
+        index.isOdd && direction == CardSwiperDirection.right) {
+      debugPrint(
+        'the card $index was swiped to the: ${direction.name}; Oh, and also your action got canceled',
+      );
+      return false;
+    }
     debugPrint('the card $index was swiped to the: ${direction.name}');
   }
 }
