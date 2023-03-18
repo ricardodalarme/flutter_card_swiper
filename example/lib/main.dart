@@ -35,10 +35,11 @@ class _ExamplePageState extends State<Example> {
             Flexible(
               child: CardSwiper(
                 controller: controller,
-                cards: cards,
+                cardsCount: cards.length,
                 numberOfCardsDisplayed: 3,
-                onSwipe: _swipe,
+                onSwipe: _onSwipe,
                 padding: const EdgeInsets.all(24.0),
+                cardBuilder: (context, index) => cards[index],
               ),
             ),
             Padding(
@@ -68,16 +69,16 @@ class _ExamplePageState extends State<Example> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _swipe(
-    int previousIndex,
-    int currentIndex,
+  void _onSwipe(
+    int? previousIndex,
+    int? currentIndex,
     CardSwiperDirection direction,
   ) {
     debugPrint(
