@@ -81,7 +81,8 @@ class Example extends StatelessWidget {
     return Scaffold(
       body: Flexible(
         child: CardSwiper(
-          cards: cards,
+          cardsCount: cards.length,
+          cardBuilder: (context, index) => cards[index],
         ),
       ),
     );
@@ -92,10 +93,10 @@ class Example extends StatelessWidget {
 ## Constructor
 #### Basic
 
-
 | Parameter        | Default           | Description  | Required  |
 | ------------- |:-------------|:-----|:-----:|
-| cards      | - | List of Widgets for the swiper | true
+| cardBuilder      | - | Widget builder for rendering cards | true
+| cardsCount      | - | Cards count | true
 | controller      | - | Trigger swipe | false
 | padding      | EdgeInsets.symmetric(horizontal: 20, vertical: 25) | Control swiper padding | false
 | duration      | 200 milliseconds    |   The duration that every animation should last | false

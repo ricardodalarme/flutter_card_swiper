@@ -3,11 +3,15 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
+import 'package:flutter_card_swiper/src/extensions.dart';
 import 'package:flutter_card_swiper/src/typedefs.dart';
 
 class CardSwiper<T extends Widget> extends StatefulWidget {
-  /// list of widgets for the swiper
-  final List<T> cards;
+  /// widget builder for rendering cards
+  final NullableIndexedWidgetBuilder cardBuilder;
+
+  /// cards count
+  final int cardsCount;
 
   /// controller to trigger actions
   final CardSwiperController? controller;
@@ -56,7 +60,8 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
 
   const CardSwiper({
     Key? key,
-    required this.cards,
+    required this.cardBuilder,
+    required this.cardsCount,
     this.controller,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
     this.duration = const Duration(milliseconds: 200),
@@ -89,7 +94,7 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
           'scale must be between 0 and 1',
         ),
         assert(
-          numberOfCardsDisplayed >= 1 && numberOfCardsDisplayed <= cards.length,
+          numberOfCardsDisplayed >= 1 && numberOfCardsDisplayed <= cardsCount,
           'you must display at least one card, and no more than the length of cards parameter',
         ),
         super(key: key);
@@ -116,20 +121,17 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
   late Animation<double> _scaleAnimation;
   late Animation<double> _differenceAnimation;
 
-  final List<T> _stack = [];
-
   CardSwiperDirection detectedDirection = CardSwiperDirection.none;
 
   double get _maxAngle => widget.maxAngle * (pi / 180);
 
-  int get _currentIndex => _stack.length - 1;
-  bool get _canSwipe => _stack.isNotEmpty && !widget.isDisabled;
+  int? _currentIndex = 0;
+  int? get _nextIndex => getValidIndexOffset(1);
+  bool get _canSwipe => _currentIndex != null && !widget.isDisabled;
 
   @override
   void initState() {
     super.initState();
-
-    _stack.addAll(widget.cards);
 
     widget.controller?.addListener(_controllerListener);
 
@@ -176,18 +178,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     );
   }
 
-  ///the number of cards that are built on the screen
-  int nbOfCardsOnScreen() {
-    return widget.isLoop
-        ? widget.numberOfCardsDisplayed
-        : _stack.isNotEmpty
-            ? min(
-                widget.numberOfCardsDisplayed,
-                _stack.length,
-              )
-            : 0;
-  }
-
   /// The card shown at the front of the stack, that can be dragged and swipped
   Widget _frontItem(BoxConstraints constraints) {
     return Positioned(
@@ -198,7 +188,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
           angle: _angle,
           child: ConstrainedBox(
             constraints: constraints,
-            child: _stack[_currentIndex],
+            child: widget.cardBuilder(context, _currentIndex!),
           ),
         ),
         onTap: () {
@@ -251,10 +241,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
         scale: _scale,
         child: ConstrainedBox(
           constraints: constraints,
-          child: _stack.length <= 1
-              ? widget.cards.last
-              : _stack[_currentIndex - 1],
-          //or: widget.cards[(_currentIndex - 1) % widget.cards.length] (same thing)
+          child: widget.cardBuilder(context, _nextIndex!),
         ),
       ),
     );
@@ -262,7 +249,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
 
   /// if widget.numberOfCardsDisplayed > 2, those cards are built behind the
   /// _secondItem and can't move at all
-  Widget _backItem(BoxConstraints constraints, int index) {
+  Widget _backItem(BoxConstraints constraints, int offset) {
     return Positioned(
       top: 40,
       left: 0,
@@ -270,7 +257,10 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
         scale: widget.scale,
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cards[(_currentIndex - index) % widget.cards.length],
+          child: widget.cardBuilder(
+            context,
+            getValidIndexOffset(offset)!,
+          ),
         ),
       ),
     );
@@ -317,21 +307,17 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
       setState(() {
         if (_swipeType == SwipeType.swipe) {
           final previousIndex = _currentIndex;
-          _stack.removeAt(_currentIndex);
+          final isLastCard = _currentIndex == widget.cardsCount - 1;
+
+          _currentIndex = _nextIndex;
           widget.onSwipe?.call(
             previousIndex,
-            widget.isLoop && _stack.isEmpty
-                ? widget.cards.length - 1
-                : _currentIndex,
+            _currentIndex,
             detectedDirection,
           );
 
-          if (_stack.isEmpty) {
+          if (isLastCard) {
             widget.onEnd?.call();
-
-            if (widget.isLoop) {
-              _stack.addAll(widget.cards);
-            }
           }
         }
         _animationController.reset();
@@ -485,5 +471,32 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     ).animate(_animationController);
 
     _swipeType = SwipeType.back;
+  }
+
+  ///the number of cards that are built on the screen
+  int nbOfCardsOnScreen() {
+    if (widget.isLoop) {
+      return widget.numberOfCardsDisplayed;
+    }
+    if (_currentIndex == null) {
+      return 0;
+    }
+
+    return min(
+      widget.numberOfCardsDisplayed,
+      widget.cardsCount - _currentIndex!,
+    );
+  }
+
+  int? getValidIndexOffset(int offset) {
+    if (_currentIndex == null) {
+      return null;
+    }
+
+    final index = _currentIndex! + offset;
+    if (!widget.isLoop && !index.isBetween(0, widget.cardsCount)) {
+      return null;
+    }
+    return index % widget.cardsCount;
   }
 }
