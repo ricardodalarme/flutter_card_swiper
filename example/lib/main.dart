@@ -75,7 +75,13 @@ class _ExamplePageState extends State<Example> {
     );
   }
 
-  void _swipe(int index, CardSwiperDirection direction) {
-    debugPrint('the card $index was swiped to the: ${direction.name}');
+  void _swipe(
+    int previousIndex,
+    int currentIndex,
+    CardSwiperDirection direction,
+  ) {
+    debugPrint(
+      'the card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
+    );
   }
 }

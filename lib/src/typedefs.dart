@@ -1,7 +1,8 @@
 import 'package:flutter_card_swiper/src/enums.dart';
 
 typedef CardSwiperOnSwipe = void Function(
-  int index,
+  int previousIndex,
+  int currentIndex,
   CardSwiperDirection direction,
 );
 
