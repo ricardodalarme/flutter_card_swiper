@@ -1,9 +1,11 @@
 name: release
 on:
   workflow_run:
-    workflows: [Test & Report]
+    workflows: [Code Check]
     types:
       - completed
+    branches:
+      - main
 
 jobs:
   release:
