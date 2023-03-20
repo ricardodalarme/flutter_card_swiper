@@ -13,6 +13,9 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
   /// cards count
   final int cardsCount;
 
+  /// index of the first card when the swiper is initialized
+  final int initialIndex;
+
   /// controller to trigger actions
   final CardSwiperController? controller;
 
@@ -63,6 +66,7 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
     required this.cardBuilder,
     required this.cardsCount,
     this.controller,
+    this.initialIndex = 0,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
     this.duration = const Duration(milliseconds: 200),
     this.maxAngle = 30,
@@ -97,6 +101,10 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
           numberOfCardsDisplayed >= 1 && numberOfCardsDisplayed <= cardsCount,
           'you must display at least one card, and no more than the length of cards parameter',
         ),
+        assert(
+          initialIndex >= 0 && initialIndex < cardsCount,
+          'initialIndex must be between 0 and cardsCount',
+        ),
         super(key: key);
 
   @override
@@ -125,13 +133,15 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
 
   double get _maxAngle => widget.maxAngle * (pi / 180);
 
-  int? _currentIndex = 0;
+  int? _currentIndex;
   int? get _nextIndex => getValidIndexOffset(1);
   bool get _canSwipe => _currentIndex != null && !widget.isDisabled;
 
   @override
   void initState() {
     super.initState();
+
+    _currentIndex = widget.initialIndex;
 
     widget.controller?.addListener(_controllerListener);
 

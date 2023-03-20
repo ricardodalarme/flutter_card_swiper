@@ -1,8 +1,12 @@
+## [3.1.0]
+
+- Adds option to set the initial index of the swiper.
+
 ## [3.0.0]
 
 - **BREAKING CHANGES**:
-  - Add currentIndex and previousIndex to the onSwipe callback
-  - Render the items through a builder function
+  - Adds currentIndex and previousIndex to the onSwipe callback.
+  - Renders the items through a builder function.
 
 ## [2.1.0]
 

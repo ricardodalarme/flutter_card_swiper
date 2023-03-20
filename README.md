@@ -97,6 +97,7 @@ class Example extends StatelessWidget {
 | ------------- |:-------------|:-----|:-----:|
 | cardBuilder      | - | Widget builder for rendering cards | true
 | cardsCount      | - | Cards count | true
+| initialIndex | 0 | index of the first card when the swiper is initialized | false
 | controller      | - | Trigger swipe | false
 | padding      | EdgeInsets.symmetric(horizontal: 20, vertical: 25) | Control swiper padding | false
 | duration      | 200 milliseconds    |   The duration that every animation should last | false
