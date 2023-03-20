@@ -134,7 +134,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
   double get _maxAngle => widget.maxAngle * (pi / 180);
 
   int? _currentIndex;
+
   int? get _nextIndex => getValidIndexOffset(1);
+
   bool get _canSwipe => _currentIndex != null && !widget.isDisabled;
 
   @override
@@ -316,8 +318,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
   void _handleOnSwipe() {
     setState(() {
       if (_swipeType == SwipeType.swipe) {
-        final cancelSwipe =
-            widget.onSwipe?.call(_currentIndex, detectedDirection) == false;
+        final cancelSwipe = widget.onSwipe
+                ?.call(_currentIndex, _nextIndex, detectedDirection) ==
+            false;
 
         if (cancelSwipe) {
           return;
