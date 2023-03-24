@@ -1,30 +1,10 @@
-name: release
+name: Publish to pub.dev
+
 on:
-  workflow_run:
-    workflows: [Code Check]
-    types:
-      - completed
-    branches:
-      - main
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]"
 
 jobs:
-  release:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: "Install Flutter"
-        uses: subosito/flutter-action@v2
-        with:
-          channel: "stable"
-
-      - name: Get all Flutter Packages
-        run: flutter pub get
-
-      - name: Publish
-        uses: sakebook/actions-flutter-pub-publisher@v1.4.1
-        with:
-          credential: ${{ secrets.CREDENTIAL_JSON }}
+  publish:
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
