@@ -1,3 +1,7 @@
+## [4.0.1]
+
+- Updates the docs.
+
 ## [4.0.0]
 
 - **BREAKING CHANGE**:
