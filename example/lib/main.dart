@@ -76,13 +76,22 @@ class _ExamplePageState extends State<Example> {
     );
   }
 
-  void _onSwipe(
+  bool _onSwipe(
     int? previousIndex,
     int? currentIndex,
     CardSwiperDirection direction,
   ) {
+    if (currentIndex?.isEven == true && direction == CardSwiperDirection.left ||
+        currentIndex?.isOdd == true && direction == CardSwiperDirection.right) {
+      debugPrint(
+        'the card $currentIndex was swiped to the: ${direction.name}; Oh, and also your action got canceled',
+      );
+      return false;
+    }
+
     debugPrint(
       'the card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
     );
+    return true;
   }
 }

@@ -38,6 +38,9 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
   final bool isDisabled;
 
   /// function that gets called with the new index and detected swipe direction when the user swiped or swipe is triggered by controller
+  ///
+  /// If [onSwipe] returns false, the swipe action will be canceled and the current card will remain on top of the stack.
+  /// Otherwise, if it returns true, the swipe action will be performed as expected.
   final CardSwiperOnSwipe? onSwipe;
 
   /// function that gets called when there is no widget left to be swiped away
@@ -134,7 +137,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
   double get _maxAngle => widget.maxAngle * (pi / 180);
 
   int? _currentIndex;
+
   int? get _nextIndex => getValidIndexOffset(1);
+
   bool get _canSwipe => _currentIndex != null && !widget.isDisabled;
 
   @override
@@ -311,34 +316,55 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
     }
   }
 
+  // handle the onSwipe methode as well as removing the current card from the
+  // stack if onSwipe does not return false
+  void _handleOnSwipe() {
+    setState(() {
+      if (_swipeType == SwipeType.swipe) {
+        final shouldCancelSwipe = widget.onSwipe
+                ?.call(_currentIndex, _nextIndex, detectedDirection) ==
+            false;
+
+        if (shouldCancelSwipe) {
+          return;
+        }
+
+        final previousIndex = _currentIndex;
+        final isLastCard = _currentIndex == widget.cardsCount - 1;
+
+        _currentIndex = _nextIndex;
+        widget.onSwipe?.call(
+          previousIndex,
+          _currentIndex,
+          detectedDirection,
+        );
+
+        if (isLastCard) {
+          widget.onEnd?.call();
+        }
+      }
+    });
+  }
+
+  // reset the card animation
+  void _resetCardAnimation() {
+    setState(() {
+      _animationController.reset();
+      _left = 0;
+      _top = 0;
+      _total = 0;
+      _angle = 0;
+      _scale = widget.scale;
+      _difference = 40;
+      _swipeType = SwipeType.none;
+    });
+  }
+
   //when the status of animation changes
   void _animationStatusListener(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
-      setState(() {
-        if (_swipeType == SwipeType.swipe) {
-          final previousIndex = _currentIndex;
-          final isLastCard = _currentIndex == widget.cardsCount - 1;
-
-          _currentIndex = _nextIndex;
-          widget.onSwipe?.call(
-            previousIndex,
-            _currentIndex,
-            detectedDirection,
-          );
-
-          if (isLastCard) {
-            widget.onEnd?.call();
-          }
-        }
-        _animationController.reset();
-        _left = 0;
-        _top = 0;
-        _total = 0;
-        _angle = 0;
-        _scale = widget.scale;
-        _difference = 40;
-        _swipeType = SwipeType.none;
-      });
+      _handleOnSwipe();
+      _resetCardAnimation();
     }
   }
 

@@ -1,3 +1,10 @@
+## [4.0.0]
+
+- **BREAKING CHANGE**:
+  - CardSwipers onSwipe function now returns ```<bool>``` instead of ```<void>```. If onSwipe returns ```false```,
+    the swipe action will now be canceled and the current card will remain on top of the stack. 
+    Otherwise, if it returns ```true```, the swipe action will be performed as expected.
+
 ## [3.1.0]
 
 - Adds option to set the initial index of the swiper.
