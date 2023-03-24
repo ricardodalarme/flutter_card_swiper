@@ -6,7 +6,7 @@ import 'package:flutter_card_swiper/src/enums.dart';
 import 'package:flutter_card_swiper/src/extensions.dart';
 import 'package:flutter_card_swiper/src/typedefs.dart';
 
-class CardSwiper<T extends Widget> extends StatefulWidget {
+class CardSwiper extends StatefulWidget {
   /// widget builder for rendering cards
   final NullableIndexedWidgetBuilder cardBuilder;
 
@@ -111,10 +111,10 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
         super(key: key);
 
   @override
-  State createState() => _CardSwiperState<T>();
+  State createState() => _CardSwiperState();
 }
 
-class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
+class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     with SingleTickerProviderStateMixin {
   double _left = 0;
   double _top = 0;
