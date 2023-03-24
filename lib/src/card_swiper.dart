@@ -7,61 +7,93 @@ import 'package:flutter_card_swiper/src/extensions.dart';
 import 'package:flutter_card_swiper/src/typedefs.dart';
 
 class CardSwiper extends StatefulWidget {
-  /// widget builder for rendering cards
+  /// Function that builds each card in the stack.
+  ///
+  /// The [int] parameter specifies the index of the card to build, and the [BuildContext]
+  /// parameter provides the build context. The function should return a widget that represents
+  /// the card at the given index. It can return `null`, which will result in an
+  /// empty card being displayed.
   final NullableIndexedWidgetBuilder cardBuilder;
 
-  /// cards count
+  /// The number of cards in the stack.
+  ///
+  /// The [cardsCount] parameter specifies the number of cards that will be displayed in the stack.
+  ///
+  /// This parameter is required and must be greater than 0.
   final int cardsCount;
 
-  /// index of the first card when the swiper is initialized
+  /// The index of the card to display initially.
+  ///
+  /// Defaults to 0, meaning the first card in the stack is displayed initially.
   final int initialIndex;
 
-  /// controller to trigger actions
+  /// The [CardSwiperController] used to control the swiper externally.
+  ///
+  /// If `null`, the swiper can only be controlled by user input.
   final CardSwiperController? controller;
 
-  /// duration of every animation
+  /// The duration of each swipe animation.
+  ///
+  /// Defaults to 200 milliseconds.
   final Duration duration;
 
-  /// padding of the swiper
+  /// The padding around the swiper.
+  ///
+  /// Defaults to `EdgeInsets.symmetric(horizontal: 20, vertical: 25)`.
   final EdgeInsetsGeometry padding;
 
-  /// maximum angle the card reaches while swiping
+  /// The maximum angle the card reaches while swiping.
+  ///
+  /// Must be between 0 and 360 degrees. Defaults to 30 degrees.
   final double maxAngle;
 
-  /// threshold from which the card is swiped away
+  /// The threshold from which the card is swiped away.
+  ///
+  /// Must be between 1 and 100 percent of the card width. Defaults to 50 percent.
   final int threshold;
 
-  /// scale of the card that is behind the front card
+  /// The scale of the card that is behind the front card.
+  ///
+  /// Must be between 0 and 1. Defaults to 0.9.
   final double scale;
 
-  /// set to true if swiping should be disabled, exception: triggered from the outside
+  /// Whether swiping is disabled.
+  ///
+  /// If `true`, swiping is disabled, except when triggered by the [controller].
+  ///
+  /// Defaults to `false`.
   final bool isDisabled;
 
-  /// function that gets called with the new index and detected swipe direction when the user swiped or swipe is triggered by controller
+  /// Callback function that is called when a swipe action is performed.
   ///
-  /// If [onSwipe] returns false, the swipe action will be canceled and the current card will remain on top of the stack.
-  /// Otherwise, if it returns true, the swipe action will be performed as expected.
+  /// The function is called with the oldIndex, the currentIndex and the direction of the swipe.
+  /// If the function returns `false`, the swipe action is canceled and the current card remains
+  /// on top of the stack. If the function returns `true`, the swipe action is performed as expected.
   final CardSwiperOnSwipe? onSwipe;
 
-  /// function that gets called when there is no widget left to be swiped away
+  /// Callback function that is called when there are no more cards to swipe.
   final CardSwiperOnEnd? onEnd;
 
-  /// function that gets triggered when the swiper is disabled
+  /// Callback function that is called when the swiper is disabled.
   final CardSwiperOnTapDisabled? onTapDisabled;
 
-  /// direction in which the card gets swiped when triggered by controller, default set to right
+  /// The direction in which the card is swiped when triggered by the [controller].
+  ///
+  /// Defaults to [CardSwiperDirection.right].
   final CardSwiperDirection direction;
 
-  /// set to false if you want your card to move only across the vertical axis when swiping
+  /// A boolean value that determines whether the card can be swiped horizontally. The default value is true.
   final bool isHorizontalSwipingEnabled;
 
-  /// set to false if you want your card to move only across the horizontal axis when swiping
+  /// A boolean value that determines whether the card can be swiped vertically. The default value is true.
   final bool isVerticalSwipingEnabled;
 
-  /// set to true if the stack should loop
+  /// A boolean value that determines whether the card stack should loop. When the last card is swiped,
+  /// if isLoop is true, the first card will become the last card again. The default value is true.
   final bool isLoop;
 
-  /// here you can change the number of cards that are displayed at the same time
+  /// An integer that determines the number of cards that are displayed at the same time.
+  /// The default value is 2. Note that you must display at least one card, and no more than the [cardsCount] parameter.
   final int numberOfCardsDisplayed;
 
   const CardSwiper({

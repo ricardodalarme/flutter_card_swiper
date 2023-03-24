@@ -38,6 +38,7 @@ Customize the threshold (when the card should slide away)
 ## Installation
 
 Add this to your package's `pubspec.yaml` file:
+
 ```yaml
 card_swiper: ...
 ```
@@ -47,6 +48,7 @@ card_swiper: ...
 ```yaml
 flutter pub add flutter_card_swiper
 ```
+
 in your project's root directory.
 
 ## Usage
@@ -91,40 +93,41 @@ class Example extends StatelessWidget {
 ```
 
 ## Constructor
+
 #### Basic
 
-| Parameter        | Default           | Description  | Required  |
-| ------------- |:-------------|:-----|:-----:|
-| cardBuilder      | - | Widget builder for rendering cards | true
-| cardsCount      | - | Cards count | true
-| initialIndex | 0 | index of the first card when the swiper is initialized | false
-| controller      | - | Trigger swipe | false
-| padding      | EdgeInsets.symmetric(horizontal: 20, vertical: 25) | Control swiper padding | false
-| duration      | 200 milliseconds    |   The duration that every animation should last | false
-| maxAngle | 30      |    Maximum angle the card reaches while swiping | false
-| threshold | 50     |    Threshold from which the card is swiped away | false
-| scale | 0.9     |    Scale of the card that is behind the front card | false
-| isDisabled | false      |   Set to ```true``` if swiping should be disabled, has no impact when triggered from the outside | false
-| isHorizontalSwipingEnabled | true    |   Set to ```false``` if you want your card to move only across the vertical axis when swiping | false
-| isVerticalSwipingEnabled | true    |   Set to ```false``` if you want your card to move only across the horizontal axis when swiping | false
-| isLoop | true | set to ```true``` if the stack should loop | false
-| onTapDisabled | -     |    Function that get triggered when the swiper is disabled | false
-| onSwipe | -    |    Called with the oldIndex, newIndex and detected swipe direction when the user swiped.  If [onSwipe] returns ```false```, the swipe action will be canceled. Otherwise, if it returns ```true```, the swipe action will be performed as expected. | false
-| onEnd | -    |    Called when there is no Widget left to be swiped away | false
-| direction | right    |    Direction in which the card is swiped away when triggered from the outside | false
-| numberOfCardsDisplayed | 2    |   If your widgets in the 'cards' list cause performance issues, you can choose to display more cards at a time to reduce how long the user waits for a card to appear | false 
+| Parameter                  | Default                                            | Description                                                                                                                                                                          | Required |
+| -------------------------- | :------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------: |
+| cardBuilder                | -                                                  | Widget builder for rendering cards                                                                                                                                                   |   true   |
+| cardsCount                 | -                                                  | Number of cards                                                                                                                                                                      |   true   |
+| initialIndex               | 0                                                  | Index of the first card when the swiper is initialized                                                                                                                               |  false   |
+| controller                 | -                                                  | Trigger swipe                                                                                                                                                                        |  false   |
+| padding                    | EdgeInsets.symmetric(horizontal: 20, vertical: 25) | Controller to trigger swipe actions                                                                                                                                                  |  false   |
+| duration                   | 200 milliseconds                                   | The duration that every animation should last                                                                                                                                        |  false   |
+| maxAngle                   | 30                                                 | Maximum angle that the card can reach during swiping                                                                                                                                 |  false   |
+| threshold                  | 50                                                 | Threshold from which the card is swiped away                                                                                                                                         |  false   |
+| scale                      | 0.9                                                | Scale of the card that is behind the front card                                                                                                                                      |  false   |
+| isDisabled                 | false                                              | Set to `true` if swiping should be disabled, has no impact when triggered from the outside                                                                                           |  false   |
+| isHorizontalSwipingEnabled | true                                               | Set to `false` if you want your card to move only across the vertical axis when swiping                                                                                              |  false   |
+| isVerticalSwipingEnabled   | true                                               | Set to `false` if you want your card to move only across the horizontal axis when swiping                                                                                            |  false   |
+| isLoop                     | true                                               | Set to `true` if the stack should loop                                                                                                                                               |  false   |
+| onTapDisabled              | -                                                  | Function that get triggered when the swiper is disabled                                                                                                                              |  false   |
+| onSwipe                    | -                                                  | Function that is called when the user swipes a card. If the function returns `false`, the swipe action is canceled. If it returns `true`, the swipe action is performed as expected  |  false   |
+| onEnd                      | -                                                  | Function that is called when there are no more cards left to swipe                                                                                                                   |  false   |
+| direction                  | right                                              | Direction in which the card is swiped away when triggered from the outside                                                                                                           |  false   |
+| numberOfCardsDisplayed     | 2                                                  | Number of cards to display at a time                                                                                                                                                 |  false   |
 
 #### Controller
 
-The ```Controller``` is used to swipe the card from outside of the widget. You can create a controller called ```CardSwiperController``` and save the instance for further usage. Please have a closer look at our Example for the usage.
+The `Controller` is used to swipe the card from outside of the widget. You can create a controller called `CardSwiperController` and save the instance for further usage. Please have a closer look at our Example for the usage.
 
-| Method        | Description
-| ------------- |:-------------
-| swipe      | Changes the state of the controller to swipe and swipes the card in your selected direction.
-| swipeLeft      | Changes the state of the controller to swipe left and swipes the card to the left side.
-| swipeRight      | Changes the state of the controller to swipe right and swipes the card to the right side.
-| swipeTop      | Changes the state of the controller to swipe top and swipes the card to the top side.
-| swipeBottom      | Changes the state of the controller to swipe bottom and swipes the card to the | swipeBottom      | Changes the state of the controller to swipe bottom and swipes the card to the right side.
+| Method      | Description                                                                                  |
+| ----------- | :------------------------------------------------------------------------------------------- |
+| swipe       | Changes the state of the controller to swipe and swipes the card in your selected direction. |
+| swipeLeft   | Changes the state of the controller to swipe left and swipes the card to the left side.      |
+| swipeRight  | Changes the state of the controller to swipe right and swipes the card to the right side.    |
+| swipeTop    | Changes the state of the controller to swipe top and swipes the card to the top side.        |
+| swipeBottom | Changes the state of the controller to swipe bottom and swipes the card to the bottom side.  |
 
 <hr/>
 
