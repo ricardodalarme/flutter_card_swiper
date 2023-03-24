@@ -1,0 +1,27 @@
+name: Auto Tag
+
+on:
+  workflow_run:
+    workflows: [Code Check]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  auto-tag:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: "Auto Tag when the pubspec.yaml version changes"
+        uses: jacopocarlini/action-autotag@3.0.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.TAG_TOKEN }}
+          tag_prefix: "v"
