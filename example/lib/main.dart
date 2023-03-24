@@ -76,7 +76,7 @@ class _ExamplePageState extends State<Example> {
     );
   }
 
-  bool? _onSwipe(
+  bool _onSwipe(
     int? previousIndex,
     int? currentIndex,
     CardSwiperDirection direction,
@@ -88,8 +88,10 @@ class _ExamplePageState extends State<Example> {
       );
       return false;
     }
+
     debugPrint(
       'the card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
     );
+    return true;
   }
 }

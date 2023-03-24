@@ -38,6 +38,9 @@ class CardSwiper<T extends Widget> extends StatefulWidget {
   final bool isDisabled;
 
   /// function that gets called with the new index and detected swipe direction when the user swiped or swipe is triggered by controller
+  ///
+  /// If [onSwipe] returns false, the swipe action will be canceled and the current card will remain on top of the stack.
+  /// Otherwise, if it returns true, the swipe action will be performed as expected.
   final CardSwiperOnSwipe? onSwipe;
 
   /// function that gets called when there is no widget left to be swiped away
@@ -318,11 +321,11 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper<T>>
   void _handleOnSwipe() {
     setState(() {
       if (_swipeType == SwipeType.swipe) {
-        final cancelSwipe = widget.onSwipe
+        final shouldCancelSwipe = widget.onSwipe
                 ?.call(_currentIndex, _nextIndex, detectedDirection) ==
             false;
 
-        if (cancelSwipe) {
+        if (shouldCancelSwipe) {
           return;
         }
 
