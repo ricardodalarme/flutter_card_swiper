@@ -43,10 +43,14 @@ class _ExamplePageState extends State<Example> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  FloatingActionButton(
+                    onPressed: controller.undo,
+                    child: const Icon(Icons.rotate_left),
+                  ),
                   FloatingActionButton(
                     onPressed: controller.swipe,
                     child: const Icon(Icons.rotate_right),

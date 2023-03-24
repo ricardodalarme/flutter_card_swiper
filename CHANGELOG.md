@@ -1,3 +1,7 @@
+## [4.1.0]
+
+- Adds option to undo cards.
+
 ## [4.0.1]
 
 - Updates the docs.

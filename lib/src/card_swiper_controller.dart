@@ -34,4 +34,10 @@ class CardSwiperController extends ChangeNotifier {
     state = CardSwiperState.swipeBottom;
     notifyListeners();
   }
+
+  // Undo the last swipe by changing the status of the controller
+  void undo() {
+    state = CardSwiperState.undo;
+    notifyListeners();
+  }
 }
