@@ -162,4 +162,63 @@ class CardAnimation {
     ).animate(animationController);
     animationController.forward();
   }
+
+  void animateUndo(BuildContext context, CardSwiperDirection direction) {
+    switch (direction) {
+      case CardSwiperDirection.left:
+        return animateUndoHorizontally(context, false);
+      case CardSwiperDirection.right:
+        return animateUndoHorizontally(context, true);
+      case CardSwiperDirection.top:
+        return animateUndoVertically(context, false);
+      case CardSwiperDirection.bottom:
+        return animateUndoVertically(context, true);
+      default:
+        return;
+    }
+  }
+
+  void animateUndoHorizontally(BuildContext context, bool isToRight) {
+    final size = MediaQuery.of(context).size;
+
+    _leftAnimation = Tween<double>(
+      begin: isToRight ? size.width : -size.width,
+      end: 0,
+    ).animate(animationController);
+    _topAnimation = Tween<double>(
+      begin: top,
+      end: top + top,
+    ).animate(animationController);
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: scale,
+    ).animate(animationController);
+    _differenceAnimation = Tween<double>(
+      begin: 0,
+      end: difference,
+    ).animate(animationController);
+    animationController.forward();
+  }
+
+  void animateUndoVertically(BuildContext context, bool isToBottom) {
+    final size = MediaQuery.of(context).size;
+
+    _leftAnimation = Tween<double>(
+      begin: left,
+      end: left + left,
+    ).animate(animationController);
+    _topAnimation = Tween<double>(
+      begin: isToBottom ? -size.height : size.height,
+      end: 0,
+    ).animate(animationController);
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: scale,
+    ).animate(animationController);
+    _differenceAnimation = Tween<double>(
+      begin: 0,
+      end: difference,
+    ).animate(animationController);
+    animationController.forward();
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_card_swiper/src/enums.dart';
 
 typedef CardSwiperOnSwipe = bool Function(
-  int? previousIndex,
+  int previousIndex,
   int? currentIndex,
   CardSwiperDirection direction,
 );
@@ -9,3 +9,9 @@ typedef CardSwiperOnSwipe = bool Function(
 typedef CardSwiperOnEnd = void Function();
 
 typedef CardSwiperOnTapDisabled = void Function();
+
+typedef CardSwiperOnUndo = bool Function(
+  int? previousIndex,
+  int currentIndex,
+  CardSwiperDirection direction,
+);

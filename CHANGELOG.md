@@ -1,3 +1,7 @@
+## [4.1.0]
+
+- Adds option to undo swipes.
+
 ## [4.0.2]
 
 - Fixes `onSwipe` callback being called twice.

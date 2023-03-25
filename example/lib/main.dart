@@ -38,15 +38,20 @@ class _ExamplePageState extends State<Example> {
                 cardsCount: cards.length,
                 numberOfCardsDisplayed: 3,
                 onSwipe: _onSwipe,
+                onUndo: _onUndo,
                 padding: const EdgeInsets.all(24.0),
                 cardBuilder: (context, index) => cards[index],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  FloatingActionButton(
+                    onPressed: controller.undo,
+                    child: const Icon(Icons.rotate_left),
+                  ),
                   FloatingActionButton(
                     onPressed: controller.swipe,
                     child: const Icon(Icons.rotate_right),
@@ -77,12 +82,23 @@ class _ExamplePageState extends State<Example> {
   }
 
   bool _onSwipe(
-    int? previousIndex,
+    int previousIndex,
     int? currentIndex,
     CardSwiperDirection direction,
   ) {
     debugPrint(
-      'the card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
+      'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
+    );
+    return true;
+  }
+
+  bool _onUndo(
+    int? previousIndex,
+    int currentIndex,
+    CardSwiperDirection direction,
+  ) {
+    debugPrint(
+      'The card $currentIndex was undod from the ${direction.name}',
     );
     return true;
   }

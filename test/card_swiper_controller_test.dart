@@ -33,5 +33,11 @@ void main() {
       controller.swipeBottom();
       expect(controller.state, CardSwiperState.swipeBottom);
     });
+
+    test('undo() changes state to undo', () {
+      final controller = CardSwiperController();
+      controller.undo();
+      expect(controller.state, CardSwiperState.undo);
+    });
   });
 }

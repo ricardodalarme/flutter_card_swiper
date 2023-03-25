@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 import 'package:flutter_card_swiper/src/extensions.dart';
 import 'package:flutter_card_swiper/src/typedefs.dart';
+import 'package:flutter_card_swiper/src/undoable.dart';
 
 class CardSwiper extends StatefulWidget {
   /// Function that builds each card in the stack.
@@ -97,6 +99,13 @@ class CardSwiper extends StatefulWidget {
   /// The default value is 2. Note that you must display at least one card, and no more than the [cardsCount] parameter.
   final int numberOfCardsDisplayed;
 
+  /// Callback function that is called when a card is unswiped.
+  ///
+  /// The function is called with the oldIndex, the currentIndex and the direction of the previous swipe.
+  /// If the function returns `false`, the undo action is canceled and the current card remains
+  /// on top of the stack. If the function returns `true`, the undo action is performed as expected.
+  final CardSwiperOnUndo? onUndo;
+
   const CardSwiper({
     Key? key,
     required this.cardBuilder,
@@ -117,6 +126,7 @@ class CardSwiper extends StatefulWidget {
     this.isVerticalSwipingEnabled = true,
     this.isLoop = true,
     this.numberOfCardsDisplayed = 2,
+    this.onUndo,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',
@@ -135,11 +145,11 @@ class CardSwiper extends StatefulWidget {
         ),
         assert(
           numberOfCardsDisplayed >= 1 && numberOfCardsDisplayed <= cardsCount,
-          'you must display at least one card, and no more than the length of cards parameter',
+          'you must display at least one card, and no more than [cardsCount]',
         ),
         assert(
           initialIndex >= 0 && initialIndex < cardsCount,
-          'initialIndex must be between 0 and cardsCount',
+          'initialIndex must be between 0 and [cardsCount]',
         ),
         super(key: key);
 
@@ -156,16 +166,18 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   CardSwiperDirection _detectedDirection = CardSwiperDirection.none;
   bool _tappedOnTop = false;
 
-  bool get _canSwipe => _currentIndex != null && !widget.isDisabled;
+  final _undoableIndex = Undoable<int?>(null);
+  final Queue<CardSwiperDirection> _directionHistory = Queue();
 
-  int? _currentIndex;
+  int? get _currentIndex => _undoableIndex.state;
   int? get _nextIndex => getValidIndexOffset(1);
+  bool get _canSwipe => _currentIndex != null && !widget.isDisabled;
 
   @override
   void initState() {
     super.initState();
 
-    _currentIndex = widget.initialIndex;
+    _undoableIndex.state = widget.initialIndex;
 
     widget.controller?.addListener(_controllerListener);
 
@@ -307,6 +319,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
         return _swipe(CardSwiperDirection.top);
       case CardSwiperState.swipeBottom:
         return _swipe(CardSwiperDirection.bottom);
+      case CardSwiperState.undo:
+        return _undo();
       default:
         return;
     }
@@ -333,17 +347,18 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   void _handleCompleteSwipe() {
+    final isLastCard = _currentIndex! == widget.cardsCount - 1;
     final shouldCancelSwipe =
-        widget.onSwipe?.call(_currentIndex, _nextIndex, _detectedDirection) ==
+        widget.onSwipe?.call(_currentIndex!, _nextIndex, _detectedDirection) ==
             false;
 
     if (shouldCancelSwipe) {
       return;
     }
 
-    _currentIndex = _nextIndex;
+    _undoableIndex.state = _nextIndex;
+    _directionHistory.add(_detectedDirection);
 
-    final isLastCard = _currentIndex == widget.cardsCount - 1;
     if (isLastCard) {
       widget.onEnd?.call();
     }
@@ -385,6 +400,28 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     _swipeType = SwipeType.back;
     _detectedDirection = CardSwiperDirection.none;
     _cardAnimation.animateBack(context);
+  }
+
+  void _undo() {
+    if (_directionHistory.isEmpty) return;
+    if (_undoableIndex.previousState == null) return;
+
+    final direction = _directionHistory.last;
+    final shouldCancelUndo = widget.onUndo?.call(
+          _currentIndex,
+          _undoableIndex.previousState!,
+          direction,
+        ) ==
+        false;
+
+    if (shouldCancelUndo) {
+      return;
+    }
+
+    _undoableIndex.undo();
+    _directionHistory.removeLast();
+    _swipeType = SwipeType.undo;
+    _cardAnimation.animateUndo(context, direction);
   }
 
   int numberOfCardsOnScreen() {
