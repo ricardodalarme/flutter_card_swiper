@@ -1,3 +1,7 @@
+## [4.0.2]
+
+- Fixes `onSwipe` callback being called twice.
+
 ## [4.0.1]
 
 - Updates the docs.

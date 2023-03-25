@@ -361,16 +361,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
           return;
         }
 
-        final previousIndex = _currentIndex;
-        final isLastCard = _currentIndex == widget.cardsCount - 1;
-
         _currentIndex = _nextIndex;
-        widget.onSwipe?.call(
-          previousIndex,
-          _currentIndex,
-          detectedDirection,
-        );
 
+        final isLastCard = _currentIndex == widget.cardsCount - 1;
         if (isLastCard) {
           widget.onEnd?.call();
         }
