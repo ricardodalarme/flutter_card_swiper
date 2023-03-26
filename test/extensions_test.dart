@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('num.isBetween', () {
-    test('should return true when value is within range', () {
+    test('when value is within range expect to return true', () {
       const value = 5;
       const from = 1;
       const to = 10;
@@ -15,7 +15,7 @@ void main() {
       expect(result, isTrue);
     });
 
-    test('should return true when value is equal to the range limits', () {
+    test('when value is equal to the range limits expect to return true', () {
       const value = 1;
       const from = 1;
       const to = 1;
@@ -25,7 +25,7 @@ void main() {
       expect(result, isTrue);
     });
 
-    test('should return false when value is outside the range', () {
+    test('when value is outside the range expect to return false', () {
       const value = 15;
       const from = 1;
       const to = 10;
@@ -35,7 +35,7 @@ void main() {
       expect(result, isFalse);
     });
 
-    test('should return false when the range limits are inverted', () {
+    test('when the range limits are inverted expect to return false', () {
       const value = 5;
       const from = 10;
       const to = 1;
@@ -47,27 +47,27 @@ void main() {
   });
 
   group('CardSwiperDirection.axis', () {
-    test('should return horizontal when direction is left', () {
+    test('when direction is left expect to return horizontal ', () {
       final axis = CardSwiperDirection.left.axis;
       expect(axis, Axis.horizontal);
     });
 
-    test('should return horizontal when direction is right', () {
+    test('when direction is right expect to return horizontal', () {
       final axis = CardSwiperDirection.right.axis;
       expect(axis, Axis.horizontal);
     });
 
-    test('should return vertical when direction is top', () {
+    test('when direction is top expect to return vertical', () {
       final axis = CardSwiperDirection.top.axis;
       expect(axis, Axis.vertical);
     });
 
-    test('should return vertical when direction is bottom', () {
+    test('when direction is bottom expect to return vertical ', () {
       final axis = CardSwiperDirection.bottom.axis;
       expect(axis, Axis.vertical);
     });
 
-    test('should throw exception when direction is none', () {
+    test('when direction is none expect to throw exception ', () {
       expect(() => CardSwiperDirection.none.axis, throwsException);
     });
   });

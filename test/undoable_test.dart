@@ -2,20 +2,21 @@ import 'package:flutter_card_swiper/src/undoable.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('should store and retrieve state', () {
+  test('when defined the initial value expect to store and retrieve state', () {
     final undoable = Undoable<int>(0);
     expect(undoable.state, equals(0));
     expect(undoable.previousState, isNull);
   });
 
-  test('should store previous state when state is changed', () {
+  test('when state is changed expect to store previous state', () {
     final undoable = Undoable<int>(0);
     undoable.state = 1;
     expect(undoable.state, equals(1));
     expect(undoable.previousState, equals(0));
   });
 
-  test('should store previous state when state is changed multiple times', () {
+  test('when state is changed multiple times expect to store previous state',
+      () {
     final undoable = Undoable<int>(0);
     undoable.state = 1;
     undoable.state = 2;
@@ -23,7 +24,7 @@ void main() {
     expect(undoable.previousState, equals(1));
   });
 
-  test('should return previous state when undo is called', () {
+  test('when undo is called expect to return previous state', () {
     final undoable = Undoable<int>(0);
     undoable.state = 1;
     undoable.undo();
@@ -31,7 +32,8 @@ void main() {
     expect(undoable.previousState, isNull);
   });
 
-  test('should return previous state when undo is called multiple times', () {
+  test('when undo is called multiple times expect to return previous state',
+      () {
     final undoable = Undoable<int>(0);
     undoable.state = 1;
     undoable.state = 2;
