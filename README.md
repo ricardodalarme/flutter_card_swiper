@@ -14,26 +14,25 @@ Very smooth animations supporting Android, iOS, Web & Desktop.
 
 ## Why?
 
-We build this package because we wanted to:
+We built this package because we wanted to:
 
-- have a completely customizable slider
-- be able to swipe in every direction
-- choose our own settings for the swiper such as duration, angle, padding, and more
-- trigger slide to any direction you want using the controller
-- add callbacks while wiping, on end or when the swiper is disabled
-- detect the direction (left, right, top, bottom) in which the card was swiped away
+- Have a fully customizable slider
+- Swipe in any direction
+- Undo swipes as many times as you want
+- Choose your own settings such as duration, angle, padding and more
+- Trigger swipes in any direction with the controller
+- Add callbacks while swiping, on end, or when the swiper is disabled
+- Detect the direction (left, right, top, bottom) the card was swiped
 
 ## Show Cases
 
-<img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/swiping.gif?raw=true" height="250" /> <img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/swipe_left_right.gif?raw=true" height="250" />
+| Swipe in any direction | Trigger swipes | Unswipe the cards |
+| ---------------------- | :------------- | :---------------- |
+| <img src="https://github.com/ricardodalarme/flutter_card_swiper/blob/main/images/swiping.gif?raw=true" height="275" /> | <img src="https://github.com/ricardodalarme/flutter_card_swiper/blob/main/images/swipe_left_right.gif?raw=true" height="275" /> | <img src="https://github.com/ricardodalarme/flutter_card_swiper/blob/main/images/unswipe.gif?raw=true" height="275" /> |
 
-Customize the angle
-
-<img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/angle.gif?raw=true" height="250" />
-
-Customize the threshold (when the card should slide away)
-
-<img src="https://github.com/appinioGmbH/flutter_packages/blob/main/assets/swiper/treshold.gif?raw=true" height="250" />
+| Fully customizable |
+| ------------------ | 
+| <img src="https://github.com/ricardodalarme/flutter_card_swiper/blob/main/images/angle.gif?raw=true" height="275" />  <img src="https://github.com/ricardodalarme/flutter_card_swiper/blob/main/images/treshold.gif?raw=true" height="275" />  | 
 
 ## Installation
 
@@ -122,13 +121,14 @@ class Example extends StatelessWidget {
 
 The `Controller` is used to swipe the card from outside of the widget. You can create a controller called `CardSwiperController` and save the instance for further usage. Please have a closer look at our Example for the usage.
 
-| Method      | Description                                                                                  |
-| ----------- | :------------------------------------------------------------------------------------------- |
-| swipe       | Changes the state of the controller to swipe and swipes the card in your selected direction. |
-| swipeLeft   | Changes the state of the controller to swipe left and swipes the card to the left side.      |
-| swipeRight  | Changes the state of the controller to swipe right and swipes the card to the right side.    |
-| swipeTop    | Changes the state of the controller to swipe top and swipes the card to the top side.        |
-| swipeBottom | Changes the state of the controller to swipe bottom and swipes the card to the bottom side.  |
+| Method      | Description                                                                                      |
+| ----------- | :----------------------------------------------------------------------------------------------- |
+| swipe       | Changes the state of the controller to swipe and swipes the card in your selected direction.     |
+| swipeLeft   | Changes the state of the controller to swipe left and swipes the card to the left side.          |
+| swipeRight  | Changes the state of the controller to swipe right and swipes the card to the right side.        |
+| swipeTop    | Changes the state of the controller to swipe top and swipes the card to the top side.            |
+| swipeBottom | Changes the state of the controller to swipe bottom and swipes the card to the bottom side.      |
+| undo        | Changes the state of the controller to undo and brings back the last card that was swiped away.  |
 
 <hr/>
 
