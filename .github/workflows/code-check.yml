@@ -22,8 +22,15 @@ jobs:
           channel: "stable"
           cache: true
 
-      - name: Run Flutter Test
-        run: flutter test
+      - name: Run Flutter Test Coverage
+        run: flutter test --coverage
+
+      - name: Upload Coverage to Codecov
+        if: github.event_name == 'push'
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: true
 
   lint:
     name: Lint

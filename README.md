@@ -1,10 +1,11 @@
 # flutter_card_swiper
 
 [![Pub Version](https://img.shields.io/pub/v/flutter_card_swiper?logo=dart&logoColor=white)](https://pub.dev/packages/flutter_card_swiper)
-[![Pub points](https://badgen.net/pub/points/flutter_card_swiper)](https://pub.dev/packages/flutter_card_swiper)
+[![Pub Points](https://badgen.net/pub/points/flutter_card_swiper)](https://pub.dev/packages/flutter_card_swiper)
 [![Pub Likes](https://badgen.net/pub/likes/flutter_card_swiper)](https://pub.dev/packages/flutter_card_swiper)
 [![Pub popularity](https://badgen.net/pub/popularity/flutter_card_swiper)](https://pub.dev/packages/flutter_card_swiper)
-[![License](https://badgen.net/github/license/ricardodalarme/flutter_card_swiper)](https://github.com/ricardodalarme/flutter_card_swiper/blob/main/LICENSE)
+[![Tests](https://github.com/ricardodalarme/flutter_card_swiper/actions/workflows/code-check.yml/badge.svg)](https://github.com/ricardodalarme/flutter_card_swiper/actions/workflows/code-check.yml)
+[![codecov](https://codecov.io/gh/ricardodalarme/flutter_card_swiper/branch/main/graph/badge.svg?token=UW677LGCBF)](https://codecov.io/gh/ricardodalarme/flutter_card_swiper)
 
 This is a Flutter package for a Tinder-like card swiper. ✨
 
