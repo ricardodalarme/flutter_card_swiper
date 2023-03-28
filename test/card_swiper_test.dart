@@ -454,5 +454,52 @@ void main() {
 
       expect(isCalled, true);
     });
+
+    testWidgets('when swipes less than the threshold should go back',
+        (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: CardSwiper(
+            key: swiperKey,
+            cardsCount: 10,
+            numberOfCardsDisplayed: 1,
+            cardBuilder: genericBuilder,
+          ),
+        ),
+      );
+
+      await tester.drag(find.byKey(swiperKey), const Offset(50, 0));
+      await tester.pumpAndSettle();
+
+      expect(find.text(getIndexText(0)), findsOneWidget);
+    });
+  });
+
+  testWidgets(
+      'when isDisabled is true and tap on card expect to call onTapDisabled',
+      (WidgetTester tester) async {
+    final swiperKey = GlobalKey();
+    var isCalled = false;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          numberOfCardsDisplayed: 1,
+          cardBuilder: genericBuilder,
+          onTapDisabled: () {
+            isCalled = true;
+          },
+          isDisabled: true,
+        ),
+      ),
+    );
+
+    await tester.tap(find.byKey(swiperKey));
+    await tester.pumpAndSettle();
+
+    expect(isCalled, true);
   });
 }

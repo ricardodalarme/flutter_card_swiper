@@ -180,31 +180,175 @@ void main() {
       expect(direction, CardSwiperDirection.bottom);
     });
 
-    testWidgets('undo() should undo the last swipe', (tester) async {
-      final controller = CardSwiperController();
-      final swiperKey = GlobalKey();
+    group('undo()', () {
+      testWidgets('should undo the last swipe', (tester) async {
+        final controller = CardSwiperController();
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: CardSwiper(
-            key: swiperKey,
-            controller: controller,
-            cardsCount: 10,
-            cardBuilder: genericBuilder,
-            direction: CardSwiperDirection.bottom,
+        await tester.pumpWidget(
+          MaterialApp(
+            home: CardSwiper(
+              controller: controller,
+              cardsCount: 10,
+              cardBuilder: genericBuilder,
+            ),
           ),
-        ),
-      );
+        );
 
-      controller.swipe();
-      await tester.pumpAndSettle();
+        controller.swipe();
+        await tester.pumpAndSettle();
 
-      expect(find.text(getIndexText(1)), findsOneWidget);
+        expect(find.text(getIndexText(1)), findsOneWidget);
 
-      controller.undo();
-      await tester.pumpAndSettle();
+        controller.undo();
+        await tester.pumpAndSettle();
 
-      expect(find.text(getIndexText(0)), findsOneWidget);
+        expect(find.text(getIndexText(0)), findsOneWidget);
+      });
+
+      testWidgets('should undo the last swipe left', (tester) async {
+        final controller = CardSwiperController();
+        var direction = CardSwiperDirection.none;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: CardSwiper(
+              controller: controller,
+              cardsCount: 10,
+              cardBuilder: genericBuilder,
+              onUndo: (_, __, swipeDirection) {
+                direction = swipeDirection;
+                return true;
+              },
+            ),
+          ),
+        );
+
+        controller.swipeLeft();
+        await tester.pumpAndSettle();
+
+        expect(find.text(getIndexText(1)), findsOneWidget);
+
+        controller.undo();
+        await tester.pumpAndSettle();
+
+        expect(find.text(getIndexText(0)), findsOneWidget);
+        expect(direction, CardSwiperDirection.left);
+      });
+
+      testWidgets('should undo the last swipe right', (tester) async {
+        final controller = CardSwiperController();
+        var direction = CardSwiperDirection.none;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: CardSwiper(
+              controller: controller,
+              cardsCount: 10,
+              cardBuilder: genericBuilder,
+              onUndo: (_, __, swipeDirection) {
+                direction = swipeDirection;
+                return true;
+              },
+            ),
+          ),
+        );
+
+        controller.swipeRight();
+        await tester.pumpAndSettle();
+
+        expect(find.text(getIndexText(1)), findsOneWidget);
+
+        controller.undo();
+        await tester.pumpAndSettle();
+
+        expect(find.text(getIndexText(0)), findsOneWidget);
+        expect(direction, CardSwiperDirection.right);
+      });
+
+      testWidgets('should undo the last swipe top', (tester) async {
+        final controller = CardSwiperController();
+        var direction = CardSwiperDirection.none;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: CardSwiper(
+              controller: controller,
+              cardsCount: 10,
+              cardBuilder: genericBuilder,
+              onUndo: (_, __, swipeDirection) {
+                direction = swipeDirection;
+                return true;
+              },
+            ),
+          ),
+        );
+
+        controller.swipeTop();
+        await tester.pumpAndSettle();
+
+        expect(find.text(getIndexText(1)), findsOneWidget);
+
+        controller.undo();
+        await tester.pumpAndSettle();
+
+        expect(find.text(getIndexText(0)), findsOneWidget);
+        expect(direction, CardSwiperDirection.top);
+      });
+
+      testWidgets('should undo the last swipe bottom', (tester) async {
+        final controller = CardSwiperController();
+        var direction = CardSwiperDirection.none;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: CardSwiper(
+              controller: controller,
+              cardsCount: 10,
+              cardBuilder: genericBuilder,
+              onUndo: (_, __, swipeDirection) {
+                direction = swipeDirection;
+                return true;
+              },
+            ),
+          ),
+        );
+
+        controller.swipeBottom();
+        await tester.pumpAndSettle();
+
+        expect(find.text(getIndexText(1)), findsOneWidget);
+
+        controller.undo();
+        await tester.pumpAndSettle();
+
+        expect(find.text(getIndexText(0)), findsOneWidget);
+        expect(direction, CardSwiperDirection.bottom);
+      });
+
+      testWidgets('should not undo if onUndo returns false', (tester) async {
+        final controller = CardSwiperController();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: CardSwiper(
+              controller: controller,
+              cardsCount: 10,
+              cardBuilder: genericBuilder,
+              onUndo: (_, __, swipeDirection) {
+                return false;
+              },
+            ),
+          ),
+        );
+
+        controller.swipe();
+        await tester.pumpAndSettle();
+
+        controller.undo();
+        await tester.pumpAndSettle();
+
+        expect(find.text(getIndexText(0)), findsNothing);
+      });
     });
   });
 }
