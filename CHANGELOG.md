@@ -1,5 +1,9 @@
 ## [4.1.0]
 
+- Changes `onSwipe` and `onEnd` callbacks to be FutureOr.
+
+## [4.1.0]
+
 - Adds option to undo swipes.
 
 ## [4.0.2]

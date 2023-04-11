@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter_card_swiper/src/enums.dart';
 
-typedef CardSwiperOnSwipe = bool Function(
+typedef CardSwiperOnSwipe = FutureOr<bool> Function(
   int previousIndex,
   int? currentIndex,
   CardSwiperDirection direction,
 );
 
-typedef CardSwiperOnEnd = void Function();
+typedef CardSwiperOnEnd = FutureOr<void> Function();
 
-typedef CardSwiperOnTapDisabled = void Function();
+typedef CardSwiperOnTapDisabled = FutureOr<void> Function();
 
 typedef CardSwiperOnUndo = bool Function(
   int? previousIndex,

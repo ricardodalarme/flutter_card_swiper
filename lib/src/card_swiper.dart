@@ -242,9 +242,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
             child: widget.cardBuilder(context, _currentIndex!),
           ),
         ),
-        onTap: () {
+        onTap: () async {
           if (widget.isDisabled) {
-            widget.onTapDisabled?.call();
+            await widget.onTapDisabled?.call();
           }
         },
         onPanStart: (tapInfo) {
@@ -332,11 +332,11 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     }
   }
 
-  void _animationStatusListener(AnimationStatus status) {
+  Future<void> _animationStatusListener(AnimationStatus status) async {
     if (status == AnimationStatus.completed) {
       switch (_swipeType) {
         case SwipeType.swipe:
-          _handleCompleteSwipe();
+          await _handleCompleteSwipe();
           break;
         default:
           break;
@@ -346,11 +346,11 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     }
   }
 
-  void _handleCompleteSwipe() {
+  Future<void> _handleCompleteSwipe() async {
     final isLastCard = _currentIndex! == widget.cardsCount - 1;
-    final shouldCancelSwipe =
-        widget.onSwipe?.call(_currentIndex!, _nextIndex, _detectedDirection) ==
-            false;
+    final shouldCancelSwipe = await widget.onSwipe
+            ?.call(_currentIndex!, _nextIndex, _detectedDirection) ==
+        false;
 
     if (shouldCancelSwipe) {
       return;
