@@ -1,4 +1,8 @@
-## [4.1.0]
+## [4.1.2]
+
+- Fixes the `isHorizontalSwipingEnabled` and `isVerticalSwipingEnabled`.
+
+## [4.1.1]
 
 - Changes `onSwipe` and `onEnd` callbacks to be FutureOr.
 

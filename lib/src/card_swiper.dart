@@ -192,6 +192,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       animationController: _animationController,
       maxAngle: widget.maxAngle,
       initialScale: widget.scale,
+      isVerticalSwipingEnabled: widget.isVerticalSwipingEnabled,
+      isHorizontalSwipingEnabled: widget.isHorizontalSwipingEnabled,
     );
   }
 
