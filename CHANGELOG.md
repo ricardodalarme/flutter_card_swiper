@@ -1,3 +1,7 @@
+## [4.1.3]
+
+- Fix Swiping when `isDisabled` is `true` and triggered by the `controller`.
+
 ## [4.1.2]
 
 - Fixes the `isHorizontalSwipingEnabled` and `isVerticalSwipingEnabled`.

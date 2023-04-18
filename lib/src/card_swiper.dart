@@ -391,7 +391,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   void _swipe(CardSwiperDirection direction) {
-    if (!_canSwipe) return;
+    if (_currentIndex == null) return;
 
     _swipeType = SwipeType.swipe;
     _detectedDirection = direction;
