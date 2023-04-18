@@ -120,16 +120,16 @@ class Example extends StatelessWidget {
 
 #### Controller
 
-The `Controller` is used to swipe the card from outside of the widget. You can create a controller called `CardSwiperController` and save the instance for further usage. Please have a closer look at our Example for the usage.
+The `Controller` is used to swipe the card from outside of the widget. You can create a controller called `CardSwiperController` and save the instance for further usage. Please have a closer look at our [Example](https://github.com/ricardodalarme/flutter_card_swiper/tree/main/example) for the usage.
 
-| Method      | Description                                                                                      |
-| ----------- | :----------------------------------------------------------------------------------------------- |
-| swipe       | Changes the state of the controller to swipe and swipes the card in your selected direction.     |
-| swipeLeft   | Changes the state of the controller to swipe left and swipes the card to the left side.          |
-| swipeRight  | Changes the state of the controller to swipe right and swipes the card to the right side.        |
-| swipeTop    | Changes the state of the controller to swipe top and swipes the card to the top side.            |
-| swipeBottom | Changes the state of the controller to swipe bottom and swipes the card to the bottom side.      |
-| undo        | Changes the state of the controller to undo and brings back the last card that was swiped away.  |
+| Method      | Description                                          |
+| ----------- | :--------------------------------------------------- |
+| swipe       | Swipes the card in the selected direction.           |
+| swipeLeft   | Swipes the card to the left side.                    |
+| swipeRight  | Swipes the card to the right side.                   |
+| swipeTop    | Swipes the card to the top side.                     |
+| swipeBottom | Swipe bottom and swipes the card to the bottom side. |
+| undo        | Bring back the last card that was swiped away.       |
 
 <hr/>
 
