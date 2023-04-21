@@ -122,14 +122,14 @@ class Example extends StatelessWidget {
 
 The `Controller` is used to swipe the card from outside of the widget. You can create a controller called `CardSwiperController` and save the instance for further usage. Please have a closer look at our [Example](https://github.com/ricardodalarme/flutter_card_swiper/tree/main/example) for the usage.
 
-| Method      | Description                                          |
-| ----------- | :--------------------------------------------------- |
-| swipe       | Swipes the card in the selected direction.           |
-| swipeLeft   | Swipes the card to the left side.                    |
-| swipeRight  | Swipes the card to the right side.                   |
-| swipeTop    | Swipes the card to the top side.                     |
-| swipeBottom | Swipe bottom and swipes the card to the bottom side. |
-| undo        | Bring back the last card that was swiped away.       |
+| Method      | Description                                    |
+| ----------- | :--------------------------------------------- |
+| swipe       | Swipes the card in the selected direction.     |
+| swipeLeft   | Swipes the card to the left side.              |
+| swipeRight  | Swipes the card to the right side.             |
+| swipeTop    | Swipes the card to the top side.               |
+| swipeBottom | Swipes the card to the bottom side.            |
+| undo        | Bring back the last card that was swiped away. |
 
 <hr/>
 
