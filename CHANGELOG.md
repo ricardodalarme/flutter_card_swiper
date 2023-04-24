@@ -1,3 +1,8 @@
+## NEXT
+
+- **BREAKING CHANGE**:
+  - `CardSwiperController` is no longer disposed by `CardSwiper`, but who created it must dispose it.
+
 ## [4.1.3]
 
 - Fix Swiping when `isDisabled` is `true` and triggered by the `controller`.

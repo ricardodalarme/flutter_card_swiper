@@ -27,6 +27,12 @@ class _ExamplePageState extends State<Example> {
   final cards = candidates.map((candidate) => ExampleCard(candidate)).toList();
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
