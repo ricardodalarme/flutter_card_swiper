@@ -106,6 +106,11 @@ class CardSwiper extends StatefulWidget {
   /// on top of the stack. If the function returns `true`, the undo action is performed as expected.
   final CardSwiperOnUndo? onUndo;
 
+  /// The offset of the back card from the front card.
+  ///
+  /// Must be a positive value. Defaults to Offset(0, 40).
+  final Offset backCardOffset;
+
   const CardSwiper({
     Key? key,
     required this.cardBuilder,
@@ -127,6 +132,7 @@ class CardSwiper extends StatefulWidget {
     this.isLoop = true,
     this.numberOfCardsDisplayed = 2,
     this.onUndo,
+    this.backCardOffset = const Offset(0, 40),
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',
@@ -150,6 +156,10 @@ class CardSwiper extends StatefulWidget {
         assert(
           initialIndex >= 0 && initialIndex < cardsCount,
           'initialIndex must be between 0 and [cardsCount]',
+        ),
+        assert(
+          backCardOffset >= Offset.zero,
+          'backCardOffset must be a positive value',
         ),
         super(key: key);
 
@@ -194,6 +204,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       initialScale: widget.scale,
       isVerticalSwipingEnabled: widget.isVerticalSwipingEnabled,
       isHorizontalSwipingEnabled: widget.isHorizontalSwipingEnabled,
+      initialOffset: widget.backCardOffset,
     );
   }
 
@@ -280,8 +291,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   Widget _secondItem(BoxConstraints constraints) {
     return Positioned(
-      top: _cardAnimation.difference,
-      left: 0,
+      top: _cardAnimation.difference.dy,
+      left: _cardAnimation.difference.dx,
       child: Transform.scale(
         scale: _cardAnimation.scale,
         child: ConstrainedBox(
@@ -294,8 +305,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   Widget _backItem(BoxConstraints constraints, int offset) {
     return Positioned(
-      top: 40,
-      left: 0,
+      top: widget.backCardOffset.dy,
+      left: widget.backCardOffset.dx,
       child: Transform.scale(
         scale: widget.scale,
         child: ConstrainedBox(
