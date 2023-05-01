@@ -9,12 +9,15 @@ class CardAnimation {
     required this.animationController,
     required this.maxAngle,
     required this.initialScale,
+    required this.initialOffset,
     this.isHorizontalSwipingEnabled = true,
     this.isVerticalSwipingEnabled = true,
-  }) : scale = initialScale;
+  })  : scale = initialScale,
+        difference = initialOffset;
 
   final double maxAngle;
   final double initialScale;
+  final Offset initialOffset;
   final AnimationController animationController;
   final bool isHorizontalSwipingEnabled;
   final bool isVerticalSwipingEnabled;
@@ -24,12 +27,12 @@ class CardAnimation {
   double total = 0;
   double angle = 0;
   double scale;
-  double difference = 40;
+  Offset difference;
 
   late Animation<double> _leftAnimation;
   late Animation<double> _topAnimation;
   late Animation<double> _scaleAnimation;
-  late Animation<double> _differenceAnimation;
+  late Animation<Offset> _differenceAnimation;
 
   double get _maxAngleInRadian => maxAngle * (pi / 180);
 
@@ -47,7 +50,7 @@ class CardAnimation {
     total = 0;
     angle = 0;
     scale = initialScale;
-    difference = 40;
+    difference = initialOffset;
   }
 
   void update(double dx, double dy, bool inverseAngle) {
@@ -79,8 +82,13 @@ class CardAnimation {
   }
 
   void updateDifference() {
-    if (difference.isBetween(0, difference)) {
-      difference = (total > 0) ? 40 - (total / 10) : 40 + (total / 10);
+    final discrepancy = (total > 0) ? total / 10 : -(total / 10);
+
+    if (difference.dx.isBetween(0, initialOffset.dx)) {
+      difference = Offset(initialOffset.dx + discrepancy, difference.dy);
+    }
+    if (difference.dy.isBetween(0, initialOffset.dy)) {
+      difference = Offset(difference.dx, initialOffset.dy + discrepancy);
     }
   }
 
@@ -114,9 +122,9 @@ class CardAnimation {
       begin: scale,
       end: 1.0,
     ).animate(animationController);
-    _differenceAnimation = Tween<double>(
+    _differenceAnimation = Tween<Offset>(
       begin: difference,
-      end: 0,
+      end: Offset.zero,
     ).animate(animationController);
     animationController.forward();
   }
@@ -136,9 +144,9 @@ class CardAnimation {
       begin: scale,
       end: 1.0,
     ).animate(animationController);
-    _differenceAnimation = Tween<double>(
+    _differenceAnimation = Tween<Offset>(
       begin: difference,
-      end: 0,
+      end: Offset.zero,
     ).animate(animationController);
     animationController.forward();
   }
@@ -156,9 +164,9 @@ class CardAnimation {
       begin: scale,
       end: initialScale,
     ).animate(animationController);
-    _differenceAnimation = Tween<double>(
+    _differenceAnimation = Tween<Offset>(
       begin: difference,
-      end: 40,
+      end: initialOffset,
     ).animate(animationController);
     animationController.forward();
   }
@@ -193,8 +201,8 @@ class CardAnimation {
       begin: 1.0,
       end: scale,
     ).animate(animationController);
-    _differenceAnimation = Tween<double>(
-      begin: 0,
+    _differenceAnimation = Tween<Offset>(
+      begin: Offset.zero,
       end: difference,
     ).animate(animationController);
     animationController.forward();
@@ -215,8 +223,8 @@ class CardAnimation {
       begin: 1.0,
       end: scale,
     ).animate(animationController);
-    _differenceAnimation = Tween<double>(
-      begin: 0,
+    _differenceAnimation = Tween<Offset>(
+      begin: Offset.zero,
       end: difference,
     ).animate(animationController);
     animationController.forward();

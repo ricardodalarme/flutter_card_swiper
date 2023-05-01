@@ -1,5 +1,6 @@
-## NEXT
+## [5.0.0]
 
+- Adds option to customize the back card offset.
 - **BREAKING CHANGE**:
   - `CardSwiperController` is no longer disposed by `CardSwiper`, but who created it must dispose it.
 
