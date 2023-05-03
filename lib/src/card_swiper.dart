@@ -230,9 +230,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
                   if (index == 0) {
                     return _frontItem(constraints);
                   }
-                  if (index == 1) {
-                    return _secondItem(constraints);
-                  }
+
                   return _backItem(constraints, index);
                 }).reversed.toList(),
               );
@@ -289,32 +287,15 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     );
   }
 
-  Widget _secondItem(BoxConstraints constraints) {
-    return Positioned(
-      top: _cardAnimation.difference.dy,
-      left: _cardAnimation.difference.dx,
-      child: Transform.scale(
-        scale: _cardAnimation.scale,
-        child: ConstrainedBox(
-          constraints: constraints,
-          child: widget.cardBuilder(context, _nextIndex!),
-        ),
-      ),
-    );
-  }
-
   Widget _backItem(BoxConstraints constraints, int offset) {
     return Positioned(
-      top: widget.backCardOffset.dy,
-      left: widget.backCardOffset.dx,
+      top: _cardAnimation.difference.dy * offset,
+      left: _cardAnimation.difference.dx * offset,
       child: Transform.scale(
-        scale: widget.scale,
+        scale: _cardAnimation.scale - ((1 - widget.scale) * (offset - 1)),
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cardBuilder(
-            context,
-            getValidIndexOffset(offset)!,
-          ),
+          child: widget.cardBuilder(context, getValidIndexOffset(offset)!),
         ),
       ),
     );
