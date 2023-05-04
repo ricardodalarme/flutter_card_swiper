@@ -1,3 +1,8 @@
+## [5.0.1]
+
+- Adds support for negative back card offset.
+- Fix only 2 cards displayed even when numberOfCardsDisplayed param is greater than 2.
+
 ## [5.0.0]
 
 - Adds option to customize the back card offset.
