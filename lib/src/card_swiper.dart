@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/card_animation.dart';
@@ -157,10 +157,6 @@ class CardSwiper extends StatefulWidget {
           initialIndex >= 0 && initialIndex < cardsCount,
           'initialIndex must be between 0 and [cardsCount]',
         ),
-        assert(
-          backCardOffset >= Offset.zero,
-          'backCardOffset must be a positive value',
-        ),
         super(key: key);
 
   @override
@@ -227,9 +223,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
                 children: List.generate(numberOfCardsOnScreen(), (index) {
-                  if (index == 0) {
-                    return _frontItem(constraints);
-                  }
+                  if (index == 0) return _frontItem(constraints);
 
                   return _backItem(constraints, index);
                 }).reversed.toList(),
@@ -287,15 +281,15 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     );
   }
 
-  Widget _backItem(BoxConstraints constraints, int offset) {
+  Widget _backItem(BoxConstraints constraints, int index) {
     return Positioned(
-      top: _cardAnimation.difference.dy * offset,
-      left: _cardAnimation.difference.dx * offset,
+      top: (widget.backCardOffset.dy * index) - _cardAnimation.difference.dy,
+      left: (widget.backCardOffset.dx * index) - _cardAnimation.difference.dx,
       child: Transform.scale(
-        scale: _cardAnimation.scale - ((1 - widget.scale) * (offset - 1)),
+        scale: _cardAnimation.scale - ((1 - widget.scale) * (index - 1)),
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cardBuilder(context, getValidIndexOffset(offset)!),
+          child: widget.cardBuilder(context, getValidIndexOffset(index)!),
         ),
       ),
     );
@@ -426,7 +420,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       return 0;
     }
 
-    return min(
+    return math.min(
       widget.numberOfCardsDisplayed,
       widget.cardsCount - _currentIndex!,
     );
