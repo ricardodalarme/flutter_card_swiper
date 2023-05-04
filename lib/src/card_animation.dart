@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -74,11 +75,9 @@ class CardAnimation {
   }
 
   void updateScale() {
-    if (scale.isBetween(initialScale, 1.0)) {
-      scale = (total > 0)
-          ? initialScale + (total / 5000)
-          : initialScale + -(total / 5000);
-    }
+    scale = (total > 0)
+        ? clampDouble(initialScale + (total / 5000), initialScale, 1.0)
+        : clampDouble(initialScale - (total / 5000), initialScale, 1.0);
   }
 
   void updateDifference() {
