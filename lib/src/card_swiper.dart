@@ -57,6 +57,12 @@ class CardSwiper extends StatefulWidget {
 
   /// The scale of the card that is behind the front card.
   ///
+  /// The [scale] and [backCardOffset] both impact the positions of the back cards.
+  /// In order to keep the back card position same after changing the [scale],
+  /// the [backCardOffset] should also be adjusted.
+  /// * As a rough rule of thumb, 0.1 change in [scale] effects an
+  /// [backCardOffset] of ~35px.
+  ///
   /// Must be between 0 and 1. Defaults to 0.9.
   final double scale;
 
@@ -107,6 +113,11 @@ class CardSwiper extends StatefulWidget {
   final CardSwiperOnUndo? onUndo;
 
   /// The offset of the back card from the front card.
+  ///
+  /// In order to keep the back card position same after changing the [backCardOffset],
+  /// the [scale] should also be adjusted.
+  /// * As a rough rule of thumb, 35px change in [backCardOffset] effects a
+  /// [scale] change of 0.1.
   ///
   /// Must be a positive value. Defaults to Offset(0, 40).
   final Offset backCardOffset;
