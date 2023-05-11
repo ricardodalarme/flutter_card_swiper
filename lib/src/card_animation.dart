@@ -10,9 +10,7 @@ class CardAnimation {
     required this.maxAngle,
     required this.initialScale,
     required this.initialOffset,
-    @Deprecated('Use [allowedSwipeDirection] instead]')
         this.isHorizontalSwipingEnabled = true,
-    @Deprecated('Use [allowedSwipeDirection] instead]')
         this.isVerticalSwipingEnabled = true,
     this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
   }) : scale = initialScale;
@@ -21,9 +19,7 @@ class CardAnimation {
   final double initialScale;
   final Offset initialOffset;
   final AnimationController animationController;
-  @Deprecated('Use [allowedSwipeDirection] instead]')
   final bool isHorizontalSwipingEnabled;
-  @Deprecated('Use [allowedSwipeDirection] instead]')
   final bool isVerticalSwipingEnabled;
   final AllowedSwipeDirection allowedSwipeDirection;
 
