@@ -48,7 +48,7 @@ class AllowedSwipeDirection {
         right: right,
       );
 
-  /// Allow the card to be swiped in symmetrically in horizontal or vertical directions
+  /// Allow the card to be swiped symmetrically in horizontal or vertical directions
   factory AllowedSwipeDirection.symmetric({
     horizontal = false,
     vertical = false,

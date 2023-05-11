@@ -1,3 +1,9 @@
+## [5.1.0]
+
+- Adds AllowedSwipeDirection to allow card to be swiped in any combination of left, right, up or down directions.
+- **DEPRECATION**:
+  - `isHorizontalSwipingEnabled` and `isVerticalSwipingEnabled` have been deprecated. Use `allowedSwipeDirection` instead.
+
 ## [5.0.1]
 
 - Adds support for negative back card offset.
@@ -75,7 +81,7 @@
 
 ## [1.1.1]
 
-- Dipose the CardSwiperController to avoid memory leaks
+- Dispose the CardSwiperController to avoid memory leaks
 
 ## [1.1.0]
 

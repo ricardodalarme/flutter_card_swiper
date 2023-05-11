@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/card_animation.dart';
-import 'package:flutter_card_swiper/src/card_swipe_direction.dart';
+import 'package:flutter_card_swiper/src/allowed_swipe_direction.dart';
 import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 import 'package:flutter_card_swiper/src/extensions.dart';
