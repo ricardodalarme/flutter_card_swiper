@@ -10,16 +10,22 @@ class CardAnimation {
     required this.maxAngle,
     required this.initialScale,
     required this.initialOffset,
-    this.isHorizontalSwipingEnabled = true,
-    this.isVerticalSwipingEnabled = true,
+    @Deprecated('Use [cardSwipeDirection] instead]')
+        this.isHorizontalSwipingEnabled = true,
+    @Deprecated('Use [cardSwipeDirection] instead]')
+        this.isVerticalSwipingEnabled = true,
+    this.cardSwipeDirection = const AllowedSwipeDirection.all(),
   }) : scale = initialScale;
 
   final double maxAngle;
   final double initialScale;
   final Offset initialOffset;
   final AnimationController animationController;
+  @Deprecated('Use [cardSwipeDirection] instead]')
   final bool isHorizontalSwipingEnabled;
+  @Deprecated('Use [cardSwipeDirection] instead]')
   final bool isVerticalSwipingEnabled;
+  final AllowedSwipeDirection cardSwipeDirection;
 
   double left = 0;
   double top = 0;
@@ -53,12 +59,28 @@ class CardAnimation {
   }
 
   void update(double dx, double dy, bool inverseAngle) {
+    //TODO: remove [isHorizontalSwipingEnabled] checks in the next major release
     if (isHorizontalSwipingEnabled) {
-      left += dx;
+      if (cardSwipeDirection.right && cardSwipeDirection.left) {
+        left += dx;
+      } else if (cardSwipeDirection.right) {
+        if (left >= 0) left += dx;
+      } else if (cardSwipeDirection.left) {
+        if (left <= 0) left += dx;
+      }
     }
+
+    //TODO: remove [isHorizontalSwipingEnabled] checks in the next major release
     if (isVerticalSwipingEnabled) {
-      top += dy;
+      if (cardSwipeDirection.up && cardSwipeDirection.down) {
+        top += dy;
+      } else if (cardSwipeDirection.up) {
+        if (top <= 0) top += dy;
+      } else if (cardSwipeDirection.down) {
+        if (top >= 0) top += dy;
+      }
     }
+
     total = left + top;
     updateAngle(inverseAngle);
     updateScale();

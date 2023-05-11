@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/card_animation.dart';
+import 'package:flutter_card_swiper/src/card_swipe_direction.dart';
 import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 import 'package:flutter_card_swiper/src/extensions.dart';
@@ -92,10 +93,20 @@ class CardSwiper extends StatefulWidget {
   final CardSwiperDirection direction;
 
   /// A boolean value that determines whether the card can be swiped horizontally. The default value is true.
+  @Deprecated(
+    'Will be deprecated in the next major release. Use [AllowedSwipeDirection] instead',
+  )
   final bool isHorizontalSwipingEnabled;
 
   /// A boolean value that determines whether the card can be swiped vertically. The default value is true.
+  @Deprecated(
+    'Will be deprecated in the next major release. Use [AllowedSwipeDirection] instead',
+  )
   final bool isVerticalSwipingEnabled;
+
+  /// Defined the directions in which the card is allowed to be swiped.
+  /// Defaults to [AllowedSwipeDirection.all]
+  final AllowedSwipeDirection allowedSwipeDirection;
 
   /// A boolean value that determines whether the card stack should loop. When the last card is swiped,
   /// if isLoop is true, the first card will become the last card again. The default value is true.
@@ -138,8 +149,11 @@ class CardSwiper extends StatefulWidget {
     this.onSwipe,
     this.onEnd,
     this.direction = CardSwiperDirection.right,
-    this.isHorizontalSwipingEnabled = true,
-    this.isVerticalSwipingEnabled = true,
+    @Deprecated('Will be deprecated in the next major release. Use [allowedSwipeDirection] instead')
+        this.isHorizontalSwipingEnabled = true,
+    @Deprecated('Will be deprecated in the next major release. Use [allowedSwipeDirection] instead')
+        this.isVerticalSwipingEnabled = true,
+    this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
     this.isLoop = true,
     this.numberOfCardsDisplayed = 2,
     this.onUndo,
@@ -187,7 +201,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   final Queue<CardSwiperDirection> _directionHistory = Queue();
 
   int? get _currentIndex => _undoableIndex.state;
+
   int? get _nextIndex => getValidIndexOffset(1);
+
   bool get _canSwipe => _currentIndex != null && !widget.isDisabled;
 
   @override
@@ -211,6 +227,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       initialScale: widget.scale,
       isVerticalSwipingEnabled: widget.isVerticalSwipingEnabled,
       isHorizontalSwipingEnabled: widget.isHorizontalSwipingEnabled,
+      cardSwipeDirection: widget.allowedSwipeDirection,
       initialOffset: widget.backCardOffset,
     );
   }
@@ -376,12 +393,26 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       final direction = _cardAnimation.left.isNegative
           ? CardSwiperDirection.left
           : CardSwiperDirection.right;
-      _swipe(direction);
+      if (direction == CardSwiperDirection.left &&
+              widget.allowedSwipeDirection.left ||
+          direction == CardSwiperDirection.right &&
+              widget.allowedSwipeDirection.right) {
+        _swipe(direction);
+      } else {
+        _goBack();
+      }
     } else if (_cardAnimation.top.abs() > widget.threshold) {
       final direction = _cardAnimation.top.isNegative
           ? CardSwiperDirection.top
           : CardSwiperDirection.bottom;
-      _swipe(direction);
+      if (direction == CardSwiperDirection.top &&
+              widget.allowedSwipeDirection.up ||
+          direction == CardSwiperDirection.bottom &&
+              widget.allowedSwipeDirection.down) {
+        _swipe(direction);
+      } else {
+        _goBack();
+      }
     } else {
       _goBack();
     }

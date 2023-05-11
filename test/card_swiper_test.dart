@@ -465,4 +465,174 @@ void main() {
       expect(isCalled, true);
     });
   });
+
+  group('Card swipe direction tests', () {
+    testWidgets(
+        'when swiping right and AllowedSwipeDirection.right=true,'
+        ' expect to see the next card', (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          numberOfCardsDisplayed: 1,
+          allowedSwipeDirection: AllowedSwipeDirection.only(right: true),
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.dragRight(swiperKey);
+      await tester.pumpAndSettle();
+
+      expect(find.card(1), findsOneWidget);
+    });
+
+    testWidgets(
+        'when swiping right and AllowedSwipeDirection.right=false,'
+        ' expect to see the same card', (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          numberOfCardsDisplayed: 1,
+          allowedSwipeDirection: AllowedSwipeDirection.only(left: true),
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.dragRight(swiperKey);
+      await tester.pumpAndSettle();
+
+      expect(find.card(0), findsOneWidget);
+    });
+
+    testWidgets(
+        'when swiping left and AllowedSwipeDirection.left=true,'
+        ' expect to see the next card', (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          numberOfCardsDisplayed: 1,
+          allowedSwipeDirection: AllowedSwipeDirection.only(left: true),
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.dragLeft(swiperKey);
+      await tester.pumpAndSettle();
+
+      expect(find.card(1), findsOneWidget);
+    });
+
+    testWidgets(
+        'when swiping left and AllowedSwipeDirection.left=false,'
+        ' expect to see the same card', (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          numberOfCardsDisplayed: 1,
+          allowedSwipeDirection: AllowedSwipeDirection.only(right: true),
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.dragLeft(swiperKey);
+      await tester.pumpAndSettle();
+
+      expect(find.card(0), findsOneWidget);
+    });
+
+    testWidgets(
+        'when swiping up and AllowedSwipeDirection.up=true,'
+        ' expect to see the next card', (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          numberOfCardsDisplayed: 1,
+          allowedSwipeDirection: AllowedSwipeDirection.only(up: true),
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.dragUp(swiperKey);
+      await tester.pumpAndSettle();
+
+      expect(find.card(1), findsOneWidget);
+    });
+
+    testWidgets(
+        'when swiping up and AllowedSwipeDirection.up=false,'
+        ' expect to see the same card', (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          numberOfCardsDisplayed: 1,
+          allowedSwipeDirection: AllowedSwipeDirection.only(down: true),
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.dragUp(swiperKey);
+      await tester.pumpAndSettle();
+
+      expect(find.card(0), findsOneWidget);
+    });
+
+    testWidgets(
+        'when swiping down and AllowedSwipeDirection.down=true,'
+        ' expect to see the next card', (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          numberOfCardsDisplayed: 1,
+          allowedSwipeDirection: AllowedSwipeDirection.only(down: true),
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.dragDown(swiperKey);
+      await tester.pumpAndSettle();
+
+      expect(find.card(1), findsOneWidget);
+    });
+
+    testWidgets(
+        'when swiping down and AllowedSwipeDirection.down=false,'
+        ' expect to see the same card', (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          numberOfCardsDisplayed: 1,
+          allowedSwipeDirection: AllowedSwipeDirection.only(up: true),
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.dragDown(swiperKey);
+      await tester.pumpAndSettle();
+
+      expect(find.card(0), findsOneWidget);
+    });
+  });
 }
