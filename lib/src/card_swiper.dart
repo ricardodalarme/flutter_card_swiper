@@ -227,7 +227,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       initialScale: widget.scale,
       isVerticalSwipingEnabled: widget.isVerticalSwipingEnabled,
       isHorizontalSwipingEnabled: widget.isHorizontalSwipingEnabled,
-      cardSwipeDirection: widget.allowedSwipeDirection,
+      allowedSwipeDirection: widget.allowedSwipeDirection,
       initialOffset: widget.backCardOffset,
     );
   }
