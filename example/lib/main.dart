@@ -24,7 +24,7 @@ class Example extends StatefulWidget {
 class _ExamplePageState extends State<Example> {
   final CardSwiperController controller = CardSwiperController();
 
-  final cards = candidates.map((candidate) => ExampleCard(candidate)).toList();
+  final cards = candidates.map(ExampleCard.new).toList();
 
   @override
   void dispose() {

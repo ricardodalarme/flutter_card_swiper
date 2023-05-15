@@ -2,8 +2,8 @@ import 'dart:collection';
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_card_swiper/src/card_animation.dart';
 import 'package:flutter_card_swiper/src/allowed_swipe_direction.dart';
+import 'package:flutter_card_swiper/src/card_animation.dart';
 import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 import 'package:flutter_card_swiper/src/extensions.dart';
@@ -225,7 +225,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       animationController: _animationController,
       maxAngle: widget.maxAngle,
       initialScale: widget.scale,
+      // ignore: deprecated_member_use_from_same_package
       isVerticalSwipingEnabled: widget.isVerticalSwipingEnabled,
+      // ignore: deprecated_member_use_from_same_package
       isHorizontalSwipingEnabled: widget.isHorizontalSwipingEnabled,
       allowedSwipeDirection: widget.allowedSwipeDirection,
       initialOffset: widget.backCardOffset,
