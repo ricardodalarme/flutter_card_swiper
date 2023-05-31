@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-Widget? genericBuilder(BuildContext context, int index) {
+Widget? genericBuilder(
+  BuildContext context,
+  int index,
+  int horizontalPercentage,
+  int verticalPercentage,
+) {
   return Container(
     width: 200,
     height: 200,

@@ -13,8 +13,7 @@ class CardAnimation {
     this.isHorizontalSwipingEnabled = true,
     this.isVerticalSwipingEnabled = true,
     this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
-    this.onHorizontalSwipeDirectionChanged,
-    this.onVerticalSwipeDirectionChanged,
+    this.onSwipeDirectionChanged,
   }) : scale = initialScale;
 
   final double maxAngle;
@@ -24,8 +23,7 @@ class CardAnimation {
   final bool isHorizontalSwipingEnabled;
   final bool isVerticalSwipingEnabled;
   final AllowedSwipeDirection allowedSwipeDirection;
-  final ValueChanged<CardSwiperDirection>? onHorizontalSwipeDirectionChanged;
-  final ValueChanged<CardSwiperDirection>? onVerticalSwipeDirectionChanged;
+  final ValueChanged<CardSwiperDirection>? onSwipeDirectionChanged;
 
   double left = 0;
   double top = 0;
@@ -63,19 +61,19 @@ class CardAnimation {
     if (isHorizontalSwipingEnabled) {
       if (allowedSwipeDirection.right && allowedSwipeDirection.left) {
         if (left > 0) {
-          onHorizontalSwipeDirectionChanged?.call(CardSwiperDirection.right);
+          onSwipeDirectionChanged?.call(CardSwiperDirection.right);
         } else if (left < 0) {
-          onHorizontalSwipeDirectionChanged?.call(CardSwiperDirection.left);
+          onSwipeDirectionChanged?.call(CardSwiperDirection.left);
         }
         left += dx;
       } else if (allowedSwipeDirection.right) {
         if (left >= 0) {
-          onHorizontalSwipeDirectionChanged?.call(CardSwiperDirection.right);
+          onSwipeDirectionChanged?.call(CardSwiperDirection.right);
           left += dx;
         }
       } else if (allowedSwipeDirection.left) {
         if (left <= 0) {
-          onHorizontalSwipeDirectionChanged?.call(CardSwiperDirection.left);
+          onSwipeDirectionChanged?.call(CardSwiperDirection.left);
           left += dx;
         }
       }
@@ -85,19 +83,19 @@ class CardAnimation {
     if (isVerticalSwipingEnabled) {
       if (allowedSwipeDirection.up && allowedSwipeDirection.down) {
         if (top > 0) {
-          onVerticalSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
+          onSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
         } else if (top < 0) {
-          onVerticalSwipeDirectionChanged?.call(CardSwiperDirection.top);
+          onSwipeDirectionChanged?.call(CardSwiperDirection.top);
         }
         top += dy;
       } else if (allowedSwipeDirection.up) {
         if (top <= 0) {
-          onVerticalSwipeDirectionChanged?.call(CardSwiperDirection.top);
+          onSwipeDirectionChanged?.call(CardSwiperDirection.top);
           top += dy;
         }
       } else if (allowedSwipeDirection.down) {
         if (top >= 0) {
-          onVerticalSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
+          onSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
           top += dy;
         }
       }

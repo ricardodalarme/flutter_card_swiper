@@ -123,7 +123,10 @@ class CardSwiper extends StatefulWidget {
   /// on top of the stack. If the function returns `true`, the undo action is performed as expected.
   final CardSwiperOnUndo? onUndo;
 
-  final CardSwiperDirectionChange? onDirectionChange;
+  /// Callback function that is called when a card swipe direction changes.
+  ///
+  /// The function is called with the last detected horizontal direction and the last detected vertical direction
+  final CardSwiperDirectionChange? onSwipeDirectionChange;
 
   /// The offset of the back card from the front card.
   ///
@@ -151,7 +154,7 @@ class CardSwiper extends StatefulWidget {
     this.onSwipe,
     this.onEnd,
     this.direction = CardSwiperDirection.right,
-    this.onDirectionChange,
+    this.onSwipeDirectionChange,
     @Deprecated(
         'Will be deprecated in the next major release. Use [allowedSwipeDirection] instead')
     this.isHorizontalSwipingEnabled = true,
@@ -238,24 +241,25 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       isHorizontalSwipingEnabled: widget.isHorizontalSwipingEnabled,
       allowedSwipeDirection: widget.allowedSwipeDirection,
       initialOffset: widget.backCardOffset,
-      onHorizontalSwipeDirectionChanged: onHorizontalSwipeDirectionChanged,
-      onVerticalSwipeDirectionChanged: onVerticalSwipeDirectionChanged,
+      onSwipeDirectionChanged: onSwipeDirectionChanged,
     );
   }
 
-  void onHorizontalSwipeDirectionChanged(CardSwiperDirection direction) {
-    if (_detectedHorizontalDirection != direction) {
-      _detectedHorizontalDirection = direction;
-      widget.onDirectionChange
-          ?.call(_detectedHorizontalDirection, _detectedVerticalDirection);
-    }
-  }
-
-  void onVerticalSwipeDirectionChanged(CardSwiperDirection direction) {
-    if (_detectedVerticalDirection != direction) {
-      _detectedVerticalDirection = direction;
-      widget.onDirectionChange
-          ?.call(_detectedHorizontalDirection, _detectedVerticalDirection);
+  void onSwipeDirectionChanged(CardSwiperDirection direction) {
+    if (direction == CardSwiperDirection.right ||
+        direction == CardSwiperDirection.left) {
+      if (_detectedHorizontalDirection != direction) {
+        _detectedHorizontalDirection = direction;
+        widget.onSwipeDirectionChange
+            ?.call(_detectedHorizontalDirection, _detectedVerticalDirection);
+      }
+    } else if (direction == CardSwiperDirection.top ||
+        direction == CardSwiperDirection.bottom) {
+      if (_detectedVerticalDirection != direction) {
+        _detectedVerticalDirection = direction;
+        widget.onSwipeDirectionChange
+            ?.call(_detectedHorizontalDirection, _detectedVerticalDirection);
+      }
     }
   }
 
@@ -411,8 +415,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   void _reset() {
-    onHorizontalSwipeDirectionChanged(CardSwiperDirection.none);
-    onVerticalSwipeDirectionChanged(CardSwiperDirection.none);
+    onSwipeDirectionChanged(CardSwiperDirection.none);
     _detectedDirection = CardSwiperDirection.none;
     setState(() {
       _animationController.reset();
