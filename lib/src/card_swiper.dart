@@ -248,7 +248,12 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   void onSwipeDirectionChanged(CardSwiperDirection direction) {
-    if (direction == CardSwiperDirection.right ||
+    if (direction == CardSwiperDirection.none) {
+      _detectedVerticalDirection = direction;
+      _detectedHorizontalDirection = direction;
+      widget.onSwipeDirectionChange
+          ?.call(_detectedHorizontalDirection, _detectedVerticalDirection);
+    } else if (direction == CardSwiperDirection.right ||
         direction == CardSwiperDirection.left) {
       if (_detectedHorizontalDirection != direction) {
         _detectedHorizontalDirection = direction;
@@ -420,8 +425,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   void _reset() {
     onSwipeDirectionChanged(CardSwiperDirection.none);
     _detectedDirection = CardSwiperDirection.none;
-    _detectedVerticalDirection = CardSwiperDirection.none;
-    _detectedHorizontalDirection = CardSwiperDirection.none;
     setState(() {
       _animationController.reset();
       _cardAnimation.reset();
@@ -461,7 +464,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   void _swipe(CardSwiperDirection direction) {
     if (_currentIndex == null) return;
-
     _swipeType = SwipeType.swipe;
     _detectedDirection = direction;
     _cardAnimation.animate(context, direction);
@@ -469,9 +471,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   void _goBack() {
     _swipeType = SwipeType.back;
-    _detectedDirection = CardSwiperDirection.none;
-    _detectedVerticalDirection = CardSwiperDirection.none;
-    _detectedHorizontalDirection = CardSwiperDirection.none;
     _cardAnimation.animateBack(context);
   }
 
