@@ -420,6 +420,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   void _reset() {
     onSwipeDirectionChanged(CardSwiperDirection.none);
     _detectedDirection = CardSwiperDirection.none;
+    _detectedVerticalDirection = CardSwiperDirection.none;
+    _detectedHorizontalDirection = CardSwiperDirection.none;
     setState(() {
       _animationController.reset();
       _cardAnimation.reset();
@@ -467,6 +469,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   void _goBack() {
     _swipeType = SwipeType.back;
+    _detectedDirection = CardSwiperDirection.none;
+    _detectedVerticalDirection = CardSwiperDirection.none;
+    _detectedHorizontalDirection = CardSwiperDirection.none;
     _cardAnimation.animateBack(context);
   }
 
