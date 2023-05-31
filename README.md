@@ -84,7 +84,7 @@ class Example extends StatelessWidget {
       body: Flexible(
         child: CardSwiper(
           cardsCount: cards.length,
-          cardBuilder: (context, index) => cards[index],
+          cardBuilder: (context, index, percentThresholdX, percentThresholdY) => cards[index],
         ),
       ),
     );
