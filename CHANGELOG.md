@@ -1,3 +1,9 @@
+## [6.0.0]
+
+- Adds `onSwipeDirectionChange` callback containing the horizontal and vertical swipe direction
+- Modifies the `cardBuilder` callback, to include the ratio of vertical drag to threshold as a percentage
+  and the ratio of horizontal drag to threshold as a percentage. 
+
 ## [5.1.0]
 
 - Adds AllowedSwipeDirection to allow card to be swiped in any combination of left, right, up or down directions.
