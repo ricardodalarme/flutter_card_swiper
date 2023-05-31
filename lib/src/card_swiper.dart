@@ -156,10 +156,12 @@ class CardSwiper extends StatefulWidget {
     this.direction = CardSwiperDirection.right,
     this.onSwipeDirectionChange,
     @Deprecated(
-        'Will be deprecated in the next major release. Use [allowedSwipeDirection] instead')
+      'Will be deprecated in the next major release. Use [allowedSwipeDirection] instead',
+    )
     this.isHorizontalSwipingEnabled = true,
     @Deprecated(
-        'Will be deprecated in the next major release. Use [allowedSwipeDirection] instead')
+      'Will be deprecated in the next major release. Use [allowedSwipeDirection] instead',
+    )
     this.isVerticalSwipingEnabled = true,
     this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
     this.isLoop = true,
@@ -303,10 +305,11 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
           child: ConstrainedBox(
             constraints: constraints,
             child: widget.cardBuilder(
-                context,
-                _currentIndex!,
-                (100 * _cardAnimation.left / widget.threshold).ceil(),
-                (100 * _cardAnimation.top / widget.threshold).ceil()),
+              context,
+              _currentIndex!,
+              (100 * _cardAnimation.left / widget.threshold).ceil(),
+              (100 * _cardAnimation.top / widget.threshold).ceil(),
+            ),
           ),
         ),
         onTap: () async {

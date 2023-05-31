@@ -22,8 +22,9 @@ typedef NullableCardBuilder = Widget? Function(
 );
 
 typedef CardSwiperDirectionChange = Function(
-    CardSwiperDirection horizontalDirection,
-    CardSwiperDirection verticalDirection);
+  CardSwiperDirection horizontalDirection,
+  CardSwiperDirection verticalDirection,
+);
 
 typedef CardSwiperOnEnd = FutureOr<void> Function();
 
