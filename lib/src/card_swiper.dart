@@ -13,10 +13,10 @@ import 'package:flutter_card_swiper/src/undoable.dart';
 class CardSwiper extends StatefulWidget {
   /// Function that builds each card in the stack.
   ///
-  /// The [int] parameter specifies the index of the card to build, and the [BuildContext]
-  /// parameter provides the build context. The function should return a widget that represents
-  /// the card at the given index. It can return `null`, which will result in an
-  /// empty card being displayed.
+  /// The function is called with the index of the card to be built, the build context, the ratio
+  /// of vertical drag to [threshold] as a percentage, and the ratio of horizontal drag to [threshold]
+  /// as a percentage. The function should return a widget that represents the card at the given index.
+  /// It can return `null`, which will result in an empty card being displayed.
   final NullableCardBuilder cardBuilder;
 
   /// The number of cards in the stack.
