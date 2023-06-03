@@ -55,26 +55,20 @@ class CardAnimation {
   }
 
   void update(double dx, double dy, bool inverseAngle) {
-    //TODO: remove [isHorizontalSwipingEnabled] checks in the next major release
-    if (isHorizontalSwipingEnabled) {
-      if (allowedSwipeDirection.right && allowedSwipeDirection.left) {
-        left += dx;
-      } else if (allowedSwipeDirection.right) {
-        if (left >= 0) left += dx;
-      } else if (allowedSwipeDirection.left) {
-        if (left <= 0) left += dx;
-      }
+    if (allowedSwipeDirection.right && allowedSwipeDirection.left) {
+      left += dx;
+    } else if (allowedSwipeDirection.right) {
+      if (left >= 0) left += dx;
+    } else if (allowedSwipeDirection.left) {
+      if (left <= 0) left += dx;
     }
 
-    //TODO: remove [isHorizontalSwipingEnabled] checks in the next major release
-    if (isVerticalSwipingEnabled) {
-      if (allowedSwipeDirection.up && allowedSwipeDirection.down) {
-        top += dy;
-      } else if (allowedSwipeDirection.up) {
-        if (top <= 0) top += dy;
-      } else if (allowedSwipeDirection.down) {
-        if (top >= 0) top += dy;
-      }
+    if (allowedSwipeDirection.up && allowedSwipeDirection.down) {
+      top += dy;
+    } else if (allowedSwipeDirection.up) {
+      if (top <= 0) top += dy;
+    } else if (allowedSwipeDirection.down) {
+      if (top >= 0) top += dy;
     }
 
     total = left + top;

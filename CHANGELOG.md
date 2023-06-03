@@ -1,3 +1,8 @@
+## NEXT
+
+- **BREAKING CHANGE**:
+  - `isHorizontalSwipingEnabled` and `isVerticalSwipingEnabled` have been removed. Use `allowedSwipeDirection` instead.
+
 ## [5.1.0]
 
 - Adds AllowedSwipeDirection to allow card to be swiped in any combination of left, right, up or down directions.
