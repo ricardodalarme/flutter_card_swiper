@@ -57,44 +57,43 @@ class CardAnimation {
   }
 
   void update(double dx, double dy, bool inverseAngle) {
-    
-if (allowedSwipeDirection.right && allowedSwipeDirection.left) {
-        if (left > 0) {
-          onSwipeDirectionChanged?.call(CardSwiperDirection.right);
-        } else if (left < 0) {
-          onSwipeDirectionChanged?.call(CardSwiperDirection.left);
-        }
+    if (allowedSwipeDirection.right && allowedSwipeDirection.left) {
+      if (left > 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.right);
+      } else if (left < 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.left);
+      }
+      left += dx;
+    } else if (allowedSwipeDirection.right) {
+      if (left >= 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.right);
         left += dx;
-      } else if (allowedSwipeDirection.right) {
-        if (left >= 0) {
-          onSwipeDirectionChanged?.call(CardSwiperDirection.right);
-          left += dx;
-        }
-      } else if (allowedSwipeDirection.left) {
-        if (left <= 0) {
-          onSwipeDirectionChanged?.call(CardSwiperDirection.left);
-          left += dx;
-        }
       }
-    
+    } else if (allowedSwipeDirection.left) {
+      if (left <= 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.left);
+        left += dx;
+      }
+    }
+
     if (allowedSwipeDirection.up && allowedSwipeDirection.down) {
-        if (top > 0) {
-          onSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
-        } else if (top < 0) {
-          onSwipeDirectionChanged?.call(CardSwiperDirection.top);
-        }
-        top += dy;
-      } else if (allowedSwipeDirection.up) {
-        if (top <= 0) {
-          onSwipeDirectionChanged?.call(CardSwiperDirection.top);
-          top += dy;
-        }
-      } else if (allowedSwipeDirection.down) {
-        if (top >= 0) {
-          onSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
-          top += dy;
-        }
+      if (top > 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
+      } else if (top < 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.top);
       }
+      top += dy;
+    } else if (allowedSwipeDirection.up) {
+      if (top <= 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.top);
+        top += dy;
+      }
+    } else if (allowedSwipeDirection.down) {
+      if (top >= 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
+        top += dy;
+      }
+    }
 
     total = left + top;
     updateAngle(inverseAngle);
