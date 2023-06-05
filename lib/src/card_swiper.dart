@@ -92,18 +92,6 @@ class CardSwiper extends StatefulWidget {
   /// Defaults to [CardSwiperDirection.right].
   final CardSwiperDirection direction;
 
-  /// A boolean value that determines whether the card can be swiped horizontally. The default value is true.
-  @Deprecated(
-    'Will be deprecated in the next major release. Use [AllowedSwipeDirection] instead',
-  )
-  final bool isHorizontalSwipingEnabled;
-
-  /// A boolean value that determines whether the card can be swiped vertically. The default value is true.
-  @Deprecated(
-    'Will be deprecated in the next major release. Use [AllowedSwipeDirection] instead',
-  )
-  final bool isVerticalSwipingEnabled;
-
   /// Defined the directions in which the card is allowed to be swiped.
   /// Defaults to [AllowedSwipeDirection.all]
   final AllowedSwipeDirection allowedSwipeDirection;
@@ -155,14 +143,6 @@ class CardSwiper extends StatefulWidget {
     this.onEnd,
     this.direction = CardSwiperDirection.right,
     this.onSwipeDirectionChange,
-    @Deprecated(
-      'Will be deprecated in the next major release. Use [allowedSwipeDirection] instead',
-    )
-    this.isHorizontalSwipingEnabled = true,
-    @Deprecated(
-      'Will be deprecated in the next major release. Use [allowedSwipeDirection] instead',
-    )
-    this.isVerticalSwipingEnabled = true,
     this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
     this.isLoop = true,
     this.numberOfCardsDisplayed = 2,
@@ -237,10 +217,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       animationController: _animationController,
       maxAngle: widget.maxAngle,
       initialScale: widget.scale,
-      // ignore: deprecated_member_use_from_same_package
-      isVerticalSwipingEnabled: widget.isVerticalSwipingEnabled,
-      // ignore: deprecated_member_use_from_same_package
-      isHorizontalSwipingEnabled: widget.isHorizontalSwipingEnabled,
       allowedSwipeDirection: widget.allowedSwipeDirection,
       initialOffset: widget.backCardOffset,
       onSwipeDirectionChanged: onSwipeDirectionChanged,
