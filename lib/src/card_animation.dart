@@ -13,6 +13,7 @@ class CardAnimation {
     this.isHorizontalSwipingEnabled = true,
     this.isVerticalSwipingEnabled = true,
     this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
+    this.onSwipeDirectionChanged,
   }) : scale = initialScale;
 
   final double maxAngle;
@@ -22,6 +23,7 @@ class CardAnimation {
   final bool isHorizontalSwipingEnabled;
   final bool isVerticalSwipingEnabled;
   final AllowedSwipeDirection allowedSwipeDirection;
+  final ValueChanged<CardSwiperDirection>? onSwipeDirectionChanged;
 
   double left = 0;
   double top = 0;
@@ -56,19 +58,41 @@ class CardAnimation {
 
   void update(double dx, double dy, bool inverseAngle) {
     if (allowedSwipeDirection.right && allowedSwipeDirection.left) {
+      if (left > 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.right);
+      } else if (left < 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.left);
+      }
       left += dx;
     } else if (allowedSwipeDirection.right) {
-      if (left >= 0) left += dx;
+      if (left >= 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.right);
+        left += dx;
+      }
     } else if (allowedSwipeDirection.left) {
-      if (left <= 0) left += dx;
+      if (left <= 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.left);
+        left += dx;
+      }
     }
 
     if (allowedSwipeDirection.up && allowedSwipeDirection.down) {
+      if (top > 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
+      } else if (top < 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.top);
+      }
       top += dy;
     } else if (allowedSwipeDirection.up) {
-      if (top <= 0) top += dy;
+      if (top <= 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.top);
+        top += dy;
+      }
     } else if (allowedSwipeDirection.down) {
-      if (top >= 0) top += dy;
+      if (top >= 0) {
+        onSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
+        top += dy;
+      }
     }
 
     total = left + top;

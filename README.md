@@ -84,7 +84,7 @@ class Example extends StatelessWidget {
       body: Flexible(
         child: CardSwiper(
           cardsCount: cards.length,
-          cardBuilder: (context, index) => cards[index],
+          cardBuilder: (context, index, percentThresholdX, percentThresholdY) => cards[index],
         ),
       ),
     );
@@ -97,7 +97,7 @@ class Example extends StatelessWidget {
 #### Basic
 
 | Parameter                                 | Default                                            | Description                                                                                                                                                           | Required |
-|-------------------------------------------| :------------------------------------------------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------: |
+|-------------------------------------------|:---------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------: |
 | cardBuilder                               | -                                                  | Widget builder for rendering cards                                                                                                                                    |  true    |
 | cardsCount                                | -                                                  | Number of cards                                                                                                                                                       |  true    |
 | controller                                | -                                                  | Controller to trigger swipe actions                                                                                                                                   |  false   |
@@ -116,7 +116,7 @@ class Example extends StatelessWidget {
 | padding                                   | EdgeInsets.symmetric(horizontal: 20, vertical: 25) | The padding around the swiper                                                                                                                                         |  false   |
 | scale                                     | 0.9                                                | Scale of the card that is behind the front card                                                                                                                       |  false   |
 | threshold                                 | 50                                                 | Threshold from which the card is swiped away                                                                                                                          |  false   |
-
+| onSwipeDirectionChange                    | -                                                  | A callback containing the horizontal and vertical swipe direction                                                                                                     |  false   |
 #### Controller
 
 The `Controller` is used to swipe the card from outside of the widget. You can create a controller called `CardSwiperController` and save the instance for further usage. Please have a closer look at our [Example](https://github.com/ricardodalarme/flutter_card_swiper/tree/main/example) for the usage.
