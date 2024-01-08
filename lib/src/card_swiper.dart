@@ -248,9 +248,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   @override
   void dispose() {
-    super.dispose();
     _animationController.dispose();
     widget.controller?.removeListener(_controllerListener);
+    super.dispose();
   }
 
   @override
