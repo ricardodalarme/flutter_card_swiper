@@ -1,8 +1,8 @@
 class Undoable<T> {
-  Undoable(this._value, {Undoable? previousValue}) : _previous = previousValue;
+  Undoable(this._value, {Undoable<T>? previousValue}) : _previous = previousValue;
 
   T _value;
-  Undoable? _previous;
+  Undoable<T>? _previous;
 
   T get state => _value;
   T? get previousState => _previous?.state;

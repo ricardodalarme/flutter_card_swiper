@@ -9,7 +9,7 @@ typedef CardSwiperOnSwipe = FutureOr<bool> Function(
   CardSwiperDirection direction,
 );
 
-typedef CardSwiperOnSwipeUpdate = Function(
+typedef CardSwiperOnSwipeUpdate = void Function(
   int? currentIndex,
   CardSwiperDirection direction,
 );
@@ -21,7 +21,7 @@ typedef NullableCardBuilder = Widget? Function(
   int verticalOffsetPercentage,
 );
 
-typedef CardSwiperDirectionChange = Function(
+typedef CardSwiperDirectionChange = void Function(
   CardSwiperDirection horizontalDirection,
   CardSwiperDirection verticalDirection,
 );
