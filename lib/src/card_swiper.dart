@@ -409,32 +409,42 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   void _onEndAnimation() {
-    if (_cardAnimation.left.abs() > widget.threshold) {
-      final direction = _cardAnimation.left.isNegative
-          ? CardSwiperDirection.left
-          : CardSwiperDirection.right;
-      if (direction == CardSwiperDirection.left &&
-              widget.allowedSwipeDirection.left ||
-          direction == CardSwiperDirection.right &&
-              widget.allowedSwipeDirection.right) {
-        _swipe(direction);
-      } else {
-        _goBack();
-      }
-    } else if (_cardAnimation.top.abs() > widget.threshold) {
-      final direction = _cardAnimation.top.isNegative
-          ? CardSwiperDirection.top
-          : CardSwiperDirection.bottom;
-      if (direction == CardSwiperDirection.top &&
-              widget.allowedSwipeDirection.up ||
-          direction == CardSwiperDirection.bottom &&
-              widget.allowedSwipeDirection.down) {
-        _swipe(direction);
-      } else {
-        _goBack();
-      }
+    final direction = _getEndAnimationDirection();
+    final isValidDirection = this._isValidDirection(direction);
+
+    if (isValidDirection) {
+      _swipe(direction);
     } else {
       _goBack();
+    }
+  }
+
+  CardSwiperDirection _getEndAnimationDirection() {
+    if (_cardAnimation.left.abs() > widget.threshold) {
+      return _cardAnimation.left.isNegative
+          ? CardSwiperDirection.left
+          : CardSwiperDirection.right;
+    }
+    if (_cardAnimation.top.abs() > widget.threshold) {
+      return _cardAnimation.top.isNegative
+          ? CardSwiperDirection.top
+          : CardSwiperDirection.bottom;
+    }
+    return CardSwiperDirection.none;
+  }
+
+  bool _isValidDirection(CardSwiperDirection direction) {
+    switch (direction) {
+      case CardSwiperDirection.left:
+        return widget.allowedSwipeDirection.left;
+      case CardSwiperDirection.right:
+        return widget.allowedSwipeDirection.right;
+      case CardSwiperDirection.top:
+        return widget.allowedSwipeDirection.up;
+      case CardSwiperDirection.bottom:
+        return widget.allowedSwipeDirection.down;
+      default:
+        return false;
     }
   }
 
