@@ -1,4 +1,9 @@
 
+## [6.1.0]
+
+- Fixes cannot access context in onSwipe when no cards left then "destroy" the widget tree
+- Make only and symetric const constructor for AllowedSwipeDirection 
+
 ## [6.0.0]
 
 - Adds `onSwipeDirectionChange` callback containing the horizontal and vertical swipe direction
