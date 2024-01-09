@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
 class ExampleCandidateModel {
-  String name;
-  String job;
-  String city;
-  List<Color> color;
+  final String name;
+  final String job;
+  final String city;
+  final List<Color> color;
 
   ExampleCandidateModel({
     required this.name,

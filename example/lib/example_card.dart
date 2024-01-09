@@ -1,6 +1,5 @@
+import 'package:example/example_candidate_model.dart';
 import 'package:flutter/material.dart';
-
-import 'example_candidate_model.dart';
 
 class ExampleCard extends StatelessWidget {
   final ExampleCandidateModel candidate;
@@ -23,7 +22,7 @@ class ExampleCard extends StatelessWidget {
             spreadRadius: 3,
             blurRadius: 7,
             offset: const Offset(0, 3),
-          )
+          ),
         ],
       ),
       alignment: Alignment.center,
@@ -66,7 +65,7 @@ class ExampleCard extends StatelessWidget {
                 Text(
                   candidate.city,
                   style: const TextStyle(color: Colors.grey),
-                )
+                ),
               ],
             ),
           ),

@@ -117,7 +117,8 @@ class CardAnimation {
   void updateDifference() {
     final discrepancy = (total / 10).abs();
 
-    var diffX = 0.0, diffY = 0.0;
+    var diffX = 0.0;
+    var diffY = 0.0;
 
     if (initialOffset.dx > 0) {
       diffX = discrepancy;

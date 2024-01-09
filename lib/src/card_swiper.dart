@@ -127,9 +127,9 @@ class CardSwiper extends StatefulWidget {
   final Offset backCardOffset;
 
   const CardSwiper({
-    Key? key,
     required this.cardBuilder,
     required this.cardsCount,
+    Key? key,
     this.controller,
     this.initialIndex = 0,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
