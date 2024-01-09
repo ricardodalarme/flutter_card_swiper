@@ -477,7 +477,7 @@ void main() {
           key: swiperKey,
           cardsCount: 10,
           numberOfCardsDisplayed: 1,
-          allowedSwipeDirection: AllowedSwipeDirection.only(right: true),
+          allowedSwipeDirection: const AllowedSwipeDirection.only(right: true),
           cardBuilder: genericBuilder,
         ),
       );
@@ -498,7 +498,7 @@ void main() {
           key: swiperKey,
           cardsCount: 10,
           numberOfCardsDisplayed: 1,
-          allowedSwipeDirection: AllowedSwipeDirection.only(left: true),
+          allowedSwipeDirection: const AllowedSwipeDirection.only(left: true),
           cardBuilder: genericBuilder,
         ),
       );
@@ -519,7 +519,7 @@ void main() {
           key: swiperKey,
           cardsCount: 10,
           numberOfCardsDisplayed: 1,
-          allowedSwipeDirection: AllowedSwipeDirection.only(left: true),
+          allowedSwipeDirection: const AllowedSwipeDirection.only(left: true),
           cardBuilder: genericBuilder,
         ),
       );
@@ -540,7 +540,7 @@ void main() {
           key: swiperKey,
           cardsCount: 10,
           numberOfCardsDisplayed: 1,
-          allowedSwipeDirection: AllowedSwipeDirection.only(right: true),
+          allowedSwipeDirection: const AllowedSwipeDirection.only(right: true),
           cardBuilder: genericBuilder,
         ),
       );
@@ -561,7 +561,7 @@ void main() {
           key: swiperKey,
           cardsCount: 10,
           numberOfCardsDisplayed: 1,
-          allowedSwipeDirection: AllowedSwipeDirection.only(up: true),
+          allowedSwipeDirection: const AllowedSwipeDirection.only(up: true),
           cardBuilder: genericBuilder,
         ),
       );
@@ -582,7 +582,7 @@ void main() {
           key: swiperKey,
           cardsCount: 10,
           numberOfCardsDisplayed: 1,
-          allowedSwipeDirection: AllowedSwipeDirection.only(down: true),
+          allowedSwipeDirection: const AllowedSwipeDirection.only(down: true),
           cardBuilder: genericBuilder,
         ),
       );
@@ -603,7 +603,7 @@ void main() {
           key: swiperKey,
           cardsCount: 10,
           numberOfCardsDisplayed: 1,
-          allowedSwipeDirection: AllowedSwipeDirection.only(down: true),
+          allowedSwipeDirection: const AllowedSwipeDirection.only(down: true),
           cardBuilder: genericBuilder,
         ),
       );
@@ -624,7 +624,7 @@ void main() {
           key: swiperKey,
           cardsCount: 10,
           numberOfCardsDisplayed: 1,
-          allowedSwipeDirection: AllowedSwipeDirection.only(up: true),
+          allowedSwipeDirection: const AllowedSwipeDirection.only(up: true),
           cardBuilder: genericBuilder,
         ),
       );
