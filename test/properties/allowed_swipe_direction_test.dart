@@ -2,7 +2,7 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('CardSwipeDirection.all() has all directions as true', () {
+  test('AllowedSwipeDirection.all() has all directions as true', () {
     const directions = AllowedSwipeDirection.all();
     expect(directions.up, true);
     expect(directions.down, true);
@@ -10,7 +10,7 @@ void main() {
     expect(directions.left, true);
   });
 
-  test('CardSwipeDirection.none() has all directions as false', () {
+  test('AllowedSwipeDirection.none() has all directions as false', () {
     const directions = AllowedSwipeDirection.none();
     expect(directions.up, false);
     expect(directions.down, false);
@@ -18,8 +18,9 @@ void main() {
     expect(directions.left, false);
   });
 
-  group('CardSwipeDirection.only() tests', () {
-    test('CardSwipeDirection.only(up:true) has only the up direction as true',
+  group('AllowedSwipeDirection.only() tests', () {
+    test(
+        'AllowedSwipeDirection.only(up:true) has only the up direction as true',
         () {
       const directions = AllowedSwipeDirection.only(up: true);
       expect(directions.up, true);
@@ -29,7 +30,7 @@ void main() {
     });
 
     test(
-        'CardSwipeDirection.only(down:true) has only the set direction as true',
+        'AllowedSwipeDirection.only(down:true) has only the set direction as true',
         () {
       const directions = AllowedSwipeDirection.only(down: true);
       expect(directions.up, false);
@@ -39,7 +40,7 @@ void main() {
     });
 
     test(
-        'CardSwipeDirection.only(right:true) has only the set direction as true',
+        'AllowedSwipeDirection.only(right:true) has only the set direction as true',
         () {
       const directions = AllowedSwipeDirection.only(right: true);
       expect(directions.up, false);
@@ -49,7 +50,7 @@ void main() {
     });
 
     test(
-        'CardSwipeDirection.only(left:true) has only the set direction as true',
+        'AllowedSwipeDirection.only(left:true) has only the set direction as true',
         () {
       const directions = AllowedSwipeDirection.only(left: true);
       expect(directions.up, false);
@@ -59,9 +60,9 @@ void main() {
     });
   });
 
-  group('CardSwipeDirection.symmetric() tests', () {
+  group('AllowedSwipeDirection.symmetric() tests', () {
     test(
-        'CardSwipeDirection.symmetric(horizontal:true) has left and right as true',
+        'AllowedSwipeDirection.symmetric(horizontal:true) has left and right as true',
         () {
       const directions = AllowedSwipeDirection.symmetric(horizontal: true);
       expect(directions.up, false);
@@ -70,7 +71,8 @@ void main() {
       expect(directions.left, true);
     });
 
-    test('CardSwipeDirection.symmetric(vertical:true) has up and down as true',
+    test(
+        'AllowedSwipeDirection.symmetric(vertical:true) has up and down as true',
         () {
       const directions = AllowedSwipeDirection.symmetric(vertical: true);
       expect(directions.up, true);

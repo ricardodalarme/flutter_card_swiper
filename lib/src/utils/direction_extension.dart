@@ -1,13 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 
-extension Range on num {
-  bool isBetween(num from, num to) {
-    return from <= this && this <= to;
-  }
-}
-
-extension CardSwiperDirectionExtension on CardSwiperDirection {
+extension DirectionExtension on CardSwiperDirection {
   Axis get axis {
     switch (this) {
       case CardSwiperDirection.left:

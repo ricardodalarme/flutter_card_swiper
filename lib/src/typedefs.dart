@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 
 typedef CardSwiperOnSwipe = FutureOr<bool> Function(
