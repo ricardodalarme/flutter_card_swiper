@@ -66,19 +66,21 @@ class _ExamplePageState extends State<Example> {
                     child: const Icon(Icons.rotate_left),
                   ),
                   FloatingActionButton(
-                    onPressed: controller.swipeLeft,
+                    onPressed: () => controller.swipe(CardSwiperDirection.left),
                     child: const Icon(Icons.keyboard_arrow_left),
                   ),
                   FloatingActionButton(
-                    onPressed: controller.swipeRight,
+                    onPressed: () =>
+                        controller.swipe(CardSwiperDirection.right),
                     child: const Icon(Icons.keyboard_arrow_right),
                   ),
                   FloatingActionButton(
-                    onPressed: controller.swipeTop,
+                    onPressed: () => controller.swipe(CardSwiperDirection.top),
                     child: const Icon(Icons.keyboard_arrow_up),
                   ),
                   FloatingActionButton(
-                    onPressed: controller.swipeBottom,
+                    onPressed: () =>
+                        controller.swipe(CardSwiperDirection.bottom),
                     child: const Icon(Icons.keyboard_arrow_down),
                   ),
                 ],

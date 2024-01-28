@@ -116,18 +116,15 @@ class Example extends StatelessWidget {
 | padding                                   | EdgeInsets.symmetric(horizontal: 20, vertical: 25) | The padding around the swiper                                                                                                                                         |  false   |
 | scale                                     | 0.9                                                | Scale of the card that is behind the front card                                                                                                                       |  false   |
 | threshold                                 | 50                                                 | Threshold from which the card is swiped away                                                                                                                          |  false   |
-| onSwipeDirectionChange                    | -                                                  | A callback containing the horizontal and vertical swipe direction                                                                                                     |  false   |
+| onSwipeDirectionChange                    | -                                                  | A callback containing the horizontal and vertical swipe direction                  
+                                                                                   |  false   |
 #### Controller
 
 The `Controller` is used to swipe the card from outside of the widget. You can create a controller called `CardSwiperController` and save the instance for further usage. Please have a closer look at our [Example](https://github.com/ricardodalarme/flutter_card_swiper/tree/main/example) for the usage.
 
 | Method      | Description                                    |
 | ----------- | :--------------------------------------------- |
-| swipe       | Swipes the card in the selected direction.     |
-| swipeLeft   | Swipes the card to the left side.              |
-| swipeRight  | Swipes the card to the right side.             |
-| swipeTop    | Swipes the card to the top side.               |
-| swipeBottom | Swipes the card to the bottom side.            |
+| swipe       | Swipes the card to a specific direction.       |
 | undo        | Bring back the last card that was swiped away. |
 
 <hr/>

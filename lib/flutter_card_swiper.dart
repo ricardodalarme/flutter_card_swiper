@@ -3,7 +3,7 @@
 /// animations supporting Android, iOS, Web & Desktop.
 library flutter_card_swiper;
 
-export 'package:flutter_card_swiper/src/card_swiper_controller.dart';
+export 'package:flutter_card_swiper/src/controller/card_swiper_controller.dart';
 export 'package:flutter_card_swiper/src/enums.dart';
 export 'package:flutter_card_swiper/src/properties/allowed_swipe_direction.dart';
 export 'package:flutter_card_swiper/src/typedefs.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:flutter_card_swiper/src/controller/controller_event.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'test_helpers/card_builder.dart';
@@ -7,334 +8,125 @@ import 'test_helpers/pump_app.dart';
 
 void main() {
   group('CardSwiperController', () {
-    test('swipe() should change the state to swipe', () {
+    test('Swipe event adds ControllerSwipeEvent to the stream', () {
       final controller = CardSwiperController();
-      controller.swipe();
-      expect(controller.state, CardSwiperState.swipe);
+      const direction = CardSwiperDirection.right;
+
+      expectLater(
+        controller.events,
+        emits(
+          isA<ControllerSwipeEvent>()
+              .having((event) => event.direction, 'direction', direction),
+        ),
+      );
+
+      controller.swipe(direction);
     });
 
-    test('swipeLeft() should change the state to swipeLeft', () {
+    test('Undo event adds ControllerUndoEvent to the stream', () {
       final controller = CardSwiperController();
-      controller.swipeLeft();
-      expect(controller.state, CardSwiperState.swipeLeft);
-    });
 
-    test('swipeRight() should change the state to swipeRight', () {
-      final controller = CardSwiperController();
-      controller.swipeRight();
-      expect(controller.state, CardSwiperState.swipeRight);
-    });
+      expectLater(
+        controller.events,
+        emits(isA<ControllerUndoEvent>()),
+      );
 
-    test('swipeTop() should change the state to swipeTop', () {
-      final controller = CardSwiperController();
-      controller.swipeTop();
-      expect(controller.state, CardSwiperState.swipeTop);
-    });
-
-    test('swipeBottom() should change the state to swipeBottom', () {
-      final controller = CardSwiperController();
-      controller.swipeBottom();
-      expect(controller.state, CardSwiperState.swipeBottom);
-    });
-
-    test('undo() changes state to undo', () {
-      final controller = CardSwiperController();
       controller.undo();
-      expect(controller.state, CardSwiperState.undo);
     });
 
-    for (final isDisabled in [false, true]) {
-      group('isDisabled=$isDisabled', () {
-        testWidgets('swipe() should swipe the card to the defined direction',
-            (tester) async {
-          final controller = CardSwiperController();
-          var direction = CardSwiperDirection.none;
+    test('Dispose closes the stream', () {
+      final controller = CardSwiperController();
 
-          await tester.pumpApp(
-            CardSwiper(
-              isDisabled: isDisabled,
-              controller: controller,
-              cardsCount: 10,
-              cardBuilder: genericBuilder,
-              direction: CardSwiperDirection.top,
-              onSwipe: (oldIndex, currentIndex, swipeDirection) {
-                direction = swipeDirection;
-                return true;
-              },
-            ),
-          );
+      expect(controller.events.isBroadcast, isTrue);
 
-          controller.swipe();
-          await tester.pumpAndSettle();
+      controller.dispose();
 
-          expect(direction, CardSwiperDirection.top);
-        });
+      expect(
+        () => controller.swipe(CardSwiperDirection.left),
+        throwsStateError,
+      );
+    });
 
-        testWidgets('swipeLeft() should swipe the card to the left',
-            (tester) async {
-          final controller = CardSwiperController();
-          var direction = CardSwiperDirection.none;
+    for (final direction in [
+      CardSwiperDirection.left,
+      CardSwiperDirection.right,
+      CardSwiperDirection.top,
+      CardSwiperDirection.bottom,
+    ]) {
+      testWidgets('swipe([direction]) should swipe the card to the [direction]',
+          (tester) async {
+        final controller = CardSwiperController();
+        var detectedDirection = CardSwiperDirection.none;
 
-          await tester.pumpApp(
-            CardSwiper(
-              isDisabled: isDisabled,
-              controller: controller,
-              cardsCount: 10,
-              cardBuilder: genericBuilder,
-              direction: CardSwiperDirection.left,
-              onSwipe: (oldIndex, currentIndex, swipeDirection) {
-                direction = swipeDirection;
-                return true;
-              },
-            ),
-          );
+        await tester.pumpApp(
+          CardSwiper(
+            controller: controller,
+            cardsCount: 10,
+            cardBuilder: genericBuilder,
+            onSwipe: (oldIndex, currentIndex, swipeDirection) {
+              detectedDirection = swipeDirection;
+              return true;
+            },
+          ),
+        );
 
-          controller.swipeLeft();
-          await tester.pumpAndSettle();
+        controller.swipe(direction);
+        await tester.pumpAndSettle();
 
-          expect(direction, CardSwiperDirection.left);
-        });
+        expect(detectedDirection, direction);
+      });
 
-        testWidgets('swipeRight() should swipe the card to the right',
-            (tester) async {
-          final controller = CardSwiperController();
-          var direction = CardSwiperDirection.none;
+      testWidgets('undo() should undo the last swipe [direction]',
+          (tester) async {
+        final controller = CardSwiperController();
+        var detectedDirection = CardSwiperDirection.none;
 
-          await tester.pumpApp(
-            CardSwiper(
-              isDisabled: isDisabled,
-              controller: controller,
-              cardsCount: 10,
-              cardBuilder: genericBuilder,
-              onSwipe: (oldIndex, currentIndex, swipeDirection) {
-                direction = swipeDirection;
-                return true;
-              },
-            ),
-          );
+        await tester.pumpApp(
+          CardSwiper(
+            controller: controller,
+            cardsCount: 10,
+            cardBuilder: genericBuilder,
+            onUndo: (_, __, swipeDirection) {
+              detectedDirection = swipeDirection;
+              return true;
+            },
+          ),
+        );
 
-          controller.swipeRight();
-          await tester.pumpAndSettle();
+        controller.swipe(direction);
+        await tester.pumpAndSettle();
 
-          expect(direction, CardSwiperDirection.right);
-        });
+        expect(find.card(1), findsOneWidget);
 
-        testWidgets('swipeTop() should swipe the card to the top',
-            (tester) async {
-          final controller = CardSwiperController();
-          var direction = CardSwiperDirection.none;
+        controller.undo();
+        await tester.pumpAndSettle();
 
-          await tester.pumpApp(
-            CardSwiper(
-              isDisabled: isDisabled,
-              controller: controller,
-              cardsCount: 10,
-              cardBuilder: genericBuilder,
-              direction: CardSwiperDirection.top,
-              onSwipe: (oldIndex, currentIndex, swipeDirection) {
-                direction = swipeDirection;
-                return true;
-              },
-            ),
-          );
-
-          controller.swipeTop();
-          await tester.pumpAndSettle();
-
-          expect(direction, CardSwiperDirection.top);
-        });
-
-        testWidgets('swipeBottom() should swipe the card to the bottom',
-            (tester) async {
-          final controller = CardSwiperController();
-          var direction = CardSwiperDirection.none;
-
-          await tester.pumpApp(
-            CardSwiper(
-              isDisabled: isDisabled,
-              controller: controller,
-              cardsCount: 10,
-              cardBuilder: genericBuilder,
-              direction: CardSwiperDirection.bottom,
-              onSwipe: (oldIndex, currentIndex, swipeDirection) {
-                direction = swipeDirection;
-                return true;
-              },
-            ),
-          );
-
-          controller.swipeBottom();
-          await tester.pumpAndSettle();
-
-          expect(direction, CardSwiperDirection.bottom);
-        });
-
-        group('undo()', () {
-          testWidgets('should undo the last swipe', (tester) async {
-            final controller = CardSwiperController();
-
-            await tester.pumpApp(
-              CardSwiper(
-                isDisabled: isDisabled,
-                controller: controller,
-                cardsCount: 10,
-                cardBuilder: genericBuilder,
-              ),
-            );
-
-            controller.swipe();
-            await tester.pumpAndSettle();
-
-            expect(find.card(1), findsOneWidget);
-
-            controller.undo();
-            await tester.pumpAndSettle();
-
-            expect(find.card(0), findsOneWidget);
-          });
-
-          testWidgets('should undo the last swipe left', (tester) async {
-            final controller = CardSwiperController();
-            var direction = CardSwiperDirection.none;
-
-            await tester.pumpApp(
-              CardSwiper(
-                isDisabled: isDisabled,
-                controller: controller,
-                cardsCount: 10,
-                cardBuilder: genericBuilder,
-                onUndo: (_, __, swipeDirection) {
-                  direction = swipeDirection;
-                  return true;
-                },
-              ),
-            );
-
-            controller.swipeLeft();
-            await tester.pumpAndSettle();
-
-            expect(find.card(1), findsOneWidget);
-
-            controller.undo();
-            await tester.pumpAndSettle();
-
-            expect(find.card(0), findsOneWidget);
-            expect(direction, CardSwiperDirection.left);
-          });
-
-          testWidgets('should undo the last swipe right', (tester) async {
-            final controller = CardSwiperController();
-            var direction = CardSwiperDirection.none;
-
-            await tester.pumpApp(
-              CardSwiper(
-                isDisabled: isDisabled,
-                controller: controller,
-                cardsCount: 10,
-                cardBuilder: genericBuilder,
-                onUndo: (_, __, swipeDirection) {
-                  direction = swipeDirection;
-                  return true;
-                },
-              ),
-            );
-
-            controller.swipeRight();
-            await tester.pumpAndSettle();
-
-            expect(find.card(1), findsOneWidget);
-
-            controller.undo();
-            await tester.pumpAndSettle();
-
-            expect(find.card(0), findsOneWidget);
-            expect(direction, CardSwiperDirection.right);
-          });
-
-          testWidgets('should undo the last swipe top', (tester) async {
-            final controller = CardSwiperController();
-            var direction = CardSwiperDirection.none;
-
-            await tester.pumpApp(
-              CardSwiper(
-                isDisabled: isDisabled,
-                controller: controller,
-                cardsCount: 10,
-                cardBuilder: genericBuilder,
-                onUndo: (_, __, swipeDirection) {
-                  direction = swipeDirection;
-                  return true;
-                },
-              ),
-            );
-
-            controller.swipeTop();
-            await tester.pumpAndSettle();
-
-            expect(find.card(1), findsOneWidget);
-
-            controller.undo();
-            await tester.pumpAndSettle();
-
-            expect(find.card(0), findsOneWidget);
-            expect(direction, CardSwiperDirection.top);
-          });
-
-          testWidgets('should undo the last swipe bottom', (tester) async {
-            final controller = CardSwiperController();
-            var direction = CardSwiperDirection.none;
-
-            await tester.pumpApp(
-              CardSwiper(
-                isDisabled: isDisabled,
-                controller: controller,
-                cardsCount: 10,
-                cardBuilder: genericBuilder,
-                onUndo: (_, __, swipeDirection) {
-                  direction = swipeDirection;
-                  return true;
-                },
-              ),
-            );
-
-            controller.swipeBottom();
-            await tester.pumpAndSettle();
-
-            expect(find.card(1), findsOneWidget);
-
-            controller.undo();
-            await tester.pumpAndSettle();
-
-            expect(find.card(0), findsOneWidget);
-            expect(direction, CardSwiperDirection.bottom);
-          });
-
-          testWidgets('should not undo if onUndo returns false',
-              (tester) async {
-            final controller = CardSwiperController();
-
-            await tester.pumpApp(
-              CardSwiper(
-                isDisabled: isDisabled,
-                controller: controller,
-                cardsCount: 10,
-                cardBuilder: genericBuilder,
-                onUndo: (_, __, swipeDirection) {
-                  return false;
-                },
-              ),
-            );
-
-            controller.swipe();
-            await tester.pumpAndSettle();
-
-            controller.undo();
-            await tester.pumpAndSettle();
-
-            expect(find.card(0), findsNothing);
-          });
-        });
+        expect(find.card(0), findsOneWidget);
+        expect(detectedDirection, direction);
       });
     }
+
+    testWidgets('should not undo if onUndo returns false', (tester) async {
+      final controller = CardSwiperController();
+
+      await tester.pumpApp(
+        CardSwiper(
+          controller: controller,
+          cardsCount: 10,
+          cardBuilder: genericBuilder,
+          onUndo: (_, __, swipeDirection) {
+            return false;
+          },
+        ),
+      );
+
+      controller.swipe(CardSwiperDirection.left);
+      await tester.pumpAndSettle();
+
+      controller.undo();
+      await tester.pumpAndSettle();
+
+      expect(find.card(0), findsNothing);
+    });
   });
 }

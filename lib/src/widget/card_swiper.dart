@@ -3,7 +3,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/src/card_animation.dart';
-import 'package:flutter_card_swiper/src/card_swiper_controller.dart';
+import 'package:flutter_card_swiper/src/controller/card_swiper_controller.dart';
+import 'package:flutter_card_swiper/src/controller/controller_event.dart';
 import 'package:flutter_card_swiper/src/enums.dart';
 import 'package:flutter_card_swiper/src/properties/allowed_swipe_direction.dart';
 import 'package:flutter_card_swiper/src/typedefs.dart';
@@ -89,11 +90,6 @@ class CardSwiper extends StatefulWidget {
   /// Callback function that is called when the swiper is disabled.
   final CardSwiperOnTapDisabled? onTapDisabled;
 
-  /// The direction in which the card is swiped when triggered by the [controller].
-  ///
-  /// Defaults to [CardSwiperDirection.right].
-  final CardSwiperDirection direction;
-
   /// Defined the directions in which the card is allowed to be swiped.
   /// Defaults to [AllowedSwipeDirection.all]
   final AllowedSwipeDirection allowedSwipeDirection;
@@ -142,7 +138,6 @@ class CardSwiper extends StatefulWidget {
     this.onTapDisabled,
     this.onSwipe,
     this.onEnd,
-    this.direction = CardSwiperDirection.right,
     this.onSwipeDirectionChange,
     this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
     this.isLoop = true,
@@ -157,10 +152,6 @@ class CardSwiper extends StatefulWidget {
         assert(
           threshold >= 1 && threshold <= 100,
           'threshold must be between 1 and 100',
-        ),
-        assert(
-          direction != CardSwiperDirection.none,
-          'direction must not be none',
         ),
         assert(
           scale >= 0 && scale <= 1,

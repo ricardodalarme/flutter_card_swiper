@@ -26,7 +26,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
     _undoableIndex.state = widget.initialIndex;
 
-    widget.controller?.addListener(_controllerListener);
+    widget.controller?.events.listen(_controllerListener);
 
     _animationController = AnimationController(
       duration: widget.duration,
@@ -65,7 +65,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   @override
   void dispose() {
     _animationController.dispose();
-    widget.controller?.removeListener(_controllerListener);
+    widget.controller?.dispose();
     super.dispose();
   }
 
@@ -157,23 +157,12 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     );
   }
 
-  void _controllerListener() {
-    switch (widget.controller?.state) {
-      case CardSwiperState.swipe:
-        return _swipe(widget.direction);
-      case CardSwiperState.swipeLeft:
-        return _swipe(CardSwiperDirection.left);
-      case CardSwiperState.swipeRight:
-        return _swipe(CardSwiperDirection.right);
-      case CardSwiperState.swipeTop:
-        return _swipe(CardSwiperDirection.top);
-      case CardSwiperState.swipeBottom:
-        return _swipe(CardSwiperDirection.bottom);
-      case CardSwiperState.undo:
-        return _undo();
-      default:
-        return;
-    }
+  void _controllerListener(ControllerEvent event) {
+    return switch (event) {
+      ControllerSwipeEvent(:final direction) => _swipe(direction),
+      ControllerUndoEvent() => _undo(),
+      _ => null
+    };
   }
 
   void _animationListener() {
@@ -225,7 +214,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   void _onEndAnimation() {
     final direction = _getEndAnimationDirection();
-    final isValidDirection = this._isValidDirection(direction);
+    final isValidDirection = _isValidDirection(direction);
 
     if (isValidDirection) {
       _swipe(direction);

@@ -2,7 +2,9 @@
 ## [7.0.0]
 
 - **BREAKING CHANGE**:
-  - Upgrade min dart sdk to 3.0.0 
+  - Upgrade min dart sdk to 3.0.0
+  - Replace `swipe`, `swipeLeft`, `swipeRight`, `swipeUp`, `swipeDown` with `swipe(CardSwiperDirection direction)`
+    - It also removes `direction` from the `CardSwiper` widget
 
 ## [6.1.0]
 
