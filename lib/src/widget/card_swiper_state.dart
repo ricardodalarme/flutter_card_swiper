@@ -161,7 +161,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     return switch (event) {
       ControllerSwipeEvent(:final direction) => _swipe(direction),
       ControllerUndoEvent() => _undo(),
-      _ => null
+      ControllerMoveEvent(:final index) => _moveTo(index),
     };
   }
 
@@ -279,6 +279,15 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     _directionHistory.removeLast();
     _swipeType = SwipeType.undo;
     _cardAnimation.animateUndo(context, direction);
+  }
+
+  void _moveTo(int index) {
+    if (index == _currentIndex) return;
+    if (index < 0 || index >= widget.cardsCount) return;
+
+    setState(() {
+      _undoableIndex.state = index;
+    });
   }
 
   int numberOfCardsOnScreen() {

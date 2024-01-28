@@ -126,6 +126,7 @@ The `Controller` is used to swipe the card from outside of the widget. You can c
 | ----------- | :--------------------------------------------- |
 | swipe       | Swipes the card to a specific direction.       |
 | undo        | Bring back the last card that was swiped away. |
+| moveTo      | Change the top card to a specific index.       |
 
 <hr/>
 

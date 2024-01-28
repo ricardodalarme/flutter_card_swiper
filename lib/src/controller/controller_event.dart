@@ -1,6 +1,6 @@
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
-abstract class ControllerEvent {
+sealed class ControllerEvent {
   const ControllerEvent();
 }
 
@@ -12,4 +12,9 @@ class ControllerSwipeEvent extends ControllerEvent {
 
 class ControllerUndoEvent extends ControllerEvent {
   const ControllerUndoEvent();
+}
+
+class ControllerMoveEvent extends ControllerEvent {
+  final int index;
+  const ControllerMoveEvent(this.index);
 }

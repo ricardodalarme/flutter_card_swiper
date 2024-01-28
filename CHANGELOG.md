@@ -1,6 +1,7 @@
 
 ## [7.0.0]
 
+- Adds `moveTo` method to `CardSwiperController` to move to a specific card index.
 - **BREAKING CHANGE**:
   - Upgrade min dart sdk to 3.0.0
   - Replace `swipe`, `swipeLeft`, `swipeRight`, `swipeUp`, `swipeDown` with `swipe(CardSwiperDirection direction)`
