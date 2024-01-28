@@ -136,18 +136,13 @@ class CardAnimation {
   }
 
   void animate(BuildContext context, CardSwiperDirection direction) {
-    switch (direction) {
-      case CardSwiperDirection.left:
-        return animateHorizontally(context, false);
-      case CardSwiperDirection.right:
-        return animateHorizontally(context, true);
-      case CardSwiperDirection.top:
-        return animateVertically(context, false);
-      case CardSwiperDirection.bottom:
-        return animateVertically(context, true);
-      default:
-        return;
-    }
+    return switch (direction) {
+      CardSwiperDirection.left => animateHorizontally(context, false),
+      CardSwiperDirection.right => animateHorizontally(context, true),
+      CardSwiperDirection.top => animateVertically(context, false),
+      CardSwiperDirection.bottom => animateVertically(context, true),
+      CardSwiperDirection.none => null,
+    };
   }
 
   void animateHorizontally(BuildContext context, bool isToRight) {
@@ -215,18 +210,13 @@ class CardAnimation {
   }
 
   void animateUndo(BuildContext context, CardSwiperDirection direction) {
-    switch (direction) {
-      case CardSwiperDirection.left:
-        return animateUndoHorizontally(context, false);
-      case CardSwiperDirection.right:
-        return animateUndoHorizontally(context, true);
-      case CardSwiperDirection.top:
-        return animateUndoVertically(context, false);
-      case CardSwiperDirection.bottom:
-        return animateUndoVertically(context, true);
-      default:
-        return;
-    }
+    return switch (direction) {
+      CardSwiperDirection.left => animateUndoHorizontally(context, false),
+      CardSwiperDirection.right => animateUndoHorizontally(context, true),
+      CardSwiperDirection.top => animateUndoVertically(context, false),
+      CardSwiperDirection.bottom => animateUndoVertically(context, true),
+      _ => null
+    };
   }
 
   void animateUndoHorizontally(BuildContext context, bool isToRight) {

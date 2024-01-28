@@ -14,8 +14,8 @@ void main() {
 
 class Example extends StatefulWidget {
   const Example({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<Example> createState() => _ExamplePageState();
@@ -64,10 +64,6 @@ class _ExamplePageState extends State<Example> {
                   FloatingActionButton(
                     onPressed: controller.undo,
                     child: const Icon(Icons.rotate_left),
-                  ),
-                  FloatingActionButton(
-                    onPressed: controller.swipe,
-                    child: const Icon(Icons.rotate_right),
                   ),
                   FloatingActionButton(
                     onPressed: controller.swipeLeft,

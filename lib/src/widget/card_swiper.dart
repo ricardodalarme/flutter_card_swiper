@@ -131,7 +131,6 @@ class CardSwiper extends StatefulWidget {
   const CardSwiper({
     required this.cardBuilder,
     required this.cardsCount,
-    Key? key,
     this.controller,
     this.initialIndex = 0,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
@@ -150,6 +149,7 @@ class CardSwiper extends StatefulWidget {
     this.numberOfCardsDisplayed = 2,
     this.onUndo,
     this.backCardOffset = const Offset(0, 40),
+    super.key,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
           'maxAngle must be between 0 and 360',
@@ -173,8 +173,7 @@ class CardSwiper extends StatefulWidget {
         assert(
           initialIndex >= 0 && initialIndex < cardsCount,
           'initialIndex must be between 0 and [cardsCount]',
-        ),
-        super(key: key);
+        );
 
   @override
   State createState() => _CardSwiperState();

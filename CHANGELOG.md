@@ -1,4 +1,9 @@
 
+## [7.0.0]
+
+- **BREAKING CHANGE**:
+  - Upgrade min dart sdk to 3.0.0 
+
 ## [6.1.0]
 
 - Fixes cannot access context in onSwipe when no cards left then "destroy" the widget tree

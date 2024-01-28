@@ -46,26 +46,20 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   void onSwipeDirectionChanged(CardSwiperDirection direction) {
-    if (direction == CardSwiperDirection.none) {
-      _detectedVerticalDirection = direction;
-      _detectedHorizontalDirection = direction;
-      widget.onSwipeDirectionChange
-          ?.call(_detectedHorizontalDirection, _detectedVerticalDirection);
-    } else if (direction == CardSwiperDirection.right ||
-        direction == CardSwiperDirection.left) {
-      if (_detectedHorizontalDirection != direction) {
-        _detectedHorizontalDirection = direction;
-        widget.onSwipeDirectionChange
-            ?.call(_detectedHorizontalDirection, _detectedVerticalDirection);
-      }
-    } else if (direction == CardSwiperDirection.top ||
-        direction == CardSwiperDirection.bottom) {
-      if (_detectedVerticalDirection != direction) {
+    switch (direction) {
+      case CardSwiperDirection.none:
         _detectedVerticalDirection = direction;
-        widget.onSwipeDirectionChange
-            ?.call(_detectedHorizontalDirection, _detectedVerticalDirection);
-      }
+        _detectedHorizontalDirection = direction;
+      case CardSwiperDirection.right:
+      case CardSwiperDirection.left:
+        _detectedHorizontalDirection = direction;
+      case CardSwiperDirection.top:
+      case CardSwiperDirection.bottom:
+        _detectedVerticalDirection = direction;
     }
+
+    widget.onSwipeDirectionChange
+        ?.call(_detectedHorizontalDirection, _detectedVerticalDirection);
   }
 
   @override
@@ -193,7 +187,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       switch (_swipeType) {
         case SwipeType.swipe:
           await _handleCompleteSwipe();
-          break;
         default:
           break;
       }
@@ -256,18 +249,13 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   bool _isValidDirection(CardSwiperDirection direction) {
-    switch (direction) {
-      case CardSwiperDirection.left:
-        return widget.allowedSwipeDirection.left;
-      case CardSwiperDirection.right:
-        return widget.allowedSwipeDirection.right;
-      case CardSwiperDirection.top:
-        return widget.allowedSwipeDirection.up;
-      case CardSwiperDirection.bottom:
-        return widget.allowedSwipeDirection.down;
-      default:
-        return false;
-    }
+    return switch (direction) {
+      CardSwiperDirection.left => widget.allowedSwipeDirection.left,
+      CardSwiperDirection.right => widget.allowedSwipeDirection.right,
+      CardSwiperDirection.top => widget.allowedSwipeDirection.up,
+      CardSwiperDirection.bottom => widget.allowedSwipeDirection.down,
+      _ => false
+    };
   }
 
   void _swipe(CardSwiperDirection direction) {

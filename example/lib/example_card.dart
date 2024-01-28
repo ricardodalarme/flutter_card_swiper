@@ -6,8 +6,8 @@ class ExampleCard extends StatelessWidget {
 
   const ExampleCard(
     this.candidate, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
