@@ -2,9 +2,9 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_card_swiper/src/controller/controller_event.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'test_helpers/card_builder.dart';
-import 'test_helpers/finders.dart';
-import 'test_helpers/pump_app.dart';
+import '../test_helpers/card_builder.dart';
+import '../test_helpers/finders.dart';
+import '../test_helpers/pump_app.dart';
 
 void main() {
   group('CardSwiperController', () {
@@ -32,6 +32,21 @@ void main() {
       );
 
       controller.undo();
+    });
+
+    test('Swipe event adds ControllerSwipeEvent to the stream', () {
+      final controller = CardSwiperController();
+      const index = 42;
+
+      expectLater(
+        controller.events,
+        emits(
+          isA<ControllerMoveEvent>()
+              .having((event) => event.index, 'index', index),
+        ),
+      );
+
+      controller.moveTo(index);
     });
 
     test('Dispose closes the stream', () {
