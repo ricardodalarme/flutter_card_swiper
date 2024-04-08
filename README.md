@@ -13,6 +13,8 @@ It allows you to swipe left, right, up, and down and define your own business lo
 
 Very smooth animations supporting Android, iOS, Web & Desktop.
 
+You can check it out directly in the [Web Demo](https://view.juneflow.org/v/card_swiper_example)
+
 ## Why?
 
 We built this package because we wanted to:
