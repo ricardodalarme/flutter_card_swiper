@@ -1,3 +1,6 @@
+## [7.0.1]
+
+- Prevents `CardSwiperController` to be disposed by `CardSwiper`.
 
 ## [7.0.0]
 
