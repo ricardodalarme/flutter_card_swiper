@@ -20,13 +20,16 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   bool get _canSwipe => _currentIndex != null && !widget.isDisabled;
 
+  StreamSubscription<ControllerEvent>? controllerSubscription;
+
   @override
   void initState() {
     super.initState();
 
     _undoableIndex.state = widget.initialIndex;
 
-    widget.controller?.events.listen(_controllerListener);
+    controllerSubscription =
+        widget.controller?.events.listen(_controllerListener);
 
     _animationController = AnimationController(
       duration: widget.duration,
@@ -65,6 +68,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   @override
   void dispose() {
     _animationController.dispose();
+    controllerSubscription?.cancel();
     super.dispose();
   }
 
