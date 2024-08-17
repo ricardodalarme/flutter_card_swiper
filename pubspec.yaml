@@ -2,7 +2,7 @@ name: flutter_card_swiper
 description: This is a Tinder-like card swiper package. It allows you to swipe left, right, up, and down and define your own business logic for each direction.
 homepage: https://github.com/ricardodalarme/flutter_card_swiper
 issue_tracker: https://github.com/ricardodalarme/flutter_card_swiper/issues
-version: 7.0.1
+version: 7.0.2
 
 environment:
   sdk: ">=3.0.0 <4.0.0"

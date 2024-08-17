@@ -1,3 +1,7 @@
+## [7.0.2]
+
+- Tracks `StreamSubscription<ControllerEvent>` given `widget.controller`, and calls `cancel` on dispose.
+
 ## [7.0.1]
 
 - Prevents `CardSwiperController` to be disposed by `CardSwiper`.
