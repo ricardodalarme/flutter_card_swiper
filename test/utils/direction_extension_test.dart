@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_card_swiper/src/enums.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_card_swiper/src/utils/direction_extension.dart';
 import 'package:flutter_test/flutter_test.dart';
 

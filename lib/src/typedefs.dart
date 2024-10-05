@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_card_swiper/src/enums.dart';
+import 'package:flutter_card_swiper/src/direction/card_swiper_direction.dart';
 
 typedef CardSwiperOnSwipe = FutureOr<bool> Function(
   int previousIndex,
