@@ -2,12 +2,9 @@ import 'dart:collection';
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_card_swiper/src/card_animation.dart';
-import 'package:flutter_card_swiper/src/controller/card_swiper_controller.dart';
 import 'package:flutter_card_swiper/src/controller/controller_event.dart';
-import 'package:flutter_card_swiper/src/enums.dart';
-import 'package:flutter_card_swiper/src/properties/allowed_swipe_direction.dart';
-import 'package:flutter_card_swiper/src/typedefs.dart';
 import 'package:flutter_card_swiper/src/utils/number_extension.dart';
 import 'package:flutter_card_swiper/src/utils/undoable.dart';
 
