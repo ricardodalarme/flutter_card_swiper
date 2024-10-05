@@ -136,21 +136,8 @@ class CardAnimation {
   }
 
   void animate(BuildContext context, CardSwiperDirection direction) {
-    if (direction == CardSwiperDirection.none) {
-      return;
-    }
-    if (direction.isCloseTo(CardSwiperDirection.left)) {
-      animateHorizontally(context, false);
-    } else if (direction.isCloseTo(CardSwiperDirection.right)) {
-      animateHorizontally(context, true);
-    } else if (direction.isCloseTo(CardSwiperDirection.top)) {
-      animateVertically(context, false);
-    } else if (direction.isCloseTo(CardSwiperDirection.bottom)) {
-      animateVertically(context, true);
-    } else {
-      // Custom angle animation
-      animateToAngle(context, direction.angle);
-    }
+    if (direction == CardSwiperDirection.none) return;
+    animateToAngle(context, direction.angle);
   }
 
   void animateToAngle(BuildContext context, double targetAngle) {
@@ -187,50 +174,6 @@ class CardAnimation {
     animationController.forward();
   }
 
-  void animateHorizontally(BuildContext context, bool isToRight) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    _leftAnimation = Tween<double>(
-      begin: left,
-      end: isToRight ? screenWidth : -screenWidth,
-    ).animate(animationController);
-    _topAnimation = Tween<double>(
-      begin: top,
-      end: top + top,
-    ).animate(animationController);
-    _scaleAnimation = Tween<double>(
-      begin: scale,
-      end: 1.0,
-    ).animate(animationController);
-    _differenceAnimation = Tween<Offset>(
-      begin: difference,
-      end: initialOffset,
-    ).animate(animationController);
-    animationController.forward();
-  }
-
-  void animateVertically(BuildContext context, bool isToBottom) {
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    _leftAnimation = Tween<double>(
-      begin: left,
-      end: left + left,
-    ).animate(animationController);
-    _topAnimation = Tween<double>(
-      begin: top,
-      end: isToBottom ? screenHeight : -screenHeight,
-    ).animate(animationController);
-    _scaleAnimation = Tween<double>(
-      begin: scale,
-      end: 1.0,
-    ).animate(animationController);
-    _differenceAnimation = Tween<Offset>(
-      begin: difference,
-      end: initialOffset,
-    ).animate(animationController);
-    animationController.forward();
-  }
-
   void animateBack(BuildContext context) {
     _leftAnimation = Tween<double>(
       begin: left,
@@ -252,64 +195,8 @@ class CardAnimation {
   }
 
   void animateUndo(BuildContext context, CardSwiperDirection direction) {
-    if (direction == CardSwiperDirection.none) {
-      return;
-    }
-    if (direction.isCloseTo(CardSwiperDirection.left)) {
-      animateUndoHorizontally(context, false);
-    } else if (direction.isCloseTo(CardSwiperDirection.right)) {
-      animateUndoHorizontally(context, true);
-    } else if (direction.isCloseTo(CardSwiperDirection.top)) {
-      animateUndoVertically(context, true);
-    } else if (direction.isCloseTo(CardSwiperDirection.bottom)) {
-      animateUndoVertically(context, false);
-    } else {
-      animateUndoFromAngle(context, direction.angle);
-    }
-  }
-
-  void animateUndoHorizontally(BuildContext context, bool isToRight) {
-    final size = MediaQuery.of(context).size;
-
-    _leftAnimation = Tween<double>(
-      begin: isToRight ? size.width : -size.width,
-      end: 0,
-    ).animate(animationController);
-    _topAnimation = Tween<double>(
-      begin: top,
-      end: top + top,
-    ).animate(animationController);
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: scale,
-    ).animate(animationController);
-    _differenceAnimation = Tween<Offset>(
-      begin: initialOffset,
-      end: difference,
-    ).animate(animationController);
-    animationController.forward();
-  }
-
-  void animateUndoVertically(BuildContext context, bool isToBottom) {
-    final size = MediaQuery.of(context).size;
-
-    _leftAnimation = Tween<double>(
-      begin: left,
-      end: left + left,
-    ).animate(animationController);
-    _topAnimation = Tween<double>(
-      begin: isToBottom ? -size.height : size.height,
-      end: 0,
-    ).animate(animationController);
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: scale,
-    ).animate(animationController);
-    _differenceAnimation = Tween<Offset>(
-      begin: initialOffset,
-      end: difference,
-    ).animate(animationController);
-    animationController.forward();
+    if (direction == CardSwiperDirection.none) return;
+    animateUndoFromAngle(context, direction.angle);
   }
 
   void animateUndoFromAngle(BuildContext context, double angle) {
