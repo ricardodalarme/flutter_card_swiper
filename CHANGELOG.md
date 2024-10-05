@@ -1,3 +1,10 @@
+## [7.0.2]
+
+- Added `CardAnimation.animateToAngle` helper to animate swipe the card to any given angle between 0-360°.
+- Added `CardAnimation.animateUndoFromAngle` helper method to undo animation from any angle.
+- Remoed previous implementations for the above in the `CardAnimation` class, namely - `animateHorizontally`, `animateVertically`, `animateUndoHorizontally`, and `animateUndoVertically` 
+- Replaced `enum CardSwiperDirection` with `class CardSwiperDirection` to support custom angle swiping.
+
 ## [7.0.1]
 
 - Prevents `CardSwiperController` to be disposed by `CardSwiper`.
