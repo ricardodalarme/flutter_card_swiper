@@ -116,6 +116,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
           if (widget.isDisabled) {
             await widget.onTapDisabled?.call();
           }
+          await widget.onTap?.call(_currentIndex!);
         },
         onPanStart: (tapInfo) {
           if (!widget.isDisabled) {

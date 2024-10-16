@@ -88,6 +88,9 @@ class CardSwiper extends StatefulWidget {
   /// Callback function that is called when the swiper is disabled.
   final CardSwiperOnTapDisabled? onTapDisabled;
 
+  /// Callback function that is called when the card is tapped (will not trigger from swipe movement)
+  final CardSwiperOnTap? onTap;
+
   /// Defined the directions in which the card is allowed to be swiped.
   /// Defaults to [AllowedSwipeDirection.all]
   final AllowedSwipeDirection allowedSwipeDirection;
@@ -134,6 +137,7 @@ class CardSwiper extends StatefulWidget {
     this.scale = 0.9,
     this.isDisabled = false,
     this.onTapDisabled,
+    this.onTap,
     this.onSwipe,
     this.onEnd,
     this.onSwipeDirectionChange,
