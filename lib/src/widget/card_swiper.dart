@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math' as math;
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_card_swiper/src/card_animation.dart';
 import 'package:flutter_card_swiper/src/controller/controller_event.dart';
@@ -121,11 +121,15 @@ class CardSwiper extends StatefulWidget {
   ///
   /// Must be a positive value. Defaults to Offset(0, 40).
   final Offset backCardOffset;
+  final Widget? dialogBuilder;
+  final bool showDialog;
 
   const CardSwiper({
     required this.cardBuilder,
     required this.cardsCount,
+    this.showDialog = false,
     this.controller,
+    this.dialogBuilder,
     this.initialIndex = 0,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
     this.duration = const Duration(milliseconds: 200),

@@ -250,12 +250,12 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     };
   }
 
-  void _swipe(CardSwiperDirection direction) {
-    if (_currentIndex == null) return;
-    _swipeType = SwipeType.swipe;
-    _detectedDirection = direction;
-    _cardAnimation.animate(context, direction);
-  }
+  // void _swipe(CardSwiperDirection direction) {
+  //   if (_currentIndex == null) return;
+  //   _swipeType = SwipeType.swipe;
+  //   _detectedDirection = direction;
+  //   _cardAnimation.animate(context, direction);
+  // }
 
   void _goBack() {
     _swipeType = SwipeType.back;
@@ -317,5 +317,57 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       return null;
     }
     return index % widget.cardsCount;
+  }
+
+  Future<void> showSwipeOptionsDialog(
+    CardSwiperDirection direction,
+    Widget customDialog,
+  ) async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => customDialog,
+    );
+
+    if (result == 'Swipe') {
+      _performSwipe(direction);
+    } else {
+      _goBack();
+    }
+  }
+
+  void _performSwipe(CardSwiperDirection direction) {
+    if (_currentIndex == null) return;
+    _swipeType = SwipeType.swipe;
+    _detectedDirection = direction;
+    _cardAnimation.animate(context, direction);
+  }
+
+  void _swipe(CardSwiperDirection direction) {
+    if (direction == CardSwiperDirection.right && widget.showDialog) {
+      showSwipeOptionsDialog(
+        direction,
+        widget.dialogBuilder ??
+            AlertDialog(
+              title: const Text('Select an option'),
+              content: const Text('Do you want to swipe the card?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop('Cancel');
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop('Swipe');
+                  },
+                  child: const Text('Swipe'),
+                ),
+              ],
+            ),
+      );
+    } else {
+      _performSwipe(direction);
+    }
   }
 }

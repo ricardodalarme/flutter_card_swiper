@@ -5,17 +5,12 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Example(),
-    ),
+    const MaterialApp(debugShowCheckedModeBanner: false, home: Example()),
   );
 }
 
 class Example extends StatefulWidget {
-  const Example({
-    super.key,
-  });
+  const Example({super.key});
 
   @override
   State<Example> createState() => _ExamplePageState();
@@ -25,6 +20,7 @@ class _ExamplePageState extends State<Example> {
   final CardSwiperController controller = CardSwiperController();
 
   final cards = candidates.map(ExampleCard.new).toList();
+  int current = 0;
 
   @override
   void dispose() {
@@ -44,9 +40,32 @@ class _ExamplePageState extends State<Example> {
                 cardsCount: cards.length,
                 onSwipe: _onSwipe,
                 onUndo: _onUndo,
-                numberOfCardsDisplayed: 3,
+                numberOfCardsDisplayed: 1,
+                showDialog: true,
                 backCardOffset: const Offset(40, 40),
                 padding: const EdgeInsets.all(24.0),
+                dialogBuilder: AlertDialog(
+                  backgroundColor: Colors.yellow,
+                  title: Text(
+                    'Select an option ${cards[current].candidate.name}',
+                  ),
+                  content: const Text('Do you want to swipe the card?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop('Cancel');
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        debugPrint('name: ${cards[current].candidate.job}');
+                        Navigator.of(context).pop('Swipe');
+                      },
+                      child: const Text('Swipe'),
+                    ),
+                  ],
+                ),
                 cardBuilder: (
                   context,
                   index,
@@ -100,6 +119,9 @@ class _ExamplePageState extends State<Example> {
     debugPrint(
       'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
     );
+    current = currentIndex!;
+    setState(() {});
+    debugPrint('current: $current');
     return true;
   }
 
@@ -109,7 +131,7 @@ class _ExamplePageState extends State<Example> {
     CardSwiperDirection direction,
   ) {
     debugPrint(
-      'The card $currentIndex was undod from the ${direction.name}',
+      'The card $currentIndex was undone from the ${direction.name}',
     );
     return true;
   }
