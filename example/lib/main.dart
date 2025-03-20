@@ -36,6 +36,7 @@ class _ExamplePageState extends State<Example> {
           children: [
             Flexible(
               child: CardSwiper(
+              
                 controller: controller,
                 cardsCount: cards.length,
                 onSwipe: _onSwipe,

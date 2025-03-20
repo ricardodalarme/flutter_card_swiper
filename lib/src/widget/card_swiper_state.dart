@@ -25,12 +25,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   @override
   void initState() {
     super.initState();
-
     _undoableIndex.state = widget.initialIndex;
-
     controllerSubscription =
         widget.controller?.events.listen(_controllerListener);
-
     _animationController = AnimationController(
       duration: widget.duration,
       vsync: this,
@@ -96,32 +93,34 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   Widget _frontItem(BoxConstraints constraints) {
+    final direction = _getEndAnimationDirection();
+    final Widget child = ConstrainedBox(
+      constraints: constraints,
+      child: widget.cardBuilder(
+        context,
+        _currentIndex!,
+        (100 * _cardAnimation.left / widget.threshold).ceil(),
+        (100 * _cardAnimation.top / widget.threshold).ceil(),
+      ),
+    );
     return Positioned(
-      left: _cardAnimation.left,
-      top: _cardAnimation.top,
+      left: widget.showDialog && direction == CardSwiperDirection.right
+          ? 0
+          : _cardAnimation.left,
+      top: widget.showDialog && direction == CardSwiperDirection.right
+          ? 0
+          : _cardAnimation.top,
       child: GestureDetector(
-        child: Transform.rotate(
-          angle: _cardAnimation.angle,
-          child: ConstrainedBox(
-            constraints: constraints,
-            child: widget.cardBuilder(
-              context,
-              _currentIndex!,
-              (100 * _cardAnimation.left / widget.threshold).ceil(),
-              (100 * _cardAnimation.top / widget.threshold).ceil(),
-            ),
-          ),
-        ),
+        child: widget.showDialog && direction == CardSwiperDirection.right
+            ? child
+            : Transform.rotate(angle: _cardAnimation.angle, child: child),
         onTap: () async {
-          if (widget.isDisabled) {
-            await widget.onTapDisabled?.call();
-          }
+          if (widget.isDisabled) await widget.onTapDisabled?.call();
         },
         onPanStart: (tapInfo) {
           if (!widget.isDisabled) {
             final renderBox = context.findRenderObject()! as RenderBox;
             final position = renderBox.globalToLocal(tapInfo.globalPosition);
-
             if (position.dy < renderBox.size.height / 2) _tappedOnTop = true;
           }
         },
@@ -182,7 +181,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
         default:
           break;
       }
-
       _reset();
     }
   }
@@ -193,16 +191,12 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
             ?.call(_currentIndex!, _nextIndex, _detectedDirection) ==
         false;
 
-    if (shouldCancelSwipe) {
-      return;
-    }
+    if (shouldCancelSwipe) return;
 
     _undoableIndex.state = _nextIndex;
     _directionHistory.add(_detectedDirection);
 
-    if (isLastCard) {
-      widget.onEnd?.call();
-    }
+    if (isLastCard) widget.onEnd?.call();
   }
 
   void _reset() {
@@ -250,13 +244,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     };
   }
 
-  // void _swipe(CardSwiperDirection direction) {
-  //   if (_currentIndex == null) return;
-  //   _swipeType = SwipeType.swipe;
-  //   _detectedDirection = direction;
-  //   _cardAnimation.animate(context, direction);
-  // }
-
   void _goBack() {
     _swipeType = SwipeType.back;
     _cardAnimation.animateBack(context);
@@ -274,9 +261,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
         ) ==
         false;
 
-    if (shouldCancelUndo) {
-      return;
-    }
+    if (shouldCancelUndo) return;
 
     _undoableIndex.undo();
     _directionHistory.removeLast();
@@ -294,12 +279,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   int numberOfCardsOnScreen() {
-    if (widget.isLoop) {
-      return widget.numberOfCardsDisplayed;
-    }
-    if (_currentIndex == null) {
-      return 0;
-    }
+    if (widget.isLoop) return widget.numberOfCardsDisplayed;
+
+    if (_currentIndex == null) return 0;
 
     return math.min(
       widget.numberOfCardsDisplayed,
@@ -308,9 +290,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   int? getValidIndexOffset(int offset) {
-    if (_currentIndex == null) {
-      return null;
-    }
+    if (_currentIndex == null) return null;
 
     final index = _currentIndex! + offset;
     if (!widget.isLoop && !index.isBetween(0, widget.cardsCount - 1)) {
@@ -325,10 +305,11 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   ) async {
     final result = await showDialog<String>(
       context: context,
-      builder: (BuildContext context) => customDialog,
+      builder: (context) => customDialog,
     );
 
     if (result == 'Swipe') {
+      await Future<void>.delayed(const Duration(seconds: 1));
       _performSwipe(direction);
     } else {
       _goBack();
@@ -352,15 +333,11 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
               content: const Text('Do you want to swipe the card?'),
               actions: <Widget>[
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop('Cancel');
-                  },
+                  onPressed: () => Navigator.of(context).pop('Cancel'),
                   child: const Text('Cancel'),
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop('Swipe');
-                  },
+                  onPressed: () => Navigator.of(context).pop('Swipe'),
                   child: const Text('Swipe'),
                 ),
               ],
