@@ -309,7 +309,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     );
 
     if (result == 'Swipe') {
-      await Future<void>.delayed(Duration(seconds: widget.delay));
       _performSwipe(direction);
     } else if (result == 'Left-Swipe') {
       await Future<void>.delayed(Duration(seconds: widget.delay));
