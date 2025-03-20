@@ -36,7 +36,6 @@ class _ExamplePageState extends State<Example> {
           children: [
             Flexible(
               child: CardSwiper(
-              
                 controller: controller,
                 cardsCount: cards.length,
                 onSwipe: _onSwipe,
@@ -53,15 +52,13 @@ class _ExamplePageState extends State<Example> {
                   content: const Text('Do you want to swipe the card?'),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop('Cancel');
-                      },
+                      onPressed: () => Navigator.of(context).pop('Cancel'),
                       child: const Text('Cancel'),
                     ),
                     TextButton(
                       onPressed: () {
                         debugPrint('name: ${cards[current].candidate.job}');
-                        Navigator.of(context).pop('Swipe');
+                        Navigator.of(context).pop('Left-Swipe');
                       },
                       child: const Text('Swipe'),
                     ),

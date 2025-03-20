@@ -12,6 +12,8 @@ import 'package:flutter_card_swiper/src/utils/undoable.dart';
 part 'card_swiper_state.dart';
 
 class CardSwiper extends StatefulWidget {
+  final int delay;
+
   /// Function that builds each card in the stack.
   ///
   /// The function is called with the index of the card to be built, the build context, the ratio
@@ -127,6 +129,7 @@ class CardSwiper extends StatefulWidget {
   const CardSwiper({
     required this.cardBuilder,
     required this.cardsCount,
+    this.delay = 1,
     this.showDialog = false,
     this.controller,
     this.dialogBuilder,
