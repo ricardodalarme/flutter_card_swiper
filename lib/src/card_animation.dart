@@ -4,6 +4,72 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
+extension CardAnimationExtension on CardAnimation {
+  void comeeBack(BuildContext context) {
+    // Create animations for left, top, scale, and difference
+    _leftAnimation = Tween<double>(
+      begin: left,
+      end: 0, // Reset to the original position
+    ).animate(animationController);
+
+    _topAnimation = Tween<double>(
+      begin: top,
+      end: 0, // Reset to the original position
+    ).animate(animationController);
+
+    _scaleAnimation = Tween<double>(
+      begin: scale,
+      end: initialScale, // Reset to the initial scale
+    ).animate(animationController);
+
+    _differenceAnimation = Tween<Offset>(
+      begin: difference,
+      end: Offset.zero, // Reset to no difference
+    ).animate(animationController);
+
+    // Start the animation
+    animationController.reset();
+    animationController.forward();
+  }
+
+  Future<void> animateTo({
+    required Offset offset,
+    required double angle,
+  }) async {
+    _leftAnimation = Tween<double>(
+      begin: left,
+      end: offset.dx,
+    ).animate(animationController);
+
+    _topAnimation = Tween<double>(
+      begin: top,
+      end: offset.dy,
+    ).animate(animationController);
+
+    _scaleAnimation = Tween<double>(
+      begin: scale,
+      end: 1.0,
+    ).animate(animationController);
+
+    _differenceAnimation = Tween<Offset>(
+      begin: difference,
+      end: Offset.zero,
+    ).animate(animationController);
+
+    animationController.reset();
+
+    await animationController.forward();
+  }
+
+  Future<void> animateToRight(BuildContext context) async {
+    final screenWidth = MediaQuery.of(context).size.width;
+    await animateTo(
+      offset: Offset(screenWidth, 0), // Move the card entirely to the right
+      angle: 0, // No rotation
+    );
+  }
+}
+
 class CardAnimation {
   CardAnimation({
     required this.animationController,

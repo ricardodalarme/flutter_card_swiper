@@ -40,12 +40,14 @@ class _ExamplePageState extends State<Example> {
                 cardsCount: cards.length,
                 onSwipe: _onSwipe,
                 onUndo: _onUndo,
+                isLoop: false,
                 numberOfCardsDisplayed: 1,
                 showDialog: true,
                 backCardOffset: const Offset(40, 40),
                 padding: const EdgeInsets.all(24.0),
                 dialogBuilder: AlertDialog(
                   backgroundColor: Colors.yellow,
+                  alignment: Alignment.bottomCenter,
                   title: Text(
                     'Select an option ${cards[current].candidate.name}',
                   ),
@@ -58,7 +60,11 @@ class _ExamplePageState extends State<Example> {
                     TextButton(
                       onPressed: () {
                         debugPrint('name: ${cards[current].candidate.job}');
-                        Navigator.of(context).pop('Left-Swipe');
+                        Navigator.of(context).pop(
+                          cards[current].candidate.job == 'Manager'
+                              ? 'Left-Swipe'
+                              : 'Swipe',
+                        );
                       },
                       child: const Text('Swipe'),
                     ),

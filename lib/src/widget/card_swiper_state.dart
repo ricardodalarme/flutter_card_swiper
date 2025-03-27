@@ -104,16 +104,10 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       ),
     );
     return Positioned(
-      left: widget.showDialog && direction == CardSwiperDirection.right
-          ? 0
-          : _cardAnimation.left,
-      top: widget.showDialog && direction == CardSwiperDirection.right
-          ? 0
-          : _cardAnimation.top,
+      left: _cardAnimation.left,
+      top: _cardAnimation.top,
       child: GestureDetector(
-        child: widget.showDialog && direction == CardSwiperDirection.right
-            ? child
-            : Transform.rotate(angle: _cardAnimation.angle, child: child),
+        child: Transform.rotate(angle: _cardAnimation.angle, child: child),
         onTap: () async {
           if (widget.isDisabled) await widget.onTapDisabled?.call();
         },
@@ -303,11 +297,18 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     CardSwiperDirection direction,
     Widget customDialog,
   ) async {
+    // Animate the card back to its original position after the dialog is shown
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   // Add a delay before the card comes back
+    //   await Future<void>.delayed(const Duration(seconds: 5));
+    //   _cardAnimation.comeeBack(context);
+    // });
+
     final result = await showDialog<String>(
       context: context,
       builder: (context) => customDialog,
     );
-
+    // _cardAnimation.animateBack(context);
     if (result == 'Swipe') {
       _performSwipe(direction);
     } else if (result == 'Left-Swipe') {
@@ -327,24 +328,27 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   void _swipe(CardSwiperDirection direction) {
     if (direction == CardSwiperDirection.right && widget.showDialog) {
-      showSwipeOptionsDialog(
-        direction,
-        widget.dialogBuilder ??
-            AlertDialog(
-              title: const Text('Select an option'),
-              content: const Text('Do you want to swipe the card?'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop('Cancel'),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop('Swipe'),
-                  child: const Text('Swipe'),
-                ),
-              ],
-            ),
-      );
+      _cardAnimation.animateToRight(context).then((_) {
+        // Show the dialog after the card moves to the right
+        showSwipeOptionsDialog(
+          direction,
+          widget.dialogBuilder ??
+              AlertDialog(
+                title: const Text('Select an option'),
+                content: const Text('Do you want to swipe the card?'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop('Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop('Swipe'),
+                    child: const Text('Swipe'),
+                  ),
+                ],
+              ),
+        );
+      });
     } else {
       _performSwipe(direction);
     }
