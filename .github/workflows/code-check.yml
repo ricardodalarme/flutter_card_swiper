@@ -44,6 +44,9 @@ jobs:
           channel: "stable"
           cache: true
 
+      - name: Normalize line endings
+        run: find . -type f -name "*.dart" -exec dos2unix {} \;
+
       - name: Run Flutter Format
         run: dart format --set-exit-if-changed .
 
