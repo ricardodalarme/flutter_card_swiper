@@ -124,7 +124,6 @@ class CardSwiper extends StatefulWidget {
 
   /// If true, the previous card will be shown in the background when swiping right,
   /// and the swipe right action will trigger an undo.
-  /// Defaults to false.
   final bool showBackCardOnUndo;
 
   const CardSwiper({
