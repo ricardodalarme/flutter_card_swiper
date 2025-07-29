@@ -122,6 +122,11 @@ class CardSwiper extends StatefulWidget {
   /// Must be a positive value. Defaults to Offset(0, 40).
   final Offset backCardOffset;
 
+  /// If true, the previous card will be shown in the background when swiping right,
+  /// and the swipe right action will trigger an undo.
+  /// Defaults to false.
+  final bool showBackCardOnUndo;
+
   const CardSwiper({
     required this.cardBuilder,
     required this.cardsCount,
@@ -142,6 +147,7 @@ class CardSwiper extends StatefulWidget {
     this.numberOfCardsDisplayed = 2,
     this.onUndo,
     this.backCardOffset = const Offset(0, 40),
+    this.showBackCardOnUndo = false,
     super.key,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
