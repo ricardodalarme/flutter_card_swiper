@@ -48,6 +48,14 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     );
   }
 
+  @override
+  void didUpdateWidget(oldWidget)
+  {
+    controllerSubscription?.cancel();
+    controllerSubscription =
+        widget.controller?.events.listen(_controllerListener);
+  }
+
   void onSwipeDirectionChanged(CardSwiperDirection direction) {
     switch (direction) {
       case CardSwiperDirection.none:
