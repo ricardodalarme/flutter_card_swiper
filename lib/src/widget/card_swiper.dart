@@ -127,6 +127,11 @@ class CardSwiper extends StatefulWidget {
   /// Defaults to false.
   final bool showBackCardOnUndo;
 
+  /// The horizontal swipe distance threshold, in pixels, after which the back card
+  /// switches to the previous card. Only active when [showBackCardOnUndo] is true.
+  /// Defaults to 50.0.
+  final double undoSwipeThreshold;
+
   const CardSwiper({
     required this.cardBuilder,
     required this.cardsCount,
@@ -148,6 +153,7 @@ class CardSwiper extends StatefulWidget {
     this.onUndo,
     this.backCardOffset = const Offset(0, 40),
     this.showBackCardOnUndo = false,
+    this.undoSwipeThreshold = 50.0,
     super.key,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
@@ -168,6 +174,10 @@ class CardSwiper extends StatefulWidget {
         assert(
           initialIndex >= 0 && initialIndex < cardsCount,
           'initialIndex must be between 0 and [cardsCount]',
+        ),
+        assert(
+          undoSwipeThreshold >= 0,
+          'undoSwipeThreshold must be a positive value',
         );
 
   @override

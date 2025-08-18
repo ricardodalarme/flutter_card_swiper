@@ -12,6 +12,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   bool _tappedOnTop = false;
 
   final _undoableIndex = Undoable<int?>(null);
+
   final Queue<CardSwiperDirection> _directionHistory = Queue();
 
   int? _backgroundCardIndex;
@@ -51,8 +52,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   @override
-  void didUpdateWidget(oldWidget)
-  {
+  void didUpdateWidget(CardSwiper oldWidget) {
     super.didUpdateWidget(oldWidget);
     controllerSubscription?.cancel();
     controllerSubscription =
@@ -136,25 +136,44 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
             if (position.dy < renderBox.size.height / 2) _tappedOnTop = true;
           }
         },
+        // onPanUpdate: (tapInfo) {
+        //   if (!widget.isDisabled) {
+        //     if (widget.showBackCardOnUndo) {
+        //       if (_backgroundCardIndex == null && tapInfo.delta.dx.abs() > 0) {
+        //         if (tapInfo.delta.dx.isNegative) {
+        //           _backgroundCardIndex = getValidIndexOffset(1);
+        //         } else {
+        //           _backgroundCardIndex = _undoableIndex.previousState;
+        //         }
+        //       }
+        //     }
+        //
+        //     setState(
+        //       () => _cardAnimation.update(
+        //         tapInfo.delta.dx,
+        //         tapInfo.delta.dy,
+        //         _tappedOnTop,
+        //       ),
+        //     );
+        //   }
+        // },
         onPanUpdate: (tapInfo) {
           if (!widget.isDisabled) {
-            if (widget.showBackCardOnUndo) {
-              if (_backgroundCardIndex == null && tapInfo.delta.dx.abs() > 0) {
-                if (tapInfo.delta.dx.isNegative) {
-                  _backgroundCardIndex = getValidIndexOffset(1);
-                } else {
-                  _backgroundCardIndex = _undoableIndex.previousState;
-                }
-              }
-            }
-
-            setState(
-              () => _cardAnimation.update(
+            setState(() {
+              _cardAnimation.update(
                 tapInfo.delta.dx,
                 tapInfo.delta.dy,
                 _tappedOnTop,
-              ),
-            );
+              );
+
+              if (widget.showBackCardOnUndo) {
+                if (_cardAnimation.left < -widget.undoSwipeThreshold) {
+                  _backgroundCardIndex = _undoableIndex.previousState;
+                } else {
+                  _backgroundCardIndex = _nextIndex;
+                }
+              }
+            });
           }
         },
         onPanEnd: (tapInfo) {
