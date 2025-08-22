@@ -12,7 +12,10 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   bool _tappedOnTop = false;
 
   final _undoableIndex = Undoable<int?>(null);
+
   final Queue<CardSwiperDirection> _directionHistory = Queue();
+
+  int? _backgroundCardIndex;
 
   int? get _currentIndex => _undoableIndex.state;
 
@@ -49,8 +52,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   @override
-  void didUpdateWidget(oldWidget)
-  {
+  void didUpdateWidget(CardSwiper oldWidget) {
     super.didUpdateWidget(oldWidget);
     controllerSubscription?.cancel();
     controllerSubscription =
@@ -136,13 +138,21 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
         },
         onPanUpdate: (tapInfo) {
           if (!widget.isDisabled) {
-            setState(
-              () => _cardAnimation.update(
+            setState(() {
+              _cardAnimation.update(
                 tapInfo.delta.dx,
                 tapInfo.delta.dy,
                 _tappedOnTop,
-              ),
-            );
+              );
+
+              if (widget.showBackCardOnUndo) {
+                if (_cardAnimation.left < -widget.undoSwipeThreshold) {
+                  _backgroundCardIndex = _undoableIndex.previousState;
+                } else {
+                  _backgroundCardIndex = _nextIndex;
+                }
+              }
+            });
           }
         },
         onPanEnd: (tapInfo) {
@@ -156,6 +166,18 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   Widget _backItem(BoxConstraints constraints, int index) {
+    int? cardIndex;
+
+    if (widget.showBackCardOnUndo && index == 1) {
+      cardIndex = _backgroundCardIndex ?? getValidIndexOffset(index);
+    } else {
+      cardIndex = getValidIndexOffset(index);
+    }
+
+    if (cardIndex == null) {
+      return const SizedBox.shrink();
+    }
+
     return Positioned(
       top: (widget.backCardOffset.dy * index) - _cardAnimation.difference.dy,
       left: (widget.backCardOffset.dx * index) - _cardAnimation.difference.dx,
@@ -163,7 +185,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
         scale: _cardAnimation.scale - ((1 - widget.scale) * (index - 1)),
         child: ConstrainedBox(
           constraints: constraints,
-          child: widget.cardBuilder(context, getValidIndexOffset(index)!, 0, 0),
+          child: widget.cardBuilder(context, cardIndex, 0, 0),
         ),
       ),
     );
@@ -217,6 +239,9 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   void _reset() {
     onSwipeDirectionChanged(CardSwiperDirection.none);
     _detectedDirection = CardSwiperDirection.none;
+
+    _backgroundCardIndex = null;
+
     setState(() {
       _animationController.reset();
       _cardAnimation.reset();
