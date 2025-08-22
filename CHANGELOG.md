@@ -1,3 +1,8 @@
+## [7.1.0]
+
+- Adds support for tapping a card
+  - `onTap` callback containing currentIndex.
+
 ## [7.0.2]
 
 - Added `CardAnimation.animateToAngle` helper to animate swipe the card to any given angle between 0-360°.
