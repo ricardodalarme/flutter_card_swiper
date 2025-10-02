@@ -646,10 +646,8 @@ void main() {
         CardSwiper(
           key: swiperKey,
           cardsCount: 10,
-          numberOfCardsDisplayed: 2,
           cardBuilder: genericBuilder,
           showBackCardOnUndo: true,
-          undoSwipeThreshold: 50,
         ),
       );
 
@@ -668,7 +666,6 @@ void main() {
         CardSwiper(
           key: swiperKey,
           cardsCount: 10,
-          numberOfCardsDisplayed: 2,
           cardBuilder: genericBuilder,
           showBackCardOnUndo: true,
           undoSwipeThreshold: 150,
@@ -690,10 +687,7 @@ void main() {
         CardSwiper(
           key: swiperKey,
           cardsCount: 10,
-          numberOfCardsDisplayed: 2,
           cardBuilder: genericBuilder,
-          showBackCardOnUndo: false,
-          undoSwipeThreshold: 50,
         ),
       );
 
