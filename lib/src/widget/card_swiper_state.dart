@@ -147,7 +147,8 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
               if (widget.showBackCardOnUndo) {
                 if (_cardAnimation.left < -widget.undoSwipeThreshold) {
-                  _backgroundCardIndex = _undoableIndex.previousState;
+                  _backgroundCardIndex =
+                      _undoableIndex.previousState ?? getValidIndexOffset(-1);
                 } else {
                   _backgroundCardIndex = _nextIndex;
                 }
@@ -347,9 +348,12 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
     }
 
     final index = _currentIndex! + offset;
+
     if (!widget.isLoop && !index.isBetween(0, widget.cardsCount - 1)) {
       return null;
     }
-    return index % widget.cardsCount;
+
+    final result = index % widget.cardsCount;
+    return result < 0 ? result + widget.cardsCount : result;
   }
 }
