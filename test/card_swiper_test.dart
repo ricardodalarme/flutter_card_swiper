@@ -635,4 +635,66 @@ void main() {
       expect(find.card(0), findsOneWidget);
     });
   });
+
+  group('showBackCardOnUndo', () {
+    testWidgets(
+        'when showBackCardOnUndo is true expect to show previous card in background during left swipe beyond threshold',
+        (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          cardBuilder: genericBuilder,
+          showBackCardOnUndo: true,
+        ),
+      );
+
+      await tester.drag(find.byKey(swiperKey), const Offset(-100, 0));
+      await tester.pump();
+
+      expect(find.card(9), findsOneWidget);
+    });
+
+    testWidgets(
+        'when showBackCardOnUndo is true and drag is not beyond undoSwipeThreshold, expect to see the next card',
+        (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          cardBuilder: genericBuilder,
+          showBackCardOnUndo: true,
+          undoSwipeThreshold: 150,
+        ),
+      );
+
+      await tester.drag(find.byKey(swiperKey), const Offset(-100, 0));
+      await tester.pump();
+
+      expect(find.card(1), findsOneWidget);
+    });
+
+    testWidgets(
+        'when showBackCardOnUndo is false, expect to always see the next card',
+        (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 10,
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.drag(find.byKey(swiperKey), const Offset(-100, 0));
+      await tester.pump();
+
+      expect(find.card(1), findsOneWidget);
+    });
+  });
 }
