@@ -45,7 +45,7 @@ jobs:
           cache: true
 
       - name: Run Flutter Format
-        run: dart format .
+        run: dart format . --set-exit-if-changed
 
       - name: Run Flutter Analyze
         run: flutter analyze
