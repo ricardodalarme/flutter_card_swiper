@@ -634,6 +634,30 @@ void main() {
 
       expect(find.card(0), findsOneWidget);
     });
+
+    testWidgets('when tapping a card, expect callback',
+        (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+      var index = -1;
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 3,
+          numberOfCardsDisplayed: 1,
+          initialIndex: 2,
+          onTap: (currentIndex) {
+            index = currentIndex;
+          },
+          cardBuilder: genericBuilder,
+        ),
+      );
+
+      await tester.tap(find.byKey(swiperKey));
+      await tester.pumpAndSettle();
+
+      expect(index, 2);
+    });
   });
 
   group('showBackCardOnUndo', () {
