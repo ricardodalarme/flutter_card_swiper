@@ -1,0 +1,6 @@
+include: ../analysis_options.yaml
+
+linter:
+  rules:
+    avoid_implementing_value_types: false
+    avoid_redundant_argument_values: false
