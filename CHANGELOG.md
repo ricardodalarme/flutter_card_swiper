@@ -1,3 +1,8 @@
+## [7.1.0]
+
+- Added optional right-swipe-to-undo with dynamic background
+- Fixed missing didUpdateWidget() override for controllerSubscription in CardSwiperState #61
+
 ## [7.0.2]
 
 - Added `CardAnimation.animateToAngle` helper to animate swipe the card to any given angle between 0-360°.
