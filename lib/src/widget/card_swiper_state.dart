@@ -146,7 +146,14 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
               );
 
               if (widget.showBackCardOnUndo) {
-                if (_cardAnimation.left < -widget.undoSwipeThreshold) {
+                final shouldShowPreviousCard = switch (widget.undoDirection) {
+                  UndoDirection.left =>
+                    _cardAnimation.left < -widget.undoSwipeThreshold,
+                  UndoDirection.right =>
+                    _cardAnimation.left > widget.undoSwipeThreshold,
+                };
+
+                if (shouldShowPreviousCard) {
                   _backgroundCardIndex =
                       _undoableIndex.previousState ?? getValidIndexOffset(-1);
                 } else {
