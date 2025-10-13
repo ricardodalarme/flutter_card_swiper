@@ -126,8 +126,8 @@ class CardSwiper extends StatefulWidget {
   /// Defaults to UndoDirection.left.
   final UndoDirection undoDirection;
 
-  /// If true, the previous card will be shown in the background when swiping right,
-  /// and the swipe right action will trigger an undo.
+  /// If true, the previous card will be shown in the background when swiping in the undo direction,
+  /// and the swipe action in the direction specified by [undoDirection] will trigger an undo.
   /// Defaults to false.
   final bool showBackCardOnUndo;
 
