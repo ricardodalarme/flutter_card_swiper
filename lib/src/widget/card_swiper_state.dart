@@ -93,7 +93,6 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
   }
 
   Widget _frontItem(BoxConstraints constraints) {
-    final direction = _getEndAnimationDirection();
     final Widget child = ConstrainedBox(
       constraints: constraints,
       child: widget.cardBuilder(
@@ -103,11 +102,65 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
         (100 * _cardAnimation.top / widget.threshold).ceil(),
       ),
     );
+    // Compute active direction & progress for overlay
+    var activeDirection = CardSwiperDirection.none;
+    double progress = 0;
+    if (_cardAnimation.left.abs() > _cardAnimation.top.abs()) {
+      if (_cardAnimation.left < 0) {
+        activeDirection = CardSwiperDirection.left;
+      } else if (_cardAnimation.left > 0) {
+        activeDirection = CardSwiperDirection.right;
+      }
+      progress = (_cardAnimation.left.abs() / widget.threshold).clamp(0, 1);
+    } else if (_cardAnimation.top.abs() > 0) {
+      if (_cardAnimation.top < 0) {
+        activeDirection = CardSwiperDirection.top;
+      } else if (_cardAnimation.top > 0) {
+        activeDirection = CardSwiperDirection.bottom;
+      }
+      progress = (_cardAnimation.top.abs() / widget.threshold).clamp(0, 1);
+    }
+    final overlay = widget.overlayBuilder?.call(
+      context,
+      _currentIndex!,
+      activeDirection,
+      progress,
+    );
+    // Overlay strategy:
+    // 1. If null -> just card.
+    // 2. If user returns Positioned -> we insert it directly in the Stack so it remains a direct child.
+    // 3. Otherwise we wrap it with Positioned.fill to cover the card area.
     return Positioned(
       left: _cardAnimation.left,
       top: _cardAnimation.top,
       child: GestureDetector(
-        child: Transform.rotate(angle: _cardAnimation.angle, child: child),
+        child: Transform.rotate(
+          angle: _cardAnimation.angle,
+          child: overlay == null
+              ? child
+              : Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    child,
+                    if (overlay is Positioned)
+                      IgnorePointer(
+                        child: _wrapOverlayOpacity(
+                          overlay: overlay,
+                          progress: progress,
+                        ),
+                      )
+                    else
+                      Positioned.fill(
+                        child: IgnorePointer(
+                          child: Opacity(
+                            opacity: progress,
+                            child: overlay,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+        ),
         onTap: () async {
           if (widget.isDisabled) await widget.onTapDisabled?.call();
         },
@@ -135,6 +188,24 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
             _onEndAnimation();
           }
         },
+      ),
+    );
+  }
+
+  Widget _wrapOverlayOpacity(
+      {required Positioned overlay, required double progress}) {
+    // Rebuild Positioned with its child wrapped in Opacity.
+    return Positioned(
+      key: overlay.key,
+      left: overlay.left,
+      top: overlay.top,
+      right: overlay.right,
+      bottom: overlay.bottom,
+      width: overlay.width,
+      height: overlay.height,
+      child: Opacity(
+        opacity: progress,
+        child: overlay.child,
       ),
     );
   }

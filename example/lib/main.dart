@@ -40,11 +40,57 @@ class _ExamplePageState extends State<Example> {
                 cardsCount: cards.length,
                 onSwipe: _onSwipe,
                 onUndo: _onUndo,
-                isLoop: false,
                 numberOfCardsDisplayed: 1,
-                showDialog: true,
                 backCardOffset: const Offset(40, 40),
                 padding: const EdgeInsets.all(24.0),
+                duration: const Duration(milliseconds: 500),
+                overlayBuilder: (
+                  context,
+                  index,
+                  direction,
+                  progress,
+                ) {
+                  if (direction == CardSwiperDirection.none) return null;
+                  final isPositive = direction == CardSwiperDirection.right ||
+                      direction == CardSwiperDirection.top;
+                  // Requirement: when swiping left, overlay should be on right side.
+                  // We'll position based on direction explicitly.
+                  return Positioned(
+                    top: 16,
+                    left: direction == CardSwiperDirection.right ? 16 : null,
+                    right: direction == CardSwiperDirection.left
+                        ? 16
+                        : (direction == CardSwiperDirection.top ? 16 : null),
+                    child: Opacity(
+                      opacity: progress,
+                      child: Transform.rotate(
+                        angle:
+                            direction == CardSwiperDirection.left ? -0.2 : 0.2,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: isPositive ? Colors.green : Colors.red,
+                              width: 4,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            isPositive ? 'LIKE' : 'NOPE',
+                            style: TextStyle(
+                              color: isPositive ? Colors.green : Colors.red,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
                 dialogBuilder: AlertDialog(
                   backgroundColor: Colors.yellow,
                   alignment: Alignment.bottomCenter,

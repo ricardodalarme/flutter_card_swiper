@@ -1,3 +1,10 @@
+## [7.2.0]
+
+- Added optional `overlayBuilder` to `CardSwiper` for displaying custom drag overlays.
+- Supports returning a `Positioned` widget for precise placement (non-`Positioned` overlays are expanded).
+- Provides normalized `progress` (0.0–1.0) and dominant `direction` to overlayBuilder.
+- Updated README with Overlay usage examples.
+
 ## [7.1.0+1]
 
 - Added `showDialog` parameter to enable dialog functionality when swiping right

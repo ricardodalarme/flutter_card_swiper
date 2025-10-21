@@ -464,6 +464,42 @@ void main() {
 
       expect(isCalled, true);
     });
+
+    testWidgets('overlayBuilder shows overlay with progress',
+        (WidgetTester tester) async {
+      final swiperKey = GlobalKey();
+      var lastProgress = -1.0;
+      CardSwiperDirection? lastDirection;
+
+      await tester.pumpApp(
+        CardSwiper(
+          key: swiperKey,
+          cardsCount: 3,
+          numberOfCardsDisplayed: 1,
+          cardBuilder: genericBuilder,
+          overlayBuilder: (
+            context,
+            index,
+            direction,
+            progress,
+          ) {
+            lastProgress = progress;
+            lastDirection = direction;
+            if (direction == CardSwiperDirection.none) return null;
+            return const Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(width: 50, height: 50),
+            );
+          },
+        ),
+      );
+
+      await tester.dragRight(swiperKey, offset: 100);
+      await tester.pump();
+
+      expect(lastDirection, CardSwiperDirection.right);
+      expect(lastProgress > 0, true);
+    });
   });
 
   group('Card swipe direction tests', () {

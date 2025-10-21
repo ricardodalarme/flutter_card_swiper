@@ -126,6 +126,21 @@ class CardSwiper extends StatefulWidget {
   final Widget? dialogBuilder;
   final bool showDialog;
 
+  /// Optional builder for an overlay widget that is displayed above the front
+  /// card while it is being dragged.
+  ///
+  /// Signature: `(context, index, direction, progress)`.
+  /// * `index` — index of the front card.
+  /// * `direction` — dominant swipe direction (left/right/top/bottom) or
+  ///   `CardSwiperDirection.none` if idle.
+  /// * `progress` — normalized 0.0–1.0 value of displacement / `threshold`.
+  ///
+  /// Return `null` for no overlay. You can return a `Positioned` to anchor the
+  /// overlay; any other widget is expanded over the card surface.
+  ///
+  /// The widget is automatically faded with `progress`.
+  final CardSwiperOverlayBuilder? overlayBuilder;
+
   const CardSwiper({
     required this.cardBuilder,
     required this.cardsCount,
@@ -149,6 +164,7 @@ class CardSwiper extends StatefulWidget {
     this.numberOfCardsDisplayed = 2,
     this.onUndo,
     this.backCardOffset = const Offset(0, 40),
+    this.overlayBuilder,
     super.key,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
