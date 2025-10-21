@@ -1,3 +1,13 @@
+## [7.1.0+1]
+
+- Added `showDialog` parameter to enable dialog functionality when swiping right
+- Added `dialogBuilder` parameter to customize the dialog shown during right swipe
+- Added `delay` parameter to control delay timing for dialog-based swipe actions
+- Added `CardAnimation.animateToRight` method to animate card to the right edge of screen
+- Added `CardAnimation.animateTo` method for custom offset and angle animations
+- Added `CardAnimation.comeeBack` method to animate card back to original position
+- Enhanced right swipe behavior with optional dialog confirmation workflow
+
 ## [7.0.2]
 
 - Added `CardAnimation.animateToAngle` helper to animate swipe the card to any given angle between 0-360°.
