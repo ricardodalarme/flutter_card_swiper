@@ -23,7 +23,7 @@ jobs:
           cache: true
 
       - name: Run Flutter Test Coverage
-        run: flutter test --coverage
+        run: flutter test --coverage --reporter github
 
       - name: Upload Coverage to Codecov
         if: github.event_name == 'push'
@@ -44,8 +44,11 @@ jobs:
           channel: "stable"
           cache: true
 
+      - name: Get dependencies
+        run: flutter pub get
+
       - name: Run Flutter Format
-        run: dart format .
+        run: dart format . --output=none --set-exit-if-changed
 
       - name: Run Flutter Analyze
         run: flutter analyze
