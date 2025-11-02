@@ -1,3 +1,7 @@
+## [7.2.0]
+
+- Adds configurable swipe direction for undo functionality]
+
 ## [7.1.0]
 
 - Added optional right-swipe-to-undo with dynamic background
