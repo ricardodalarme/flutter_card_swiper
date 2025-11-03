@@ -1,6 +1,6 @@
 ## [7.2.0]
 
-- Adds configurable swipe direction for undo functionality]
+- Adds configurable swipe direction for undo functionality
 
 ## [7.1.0]
 
