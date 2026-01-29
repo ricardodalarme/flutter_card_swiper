@@ -14,6 +14,12 @@
 - Added `CardAnimation.animateTo` method for custom offset and angle animations
 - Added `CardAnimation.comeeBack` method to animate card back to original position
 - Enhanced right swipe behavior with optional dialog confirmation workflow
+- Adds configurable swipe direction for undo functionality
+
+## [7.1.0]
+
+- Added optional right-swipe-to-undo with dynamic background
+- Fixed missing didUpdateWidget() override for controllerSubscription in CardSwiperState #61
 
 ## [7.0.2]
 
