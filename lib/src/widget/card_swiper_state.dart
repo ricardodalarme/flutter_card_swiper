@@ -222,7 +222,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
           break;
       }
 
-      _reset();
+      if (mounted) _reset();
     }
   }
 
